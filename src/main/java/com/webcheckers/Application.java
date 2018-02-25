@@ -17,6 +17,7 @@ import spark.template.freemarker.FreeMarkerEngine;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
+
 public final class Application {
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
 
