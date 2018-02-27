@@ -56,5 +56,4 @@ public class GetHomeRoute implements Route {
     vm.put("title", "Welcome!");
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
-
 }
