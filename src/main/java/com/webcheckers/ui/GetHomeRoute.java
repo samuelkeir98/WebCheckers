@@ -18,6 +18,9 @@ import spark.TemplateEngine;
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
 public class GetHomeRoute implements Route {
+
+  public static final String NUM_PLAYER_PARAM = "numPlayers";
+
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
   private final TemplateEngine templateEngine;
@@ -58,6 +61,7 @@ public class GetHomeRoute implements Route {
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
+    vm.put(NUM_PLAYER_PARAM, playerLobby.numPlayers());
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
 

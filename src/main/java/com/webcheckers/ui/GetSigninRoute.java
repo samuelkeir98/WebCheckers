@@ -13,9 +13,10 @@ import java.util.HashMap;
  */
 public class GetSigninRoute implements Route {
 
-    private final static String PAGE_TITLE = "Sign-in";
-    private final static String TITLE_PARAM = "title";
-    private final static String TEMPLATE_NAME = "signin.ftl";
+    public final static String TITLE_PARAM = "title";
+    public final static String MESSAGE_PARAM = "message";
+    public final static String PAGE_TITLE = "Sign-in";
+    public final static String TEMPLATE_NAME = "signin.ftl";
 
     private final TemplateEngine templateEngine;
 
