@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * Player Lobby Service class
+ * @author Anthony Massicci
  */
 public class PlayerLobby {
     private Set<Player> players = new HashSet<>();
@@ -19,7 +20,7 @@ public class PlayerLobby {
      * @return a new Player object if specified
      * player name is available, null otherwise.
      */
-    public Player signin(String playerName) {
+    public synchronized Player signin(String playerName) {
         Player newPlayer = new Player(playerName);
 
         if (players.contains(newPlayer))
@@ -39,5 +40,12 @@ public class PlayerLobby {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * returns number of players signed in
+     * @return # of players
+     */
+    public synchronized int numPlayers() {
+        return players.size();
+    }
 
 }
