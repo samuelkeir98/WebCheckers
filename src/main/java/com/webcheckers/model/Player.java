@@ -27,4 +27,20 @@ public class Player {
      * equals method for value object semantics
      * @param other other object to compare this object to.
      */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Player))
+            return false;
+
+        Player otherPlayer = (Player)other;
+        return otherPlayer.name == this.name;
+    }
+
+    /**
+     * implementation for hashCode
+     */
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
 }
