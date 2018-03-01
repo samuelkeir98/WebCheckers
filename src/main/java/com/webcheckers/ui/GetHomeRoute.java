@@ -67,10 +67,10 @@ public class GetHomeRoute implements Route {
       Player player = session.attribute(PLAYER_KEY);
       vm.put(USER_PARAM, player);
 
-      Set<Player> otherPlayers = playerLobby.getPlayers()
+      List<Player> otherPlayers = playerLobby.getPlayers()
               .stream()
               .filter(p -> !p.equals(player))
-              .collect(Collectors.toSet());
+              .collect(Collectors.toList());
 
       vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
 
