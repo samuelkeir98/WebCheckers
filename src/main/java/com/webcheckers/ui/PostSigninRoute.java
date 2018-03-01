@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.PlayerLobby;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -13,14 +14,18 @@ import java.util.Objects;
 public class PostSigninRoute implements Route {
 
     private final TemplateEngine templateEngine;
+    private final PlayerLobby playerLobby;
 
     /**
      * constructor
      * @param templateEngine template engine to render pages
      */
-    public PostSigninRoute(TemplateEngine templateEngine) {
+    public PostSigninRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {
         Objects.requireNonNull(templateEngine);
+        Objects.requireNonNull(playerLobby);
+
         this.templateEngine = templateEngine;
+        this.playerLobby = playerLobby;
     }
 
     /**
