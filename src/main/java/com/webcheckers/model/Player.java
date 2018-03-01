@@ -33,7 +33,7 @@ public class Player {
             return false;
 
         Player otherPlayer = (Player)other;
-        return otherPlayer.name == this.name;
+        return otherPlayer.name.equals(this.name);
     }
 
     /**
