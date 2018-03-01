@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class PostSigninRoute implements Route {
 
-    public final static String PLAYERLOBBY_KEY = "playerLobby";
+    public final static String PLAYER_KEY = "player";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -48,7 +48,7 @@ public class PostSigninRoute implements Route {
 
         Player player = playerLobby.signin(name);
         if (player != null) {
-            session.attribute(PLAYERLOBBY_KEY, player);
+            session.attribute(PLAYER_KEY, player);
             response.redirect(WebServer.HOME_URL);
             halt();
             return null;

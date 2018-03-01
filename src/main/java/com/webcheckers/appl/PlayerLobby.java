@@ -2,10 +2,10 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Player Lobby Service class
@@ -34,10 +34,8 @@ public class PlayerLobby {
      * returns a list of all currently signed in players
      * @return list of player names
      */
-    public List<String> getAllPlayerNames() {
-        return players.stream()
-                .map(player -> player.getName())
-                .collect(Collectors.toList());
+    public Set<Player> getPlayers() {
+        return Collections.unmodifiableSet(players);
     }
 
     /**

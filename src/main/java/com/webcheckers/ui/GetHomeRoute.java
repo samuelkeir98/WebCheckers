@@ -1,16 +1,12 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import com.webcheckers.appl.PlayerLobby;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import com.webcheckers.model.Player;
+import spark.*;
 
 /**
  * The UI Controller to GET the Home page.
@@ -20,6 +16,9 @@ import spark.TemplateEngine;
 public class GetHomeRoute implements Route {
 
   public static final String NUM_PLAYER_PARAM = "numPlayers";
+  public static final String USER_PARAM = "currentPlayer";
+  public static final String OTHER_PLAYERS_PARAM = "otherPlayers";
+  public static final String PLAYER_KEY = "player";
 
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
@@ -57,11 +56,26 @@ public class GetHomeRoute implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
+    final Session session = request.session();
     LOG.finer("GetHomeRoute is invoked.");
     //
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
     vm.put(NUM_PLAYER_PARAM, playerLobby.numPlayers());
+
+    if (session.attribute(PLAYER_KEY) != null) {
+      Player player = session.attribute(PLAYER_KEY);
+      vm.put(USER_PARAM, player);
+
+      Set<Player> otherPlayers = playerLobby.getPlayers()
+              .stream()
+              .filter(p -> !p.equals(player))
+              .collect(Collectors.toSet());
+
+      vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
+
+    }
+
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
 
