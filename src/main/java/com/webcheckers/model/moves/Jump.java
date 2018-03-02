@@ -4,18 +4,14 @@ import com.webcheckers.model.Piece;
 
 public class Jump extends Move {
 
-    private int jumpSpotRow,jumpSpotCol;
+    private Piece jumped;
 
-    public Jump(Piece piece, Direction direction){
+    public Jump(Piece piece, Direction direction,Piece taken){
         super(piece,direction,Type.JUMP);
-        //TODO Implement Piece then handle jump spots
+        jumped = taken;
     }
 
-    public int getJumpSpotCol() {
-        return jumpSpotCol;
-    }
-
-    public int getJumpSpotRow() {
-        return jumpSpotRow;
+    public Piece getJumped() {
+        return jumped;
     }
 }

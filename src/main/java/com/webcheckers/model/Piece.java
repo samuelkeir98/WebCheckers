@@ -9,6 +9,12 @@ public class Piece {
 	}
 	private Position position;
 
-	public Piece()
+	public Piece(int row, int col){
+		position = new Position(row,col);
+		//TODO Add team color functionality
+	}
 
+	public Position getPosition() {
+		return position;
+	}
 }

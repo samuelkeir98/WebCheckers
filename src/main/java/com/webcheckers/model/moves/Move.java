@@ -22,7 +22,9 @@ public abstract class Move {
 
     protected Move(Piece piece, Direction direction, Type type){
         this(piece.getPosition(),
-                new Position(piece.get))
+                new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces(),
+                        piece.getPosition().getCol() + direction.getCol() * type.getSpaces()),
+                type);
     }
 
     protected Move(Position startPos,Position endPos, Type type){
