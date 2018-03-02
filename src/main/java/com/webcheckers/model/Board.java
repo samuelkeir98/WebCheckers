@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Board implements Iterable<Row> {
 
-    private static final int NUM_ROWS = 8;
+    public static final int NUM_ROWS = 8;
 
     private Player curPlayer;
     private Player redPlayer;
@@ -24,7 +24,11 @@ public class Board implements Iterable<Row> {
             rows.add(new Row());
         }
 
+        for(int row = 0; row<3; row++) {
+            for (int i = 0; i < Row.ROW_SIZE; i++) {
 
+            }
+        }
     }
 
     @Override
