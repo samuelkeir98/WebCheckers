@@ -5,4 +5,8 @@ public class Piece {
 		NORMAL,
 		KING
 	}
+	enum Color{
+		RED,
+		BLACK
+	}
 }

@@ -26,7 +26,21 @@ public class Board implements Iterable<Row> {
 
         for(int row = 0; row<3; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
+                if((i+row)%2 == 0) {
+                    Piece piece = new Piece(); //TODO include proper Piece constructor
+                    redPieces.add(piece);
+                    rows.get(row).placePiece(piece,i);
+                }
+            }
+        }
 
+        for(int row = NUM_ROWS-3; row<NUM_ROWS; row++) {
+            for (int i = 0; i < Row.ROW_SIZE; i++) {
+                if((i+row)%2 == 0) {
+                    Piece piece = new Piece(); //TODO include proper Piece constructor
+                    redPieces.add(piece);
+                    rows.get(row).placePiece(piece,i);
+                }
             }
         }
     }
