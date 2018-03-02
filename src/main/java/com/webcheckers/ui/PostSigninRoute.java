@@ -20,8 +20,6 @@ public class PostSigninRoute implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
-
-
     /**
      * constructor
      * @param templateEngine template engine to render pages
@@ -46,16 +44,32 @@ public class PostSigninRoute implements Route {
         final Session session = request.session();
         final Map<String, Object> vm = new HashMap<>();
 
-        Player player = playerLobby.signin(name);
-        if (player != null) {
-            session.attribute(PLAYER_KEY, player);
-            response.redirect(WebServer.HOME_URL);
-            halt();
-            return null;
+        vm.put(GetSigninRoute.TITLE_PARAM, GetSigninRoute.PAGE_TITLE);
+
+        if (validateName(name)) {
+            Player player = new Player(name);
+
+            if (player != null) {
+                session.attribute(PLAYER_KEY, player);
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            } else {
+                return templateEngine.render(error(vm, "User name is already taken!"));
+            }
         } else {
-            vm.put(GetSigninRoute.TITLE_PARAM, GetSigninRoute.PAGE_TITLE);
-            vm.put(GetSigninRoute.MESSAGE_PARAM, "User name is already taken!");
-            return templateEngine.render(new ModelAndView(vm, GetSigninRoute.TEMPLATE_NAME));
+            return templateEngine.render(
+                    error(vm, "names can only have alphanumeric characters or spaces")
+            );
         }
+    }
+
+    private ModelAndView error(Map<String, Object> vm, String message) {
+        vm.put(GetSigninRoute.MESSAGE_PARAM, message);
+        return new ModelAndView(vm, GetSigninRoute.TEMPLATE_NAME);
+    }
+
+    private boolean validateName(String name) {
+        return name.matches("[0-9a-zA-Z\\s]+");
     }
 }
