@@ -66,6 +66,24 @@ public class Board implements Iterable<Row> {
     //TODO
     boolean canJump(Piece piece){return false;}
 
+    Piece getPiece(Position position){
+        return rows.get(position.getRow()).getPieceAt(position.getCol());
+    }
+
+    boolean isValid(Position position){
+        return rows.get(position.getRow()).isValid(position.getCol());
+    }
+
+    //TODO
+    boolean isValidMove(Move move){
+        Position startPos = move.getStartPos();
+        Position endPos = move.getEndPos();
+        if(getPiece(startPos)==null || getPiece(startPos).getColor()!=curTurn || !isValid(endPos)){
+            return false;
+        }
+        return true;
+    }
+
     //TODO
     Set<Jump> getJumpMoves(){return null;}
 
