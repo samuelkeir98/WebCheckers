@@ -7,6 +7,10 @@ public class Piece {
 		NORMAL,
 		KING
 	}
+	enum Color{
+		RED,
+		BLACK
+	}
 	private Position position;
 
 	public Piece(int row, int col){
