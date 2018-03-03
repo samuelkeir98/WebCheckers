@@ -28,6 +28,10 @@ public class Row implements Iterable<Space>{
         return spaces.get(index).getPiece();
     }
 
+    public boolean isValid(int index){
+        return spaces.get(index).isValid();
+    }
+
     public boolean isPieceAt(int index){
         return spaces.get(index).isValid();
     }
