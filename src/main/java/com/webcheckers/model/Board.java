@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.webcheckers.model.moves.Jump;
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
@@ -95,6 +96,23 @@ public class Board implements Iterable<Row> {
 
     //TODO
     void makeMove(Move move){
+
+        if(isValidMove(move)){
+            Position startPos = move.getStartPos();
+            Position endPos = move.getEndPos();
+
+            Piece myPiece = getPiece(startPos);
+            Row row = rows.get(startPos.getRow());
+            row.removePiece(startPos.getCol());
+            row = rows.get(endPos.getRow());
+            row.placePiece(myPiece,endPos.getCol());
+            if(curTurn == Color.RED){
+                curTurn = Color.WHITE;
+            } else{
+                curTurn = Color.RED;
+            }
+
+        }
 
     }
 
