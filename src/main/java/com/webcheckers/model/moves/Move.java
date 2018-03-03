@@ -37,6 +37,13 @@ public class Move {
         return type;
     }
 
+    public Position getStartPos() {
+        return startPos;
+    }
+
+    public Position getEndPos() {
+        return endPos;
+    }
 
     /**
      * Represent whether a move is a one-tile step or two-tile jump.

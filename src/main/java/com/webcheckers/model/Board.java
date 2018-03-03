@@ -67,6 +67,11 @@ public class Board implements Iterable<Row> {
     boolean canJump(Piece piece){return false;}
 
     //TODO
+    boolean isValidMove(Move move){
+        Position startPos = move
+    }
+
+    //TODO
     Set<Jump> getJumpMoves(){return null;}
 
     //TODO

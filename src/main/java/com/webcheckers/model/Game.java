@@ -11,13 +11,13 @@ public class Game {
      * to actual coordinates that the board understands
      */
     private static final Position[][] redPlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
-    private static final Position[][] blackPlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
+    private static final Position[][] whitePlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
     static {
         for (int row = 0; row < Board.NUM_ROWS; row++) {
             for (int col = 0; col < Row.ROW_SIZE; col++) {
                 Position position = new Position(row, col);
                 redPlayMatrix[row][col] = position;
-                blackPlayMatrix[Board.NUM_ROWS - row - 1][Row.ROW_SIZE - col - 1] = position;
+                whitePlayMatrix[Board.NUM_ROWS - row - 1][Row.ROW_SIZE - col - 1] = position;
             }
         }
     }
@@ -28,7 +28,15 @@ public class Game {
     private Stack<Move> lastPlayed;
 
     //TODO
-    public Game(Player redPlayer,Player whitePlayer){}
+    public Game(Player redPlayer,Player whitePlayer){
+        this.redPlayer = redPlayer;
+        this.whitePlayer = whitePlayer;
+        board = new Board(redPlayer,whitePlayer);
+        gameOver = false;
+        lastPlayed = new Stack<>();
+    }
+
+
 
 
 }
