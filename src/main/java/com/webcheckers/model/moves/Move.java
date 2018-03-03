@@ -2,12 +2,25 @@ package com.webcheckers.model.moves;
 
 import com.webcheckers.model.Piece;
 
+/**
+ * Value object representing one move
+ * @author Adrian Postolache
+ */
 public abstract class Move {
-    public enum Type{
-        STEP(1),
-        JUMP(2);
 
+    /**
+     * Represent whether a move is a one-tile step or two-tile jump.
+     * Includes those values to keep the actual code generic.
+     */
+    public enum Type{
+        STEP(1), //Regular, one-tile movement
+        JUMP(2); //Attacking, two-tile movement
+
+        /**
+         * How many spaces this type of move will take.
+         */
         private int spaces;
+
         Type(int spaces){
             this.spaces=spaces;
         }
