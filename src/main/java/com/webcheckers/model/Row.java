@@ -29,7 +29,7 @@ public class Row implements Iterable<Space>{
     }
 
     public boolean isPieceAt(int index){
-        return spaces.get(index).hasPiece();
+        return spaces.get(index).isValid();
     }
 
 
