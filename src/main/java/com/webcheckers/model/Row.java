@@ -37,7 +37,7 @@ public class Row implements Iterable<Space>{
     }
 
     public void removePiece(int index){
-        spaces.remove(index);
+        spaces.get(index).removePiece();
     }
 
 

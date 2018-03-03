@@ -1,6 +1,5 @@
 package com.webcheckers.model;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.webcheckers.model.moves.Jump;
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
@@ -94,11 +93,33 @@ public class Board implements Iterable<Row> {
     //TODO
     void undo(Move move){}
 
+    public static void main(String[] args){
+        Board board = new Board(new Player("joe"),new Player("jim"));
+        System.out.println(board);
+
+        Move move = new Move(new Position(5,1),new Position(4,2),Move.Type.OTHER);
+        board.makeMove(move);
+		System.out.println(board);
+	}
+
+    @Override
+    public String toString() {
+        String out = " ";
+        for(int i = 0;i<Row.ROW_SIZE;i++){
+            out+=i;
+        }
+        out+="\n";
+        for(int i = 0; i<NUM_ROWS;i++) {
+            out+=rows.get(i).toString() + "\n";
+        }
+        return out;
+    }
+
     //TODO
     void makeMove(Move move){
 
         if(isValidMove(move)){
-            Position startPos = move.getStartPos();
+			Position startPos = move.getStartPos();
             Position endPos = move.getEndPos();
 
             Piece myPiece = getPiece(startPos);
@@ -114,23 +135,5 @@ public class Board implements Iterable<Row> {
 
         }
 
-    }
-
-    @Override
-    public String toString() {
-        String out = " ";
-        for(int i = 0;i<Row.ROW_SIZE;i++){
-            out+=i;
-        }
-        out+="\n";
-        for(int i = 0; i<NUM_ROWS;i++) {
-            out+=rows.get(i).toString() + "\n";
-        }
-        return out;
-    }
-
-    public static void main(String[] args){
-        Board board = new Board(new Player("joe"),new Player("jim"));
-        System.out.println(board);
     }
 }
