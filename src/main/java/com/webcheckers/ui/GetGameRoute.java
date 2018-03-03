@@ -37,7 +37,7 @@ public class GetGameRoute implements Route {
         Player player1 = new Player("Bob");
         Player player2 = new Player("Billy");
         vm.put("currentPlayer", player1);
-        viewMode view = viewMode.PLAY;
+        ViewMode view = ViewMode.PLAY;
         vm.put("viewMode", view);
         vm.put("redPlayer", player1);
         vm.put("whitePlayer", player2);

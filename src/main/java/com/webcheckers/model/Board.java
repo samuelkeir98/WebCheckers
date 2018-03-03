@@ -93,8 +93,14 @@ public class Board implements Iterable<Row> {
     //TODO
     void undo(Move move){}
 
-    //TODO
-    void makeMove(Move move){}
+    public static void main(String[] args){
+        Board board = new Board(new Player("joe"),new Player("jim"));
+        System.out.println(board);
+
+        Move move = new Move(new Position(5,1),new Position(4,2),Move.Type.OTHER);
+        board.makeMove(move);
+		System.out.println(board);
+	}
 
     @Override
     public String toString() {
@@ -109,8 +115,25 @@ public class Board implements Iterable<Row> {
         return out;
     }
 
-    public static void main(String[] args){
-        Board board = new Board(new Player("joe"),new Player("jim"));
-        System.out.println(board);
+    //TODO
+    void makeMove(Move move){
+
+        if(isValidMove(move)){
+			Position startPos = move.getStartPos();
+            Position endPos = move.getEndPos();
+
+            Piece myPiece = getPiece(startPos);
+            Row row = rows.get(startPos.getRow());
+            row.removePiece(startPos.getCol());
+            row = rows.get(endPos.getRow());
+            row.placePiece(myPiece,endPos.getCol());
+            if(curTurn == Color.RED){
+                curTurn = Color.WHITE;
+            } else{
+                curTurn = Color.RED;
+            }
+
+        }
+
     }
 }

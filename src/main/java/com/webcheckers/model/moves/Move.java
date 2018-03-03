@@ -20,14 +20,14 @@ public class Move {
     Position startPos,endPos;
     Type type;
 
-    protected Move(Piece piece, Direction direction, Type type,Color color){
+    public Move(Piece piece, Direction direction, Type type,Color color){
         this(piece.getPosition(),
                 new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces() * color.getMovementFactor(),
                         piece.getPosition().getCol() + direction.getCol() * type.getSpaces() * color.getMovementFactor()),
                 type);
     }
 
-    protected Move(Position startPos,Position endPos, Type type){
+    public Move(Position startPos,Position endPos, Type type){
         this.startPos = startPos;
         this.endPos = endPos;
         this.type = type;

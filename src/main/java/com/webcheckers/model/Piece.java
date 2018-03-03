@@ -12,7 +12,7 @@ public class Piece {
 	private static int pieceID = 0;
 
 	enum Type{
-		NORMAL,
+		SINGLE,
 		KING
 	}
 	private Position position;
@@ -24,7 +24,7 @@ public class Piece {
 	public Piece(Position position,Color color){
 		this.position = position;
 		this.id = pieceID++;
-		this.type = Type.NORMAL;
+		this.type = Type.SINGLE;
 		this.color = color;
 	}
 
@@ -41,7 +41,7 @@ public class Piece {
 	}
 
 	Direction[] getDirections(){
-		return (type == Type.NORMAL ? NormalDirection.values() : KingDirection.values());
+		return (type == Type.SINGLE ? NormalDirection.values() : KingDirection.values());
 	}
 
 	public void setPosition(Position position) {
