@@ -1,5 +1,8 @@
 package com.webcheckers.model;
 
+import com.webcheckers.model.moves.Direction;
+import com.webcheckers.model.moves.KingDirection;
+import com.webcheckers.model.moves.NormalDirection;
 import com.webcheckers.model.moves.Position;
 
 import java.util.Objects;
@@ -37,7 +40,9 @@ public class Piece {
 		return type;
 	}
 
-
+	Direction[] getDirections(){
+		return (type == Type.NORMAL ? NormalDirection.values() : KingDirection.values());
+	}
 
 	public void setPosition(Position position) {
 		this.position = position;

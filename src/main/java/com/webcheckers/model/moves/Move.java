@@ -1,5 +1,6 @@
 package com.webcheckers.model.moves;
 
+import com.webcheckers.model.Color;
 import com.webcheckers.model.Piece;
 
 /**
@@ -33,10 +34,10 @@ public abstract class Move {
     Position startPos,endPos;
     Type type;
 
-    protected Move(Piece piece, Direction direction, Type type){
+    protected Move(Piece piece, Direction direction, Type type,Color color){
         this(piece.getPosition(),
-                new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces(),
-                        piece.getPosition().getCol() + direction.getCol() * type.getSpaces()),
+                new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces() * color.getMovementFactor(),
+                        piece.getPosition().getCol() + direction.getCol() * type.getSpaces() * color.getMovementFactor()),
                 type);
     }
 

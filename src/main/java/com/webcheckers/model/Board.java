@@ -1,7 +1,9 @@
 package com.webcheckers.model;
 
+import com.webcheckers.model.moves.Jump;
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
+import com.webcheckers.model.moves.Step;
 
 import java.util.*;
 
@@ -58,6 +60,17 @@ public class Board implements Iterable<Row> {
 
     //TODO
     Player getWinner(){return null;}
+
+    Player whoseTurn(){return curPlayer;}
+
+    //TODO
+    boolean canJump(Piece piece){return false;}
+
+    //TODO
+    Set<Jump> getJumpMoves(){return null;}
+
+    //TODO
+    Set<Step> getStepMoves(){return null;}
 
     //TODO
     void undo(Move move){}
