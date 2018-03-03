@@ -9,12 +9,13 @@ import java.util.Objects;
  * Value object representing one move
  * @author Adrian Postolache
  */
-public abstract class Move {
+public class Move {
 
     @Override
     public int hashCode() {
         return Objects.hash(startPos.hashCode(),endPos.hashCode());
     }
+
 
     Position startPos,endPos;
     Type type;
@@ -36,14 +37,6 @@ public abstract class Move {
         return type;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof Move){
-            Move move = (Move) obj;
-            return startPos.equals(move.startPos) && endPos.equals(move.endPos);
-        }
-        return false;
-    }
 
     /**
      * Represent whether a move is a one-tile step or two-tile jump.
@@ -66,4 +59,15 @@ public abstract class Move {
             return spaces;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Move){
+            Move move = (Move) obj;
+            return startPos.equals(move.startPos) && endPos.equals(move.endPos);
+        }
+        return false;
+    }
+
+
 }
