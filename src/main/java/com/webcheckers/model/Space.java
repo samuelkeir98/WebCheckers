@@ -4,8 +4,14 @@ public class Space {
 
     private Piece piece;
 
+    private int cellIdx;
+
     public Space(){
         this.piece = null;
+    }
+
+    public int getCellIdx() {
+        return cellIdx;
     }
 
     public boolean hasPiece(){
