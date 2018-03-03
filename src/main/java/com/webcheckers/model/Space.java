@@ -15,7 +15,7 @@ public class Space {
     }
 
     public boolean isValid(){
-        return piece != null;
+        return piece == null;
     }
 
     public Piece getPiece() {

@@ -1,5 +1,5 @@
 package com.webcheckers.ui;
 
-public enum viewMode {
+public enum ViewMode {
     PLAY, SPECTATOR, REPLAY
 }
