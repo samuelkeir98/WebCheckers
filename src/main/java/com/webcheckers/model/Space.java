@@ -23,4 +23,9 @@ public class Space {
     public void removePiece(){
         piece = null;
     }
+
+    @Override
+    public String toString() {
+        return (piece == null ? " ": piece.toString());
+    }
 }

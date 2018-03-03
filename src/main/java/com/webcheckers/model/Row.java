@@ -1,5 +1,7 @@
 package com.webcheckers.model;
 
+import freemarker.template.utility.RichObjectWrapper;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,5 +40,15 @@ public class Row implements Iterable<Space>{
 
     public int getIndex() {
         return index;
+    }
+
+    @Override
+    public String toString() {
+        String out = "";
+        out += index;
+        for(int i = 0; i<ROW_SIZE; i++){
+            out+=spaces.get(i).toString();
+        }
+        return out;
     }
 }
