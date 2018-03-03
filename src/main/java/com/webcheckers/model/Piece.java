@@ -60,4 +60,9 @@ public class Piece {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return (color == Color.RED ? "R" : "W");
+	}
 }

@@ -32,7 +32,7 @@ public class Board implements Iterable<Row> {
         for(int row = 0; row<3; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
                 if((i+row)%2 == 0) {
-                    Piece piece = new Piece(new Position(row,i),Color.WHITE); //TODO include proper Piece constructor
+                    Piece piece = new Piece(new Position(row,i),Color.WHITE);
                     whitePieces.add(piece);
                     rows.get(row).placePiece(piece,i);
                 }
@@ -42,7 +42,7 @@ public class Board implements Iterable<Row> {
         for(int row = NUM_ROWS-3; row<NUM_ROWS; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
                 if((i+row)%2 == 0) {
-                    Piece piece = new Piece(new Position(row,i),Color.RED); //TODO include proper Piece constructor
+                    Piece piece = new Piece(new Position(row,i),Color.RED);
                     redPieces.add(piece);
                     rows.get(row).placePiece(piece,i);
                 }
@@ -77,4 +77,22 @@ public class Board implements Iterable<Row> {
 
     //TODO
     void makeMove(Move move){}
+
+    @Override
+    public String toString() {
+        String out = " ";
+        for(int i = 0;i<Row.ROW_SIZE;i++){
+            out+=i;
+        }
+        out+="\n";
+        for(int i = 0; i<NUM_ROWS;i++) {
+            out+=rows.get(i).toString() + "\n";
+        }
+        return out;
+    }
+
+    public static void main(String[] args){
+        Board board = new Board(new Player("joe"),new Player("jim"));
+        System.out.println(board);
+    }
 }
