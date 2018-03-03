@@ -1,5 +1,7 @@
 package com.webcheckers.model.moves;
 
+import java.util.Objects;
+
 /**
  * An easy value object method to pass positions around without needing too many parameters
  */
@@ -34,5 +36,19 @@ public class Position {
      */
     public int getCol() {
         return col;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(row,col);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Position){
+            Position position = (Position) obj;
+            return row == position.row && col == position.col;
+        }
+        return false;
     }
 }

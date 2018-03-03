@@ -8,8 +8,10 @@ public class Row implements Iterable<Space>{
     public static final int ROW_SIZE = 8;
 
     private List<Space> spaces;
+    private int index;
 
-    public Row(){
+    public Row(int index){
+        this.index = index;
         spaces = new ArrayList<>(ROW_SIZE);
         for(int i = 0; i<ROW_SIZE; i++){
             spaces.add(new Space());
@@ -32,5 +34,9 @@ public class Row implements Iterable<Space>{
     @Override
     public Iterator<Space> iterator() {
         return spaces.iterator();
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

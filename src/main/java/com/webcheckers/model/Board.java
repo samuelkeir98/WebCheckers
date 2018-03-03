@@ -11,7 +11,7 @@ public class Board implements Iterable<Row> {
 
     public static final int NUM_ROWS = 8;
 
-    private Player curPlayer;
+    private Color curTurn;
     private Player redPlayer;
     private Set<Piece> redPieces;
     private Player whitePlayer;
@@ -23,16 +23,16 @@ public class Board implements Iterable<Row> {
         this.redPieces = new HashSet<>();
         this.whitePlayer = whitePlayer;
         this.whitePieces = new HashSet<>();
-        this.curPlayer = redPlayer;
+        this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
         for(int i = 0;i<NUM_ROWS;i++){
-            rows.add(new Row());
+            rows.add(new Row(i));
         }
 
         for(int row = 0; row<3; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
                 if((i+row)%2 == 0) {
-                    Piece piece = new Piece(new Position(row,i),Color.BLACK); //TODO include proper Piece constructor
+                    Piece piece = new Piece(new Position(row,i),Color.WHITE); //TODO include proper Piece constructor
                     whitePieces.add(piece);
                     rows.get(row).placePiece(piece,i);
                 }
@@ -61,7 +61,7 @@ public class Board implements Iterable<Row> {
     //TODO
     Player getWinner(){return null;}
 
-    Player whoseTurn(){return curPlayer;}
+    Color whoseTurn(){return curTurn;}
 
     //TODO
     boolean canJump(Piece piece){return false;}
