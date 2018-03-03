@@ -76,7 +76,9 @@ public class Board implements Iterable<Row> {
     void undo(Move move){}
 
     //TODO
-    void makeMove(Move move){}
+    void makeMove(Move move){
+
+    }
 
     @Override
     public String toString() {

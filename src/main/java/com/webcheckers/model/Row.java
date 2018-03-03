@@ -32,6 +32,10 @@ public class Row implements Iterable<Space>{
         return spaces.get(index).isValid();
     }
 
+    public void removePiece(int index){
+        spaces.remove(index);
+    }
+
 
     @Override
     public Iterator<Space> iterator() {

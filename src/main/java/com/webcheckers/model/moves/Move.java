@@ -50,4 +50,5 @@ public abstract class Move {
     public Type getType() {
         return type;
     }
+
 }
