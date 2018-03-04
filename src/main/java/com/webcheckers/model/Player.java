@@ -25,8 +25,9 @@ public class Player {
     }
 
     /**
-     * equals method for value object semantics
+     * Equals method for value object semantics
      * @param other other object to compare this object to.
+     * @return equivalency
      */
     @Override
     public boolean equals(Object other) {
