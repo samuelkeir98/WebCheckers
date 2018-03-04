@@ -1,11 +1,11 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.model.Color;
 import spark.*;
 
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Player;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,7 +41,7 @@ public class GetGameRoute implements Route {
         vm.put("viewMode", view);
         vm.put("redPlayer", player1);
         vm.put("whitePlayer", player2);
-        vm.put("activeColor", Color.ORANGE);
+        vm.put("activeColor", Color.RED);
         vm.put("board", new Board(player1, player2));
         return templateEngine.render(new ModelAndView(vm, "game.ftl"));
     }
