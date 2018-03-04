@@ -23,7 +23,7 @@ public class PostSigninRoute implements Route {
     private final PlayerLobby playerLobby;
 
     /**
-     * constructor
+     * Constructor
      * @param templateEngine template engine to render pages
      */
     public PostSigninRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {
@@ -35,7 +35,7 @@ public class PostSigninRoute implements Route {
     }
 
     /**
-     * implementation of handle
+     * Implementation of handle
      * @param request HTTP request
      * @param response HTTP response object
      * @return rendered HTML page
@@ -65,11 +65,22 @@ public class PostSigninRoute implements Route {
         }
     }
 
+    /**
+     * Error message production
+     * @param vm the map
+     * @param message error message
+     * @return
+     */
     private ModelAndView error(Map<String, Object> vm, String message) {
         vm.put(GetSigninRoute.MESSAGE_PARAM, message);
         return new ModelAndView(vm, GetSigninRoute.TEMPLATE_NAME);
     }
 
+    /**
+     * Validates the given name
+     * @param name the given name
+     * @return
+     */
     private boolean validateName(String name) {
         return name.matches("[0-9a-zA-Z\\s]+");
     }
