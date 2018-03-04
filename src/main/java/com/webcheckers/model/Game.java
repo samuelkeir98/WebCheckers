@@ -69,7 +69,12 @@ public class Game {
     //TODO
     public void undoMove(){}
 
+    public Player getWhitePlayer() {
+        return whitePlayer;
+    }
 
-
+    public Player getRedPlayer() {
+        return redPlayer;
+    }
 
 }
