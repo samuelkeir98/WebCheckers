@@ -61,7 +61,11 @@ public class Board implements Iterable<Row> {
     //TODO
     Player getWinner(){return null;}
 
-    Color whoseTurn(){return curTurn;}
+    public Color whoseTurn(){return curTurn;}
+
+    public Player getPlayer(Color color){
+        return (color == Color.RED ? redPlayer : whitePlayer);
+    }
 
     //TODO
     boolean canJump(Piece piece){return false;}
@@ -115,7 +119,7 @@ public class Board implements Iterable<Row> {
         return out;
     }
 
-    void makeMove(Move move){
+    public void makeMove(Move move){
 
         if(isValidMove(move)){
 			Position startPos = move.getStart();

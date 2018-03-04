@@ -1,11 +1,12 @@
 package com.webcheckers.model.moves;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * An easy value object method to pass positions around without needing too many parameters
  */
-public class Position {
+public class Position implements Serializable{
 
     /**
      * the row and column this position represents
