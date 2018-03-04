@@ -17,6 +17,9 @@ import java.util.logging.Logger;
  * @author Andy Gin
  */
 public class GetGameRoute implements Route {
+
+    static final String BOARD_ATTRIBUTE_KEY = "BOARD";
+
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
     private final TemplateEngine templateEngine;
@@ -33,6 +36,9 @@ public class GetGameRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
+
+        final Session httpSession = request.session();
+
         LOG.finer("GetGameRoute is invoked");
         Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
         final Map<String, Object> vm = new HashMap<>();
@@ -47,7 +53,7 @@ public class GetGameRoute implements Route {
             vm.put("viewMode", view);
             vm.put("redPlayer", player1);
             vm.put("whitePlayer", player2);
-            vm.put("activeColor", Color.ORANGE);
+            vm.put("activeColor", Color.WHITE);
             vm.put("board", new Board(player1, player2));
             return templateEngine.render(new ModelAndView(vm, "game.ftl"));
         }
