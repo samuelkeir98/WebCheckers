@@ -1,47 +1,39 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.model.Color;
-import spark.*;
-
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Player;
+import spark.*;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
-/**
- *
- *
- * @author Andy Gin
- */
-public class GetGameRoute implements Route {
-    private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
+public class PostGameRoute implements Route {
 
     private final TemplateEngine templateEngine;
+    private final PlayerLobby lobby;
 
-    public GetGameRoute(TemplateEngine templateEngine) {
+    public PostGameRoute(TemplateEngine templateEngine, PlayerLobby lobby) {
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
-
-        LOG.config("GetGameRoute is initialized.");
+        this.lobby = lobby;
     }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        LOG.finer("GetGameRoute is invoked");
-
-        Map<String, Object> vm = new HashMap<>();
+        final String opponent = request.queryParams("name");
+        final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
-        Player player1 = new Player("Bob");
-        Player player2 = new Player("Billy");
+        Player player1 = request.session().attribute(PostSigninRoute.PLAYER_KEY);
+        Player player2 = new Player(opponent);
         vm.put("currentPlayer", player1);
         ViewMode view = ViewMode.PLAY;
         vm.put("viewMode", view);
         vm.put("redPlayer", player1);
         vm.put("whitePlayer", player2);
-        vm.put("activeColor", Color.RED);
+        vm.put("activeColor", Color.ORANGE);
         vm.put("board", new Board(player1, player2));
         return templateEngine.render(new ModelAndView(vm, "game.ftl"));
     }
