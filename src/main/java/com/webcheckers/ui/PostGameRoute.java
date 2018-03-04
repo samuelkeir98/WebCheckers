@@ -1,13 +1,14 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Board;
+import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

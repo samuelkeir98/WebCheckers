@@ -15,6 +15,13 @@ public class Move implements Serializable{
     Position start, end;
     Type type;
 
+    /**
+     * Represents a piece moving.
+     * @param piece The piece to move.
+     * @param direction The direction on the board a piece is moving.
+     * @param type The type of piece(Single or KIng).
+     * @param color The player color.
+     */
     public Move(Piece piece, Direction direction, Type type,Color color){
         this(piece.getPosition(),
                 new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces() * color.getMovementFactor(),
@@ -22,29 +29,56 @@ public class Move implements Serializable{
                 type);
     }
 
+    /**
+     * Represents a piece moving.
+     * @param start Where the Piece is located before it is moved.
+     * @param end Where the Piece should be moved to.
+     * @param type The type of piece(Single or KIng).
+     */
     public Move(Position start, Position end, Type type){
         this.start = start;
         this.end = end;
         this.type = type;
     }
 
+    /**
+     * Represent a piece moving.
+     * @param start The pieces starting position.
+     * @param end   The pieces ending position.
+     */
     public Move(Position start,Position end){
         this(start,end,Type.OTHER);
     }
 
+    /**
+     * Hashes based on the start and end position.
+     * @return the hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(start.hashCode(), end.hashCode());
     }
 
+    /**
+     * Returns the type of the piece.
+     * @return the type of the piece.
+     */
     public Type getType() {
         return type;
     }
 
+    /**
+     * Returns the starting position.
+     * @return the starting position.
+     */
     public Position getStart() {
         return start;
     }
 
+    /**
+     * Returns the ending position.
+     * @return the ending position.
+     */
     public Position getEnd() {
         return end;
     }
@@ -62,15 +96,28 @@ public class Move implements Serializable{
          */
         private int spaces;
 
+        /**
+         * Sets how many spaces a move will take.
+         * @param spaces the amount of spaces a move will take
+         */
         Type(int spaces){
             this.spaces=spaces;
         }
 
+        /**
+         * gets the number of spaces.
+         * @return the number of spaces.
+         */
         public int getSpaces() {
             return spaces;
         }
     }
 
+    /**
+     * Sees if two moves are the same
+     * @param obj the object we are comparing to
+     * @return True if equal false if not equal.
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Move){
@@ -80,6 +127,10 @@ public class Move implements Serializable{
         return false;
     }
 
+    /**
+     * Converts a move to string form
+     * @return the string representation of a move
+     */
     @Override
     public String toString() {
         return "Start: "+ start +" EndPos: "+ end ;
