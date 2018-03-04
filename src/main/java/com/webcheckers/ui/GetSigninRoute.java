@@ -10,6 +10,7 @@ import java.util.HashMap;
  * UI controller to GET signin page
  *
  * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class GetSigninRoute implements Route {
 

@@ -58,7 +58,7 @@ public class PostSigninRoute implements Route {
             }
         } else {
             return templateEngine.render(
-                    error(vm, "names can only have alphanumeric characters or spaces")
+                    error(vm, "Names can only have alphanumeric characters or spaces")
             );
         }
     }
