@@ -11,38 +11,36 @@ import java.util.Objects;
  */
 public class Move {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(startPos.hashCode(),endPos.hashCode());
-    }
-
-
-    Position startPos,endPos;
-    Type type;
-
+    Position start, end;
+    Type type = Type.OTHER;
     public Move(Piece piece, Direction direction, Type type,Color color){
         this(piece.getPosition(),
                 new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces() * color.getMovementFactor(),
-                        piece.getPosition().getCol() + direction.getCol() * type.getSpaces() * color.getMovementFactor()),
+                        piece.getPosition().getCell() + direction.getCol() * type.getSpaces() * color.getMovementFactor()),
                 type);
     }
 
-    public Move(Position startPos,Position endPos, Type type){
-        this.startPos = startPos;
-        this.endPos = endPos;
+    public Move(Position start, Position end, Type type){
+        this.start = start;
+        this.end = end;
         this.type = type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start.hashCode(), end.hashCode());
     }
 
     public Type getType() {
         return type;
     }
 
-    public Position getStartPos() {
-        return startPos;
+    public Position getStart() {
+        return start;
     }
 
-    public Position getEndPos() {
-        return endPos;
+    public Position getEnd() {
+        return end;
     }
 
     /**
@@ -71,10 +69,13 @@ public class Move {
     public boolean equals(Object obj) {
         if(obj instanceof Move){
             Move move = (Move) obj;
-            return startPos.equals(move.startPos) && endPos.equals(move.endPos);
+            return start.equals(move.start) && end.equals(move.end);
         }
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "Start: "+ start +" EndPos: "+ end +" Type: "+ type.toString();
+    }
 }

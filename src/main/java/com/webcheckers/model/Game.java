@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
-import javafx.geometry.Pos;
 
 import java.util.Stack;
 
@@ -36,6 +35,7 @@ public class Game {
         gameOver = false;
         lastPlayed = new Stack<>();
     }
+
     public void makeMove(Player player, Move move){
         Position[][] matrix;
         if(player == redPlayer){
@@ -44,8 +44,8 @@ public class Game {
             matrix = whitePlayMatrix;
         }
 
-        Position newStart = matrix[move.getStartPos().getRow()][move.getStartPos().getCol()];
-        Position newEnd = matrix[move.getStartPos().getRow()][move.getStartPos().getCol()];
+        Position newStart = matrix[move.getStart().getRow()][move.getStart().getCell()];
+        Position newEnd = matrix[move.getStart().getRow()][move.getStart().getCell()];
         Move newMove = new Move(newStart,newEnd,move.getType());
 
         if(board.isValidMove(newMove)){
@@ -56,6 +56,7 @@ public class Game {
     public boolean isGameOver(){
         return board.isGameOver();
     }
+
     public Board getBoard(){
         return board;
 

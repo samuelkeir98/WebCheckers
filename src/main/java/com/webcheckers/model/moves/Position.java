@@ -8,22 +8,22 @@ import java.util.Objects;
 public class Position {
 
     /**
-     * the row and column this position represents
+     * The row and column this position represents
      */
-    private final int row,col;
+    private final int row,cell;
 
     /**
-     * creates the position value object
+     * Creates the position value object
      * @param row the row
-     * @param col the column
+     * @param cell the column
      */
-    public Position(int row,int col){
+    public Position(int row,int cell){
         this.row = row;
-        this.col = col;
+        this.cell = cell;
     }
 
     /**
-     * gets the row
+     * Gets the row
      * @return the row
      */
     public int getRow() {
@@ -31,24 +31,34 @@ public class Position {
     }
 
     /**
-     * gets the column
+     * Gets the column
      * @return the column
      */
-    public int getCol() {
-        return col;
+    public int getCell() {
+        return cell;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(row,col);
+        return Objects.hash(row,cell);
     }
 
+    /**
+     * Equals method for Position
+     * @param obj object being compared to
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Position){
             Position position = (Position) obj;
-            return row == position.row && col == position.col;
+            return row == position.row && cell == position.cell;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Position row: "+row+" Cell: "+cell;
     }
 }
