@@ -2,7 +2,6 @@ package com.webcheckers.model;
 
 /**
  * Player model class
- *
  * @author Anthony Massicci
  * Tested by Samuel Keir
  */
@@ -10,7 +9,7 @@ public class Player {
     private final String name;
 
     /**
-     * constructor
+     * Constructor
      * @param name name of player
      */
     public Player(String name) {
@@ -18,7 +17,7 @@ public class Player {
     }
 
     /**
-     * grabs name of player
+     * Grabs name of player
      */
     public String getName() {
         return this.name;
@@ -39,7 +38,7 @@ public class Player {
     }
 
     /**
-     * implementation for hashCode
+     * Implementation for hashCode
      */
     @Override
     public int hashCode() {
