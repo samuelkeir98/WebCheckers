@@ -22,11 +22,12 @@
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
       <#if otherPlayers??>
-        <ul>
-        <#list otherPlayers as player>
-          <li>${player.name}</li>
-        </#list>
-        </ul>
+        <form action="/game" method="POST">
+          <#list otherPlayers as player>
+            <input type="radio" name="name" value="${player.name}" checked>${player.name}<br>
+          </#list>
+          <input type="submit" value="Challenge">
+        </form>
       </#if>
       <p>Number of people playing: ${numPlayers}</p>
     </div>
