@@ -36,6 +36,10 @@ public class Game {
         lastPlayed = new Stack<>();
     }
 
+    public Board getBoard(){
+        return board;
+    }
+
     public Player getWinner(){
         return board.getWinner();
     }
