@@ -9,12 +9,12 @@ import java.util.Objects;
 public class Position implements Serializable{
 
     /**
-     * the row and column this position represents
+     * The row and column this position represents
      */
     private final int row,cell;
 
     /**
-     * creates the position value object
+     * Creates the position value object
      * @param row the row
      * @param cell the column
      */
@@ -24,7 +24,7 @@ public class Position implements Serializable{
     }
 
     /**
-     * gets the row
+     * Gets the row
      * @return the row
      */
     public int getRow() {
@@ -32,7 +32,7 @@ public class Position implements Serializable{
     }
 
     /**
-     * gets the column
+     * Gets the column
      * @return the column
      */
     public int getCell() {
@@ -44,6 +44,11 @@ public class Position implements Serializable{
         return Objects.hash(row,cell);
     }
 
+    /**
+     * Equals method for Position
+     * @param obj object being compared to
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Position){
