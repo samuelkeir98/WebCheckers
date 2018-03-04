@@ -27,8 +27,9 @@
           <li>${player.name}</li>
         </#list>
         </ul>
+       <#else>
+          <p>Number of people playing: ${numPlayers}</p>
       </#if>
-      <p>Number of people playing: ${numPlayers}</p>
     </div>
     
   </div>
