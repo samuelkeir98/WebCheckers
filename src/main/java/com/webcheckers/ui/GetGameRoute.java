@@ -1,7 +1,9 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Color;
+import com.webcheckers.model.Game;
 import spark.*;
 
 import com.webcheckers.model.Board;
@@ -48,14 +50,15 @@ public class GetGameRoute implements Route {
         if(gameLobby.inGame(player)) {
             Player player1 = gameLobby.getGames().get(player).getRedPlayer();
             Player player2 = gameLobby.getGames().get(player).getWhitePlayer();
+            Game game = gameLobby.getGames().get(player);
 
-            vm.put("currentPlayer", player1);
+            vm.put("currentPlayer", player);
             ViewMode view = ViewMode.PLAY;
             vm.put("viewMode", view);
             vm.put("redPlayer", player1);
             vm.put("whitePlayer", player2);
             vm.put("activeColor", Color.RED);
-            vm.put("board", gameLobby.getGames().get(player).getBoard());
+            vm.put("board", new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
             return templateEngine.render(new ModelAndView(vm, "game.ftl"));
         }
 
