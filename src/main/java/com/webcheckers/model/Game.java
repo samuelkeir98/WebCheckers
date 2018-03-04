@@ -36,6 +36,13 @@ public class Game {
         lastPlayed = new Stack<>();
     }
 
+    public Player getWinner(){
+        return board.getWinner();
+    }
+
+    //TODO
+    public void undoMove(){}
+
 
 
 
