@@ -77,4 +77,8 @@ public class Game {
         return redPlayer;
     }
 
+    public boolean hasPlayer(Player player) {
+        return player.equals(redPlayer) || player.equals(whitePlayer);
+    }
+
 }

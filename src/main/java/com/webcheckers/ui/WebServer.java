@@ -83,19 +83,20 @@ public class WebServer {
    * @param gson
    *    The Google JSON parser object used to render Ajax responses.
    *
+   * @param playerLobby
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
   public WebServer(final TemplateEngine templateEngine, final Gson gson,
                    final PlayerLobby playerLobby, GameLobby gameLobby) {
-    this.gameLobby = gameLobby;
+      this.playerLobby = playerLobby;
+      this.gameLobby = gameLobby;
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
     this.gson = gson;
-    this.playerLobby = playerLobby;
   }
 
   //

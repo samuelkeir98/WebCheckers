@@ -75,14 +75,14 @@ public class GetHomeRoute implements Route {
               .stream()
               .filter(p -> !p.equals(player))
               .collect(Collectors.toList());
-
       vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
 
-      System.out.println(gameLobby.getGames());
-      System.out.println(gameLobby.inGame(player));
       if(gameLobby.inGame(player)) {
         response.redirect("/game");
       }
+
+      String message = session.attribute("message");
+      vm.put("message", message);
 
     }
 

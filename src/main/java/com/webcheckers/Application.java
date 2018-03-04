@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.model.Game;
 import com.webcheckers.ui.WebServer;
 
 import spark.TemplateEngine;
