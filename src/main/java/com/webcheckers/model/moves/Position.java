@@ -8,12 +8,12 @@ import java.util.Objects;
 public class Position {
 
     /**
-     * the row and column this position represents
+     * The row and column this position represents
      */
     private final int row,col;
 
     /**
-     * creates the position value object
+     * Creates the position value object
      * @param row the row
      * @param col the column
      */
@@ -23,7 +23,7 @@ public class Position {
     }
 
     /**
-     * gets the row
+     * Gets the row
      * @return the row
      */
     public int getRow() {
@@ -31,7 +31,7 @@ public class Position {
     }
 
     /**
-     * gets the column
+     * Gets the column
      * @return the column
      */
     public int getCol() {
@@ -43,6 +43,11 @@ public class Position {
         return Objects.hash(row,col);
     }
 
+    /**
+     * Equals method for Position
+     * @param obj object being compared to
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof Position){
