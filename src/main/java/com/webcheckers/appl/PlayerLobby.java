@@ -10,6 +10,7 @@ import java.util.Set;
 /**
  * Player Lobby Service class
  * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class PlayerLobby {
     private Set<Player> players = new HashSet<>();

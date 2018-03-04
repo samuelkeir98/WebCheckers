@@ -4,6 +4,7 @@ package com.webcheckers.model;
  * Player model class
  *
  * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class Player {
     private final String name;

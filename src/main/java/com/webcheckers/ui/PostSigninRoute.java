@@ -13,6 +13,7 @@ import java.util.Objects;
 /**
  * UI controller for route for POST /signin
  * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class PostSigninRoute implements Route {
 
