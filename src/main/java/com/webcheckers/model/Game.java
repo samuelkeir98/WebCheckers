@@ -36,4 +36,12 @@ public class Game {
         lastPlayed = new Stack<>();
     }
 
+    public Player getWhitePlayer() {
+        return whitePlayer;
+    }
+
+    public Player getRedPlayer() {
+        return redPlayer;
+    }
+
 }
