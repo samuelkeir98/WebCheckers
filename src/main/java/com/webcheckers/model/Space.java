@@ -4,9 +4,12 @@ public class Space {
 
     private Piece piece;
 
+    private boolean isValid;
+
     private int cellIdx;
 
-    public Space(){
+    public Space(boolean isValid){
+        this.isValid = isValid;
         this.piece = null;
     }
 
@@ -15,7 +18,7 @@ public class Space {
     }
 
     public boolean isValid(){
-        return piece == null;
+        return piece == null && isValid;
     }
 
     public Piece getPiece() {

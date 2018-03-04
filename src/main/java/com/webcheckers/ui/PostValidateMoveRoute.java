@@ -43,7 +43,7 @@ public class PostValidateMoveRoute implements Route {
 		vm.put("board",board);
 		vm.put("activeColor", board.whoseTurn());
 
-		return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+		return gson.toJson(board);
 
 
 	}
