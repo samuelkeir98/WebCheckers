@@ -97,8 +97,8 @@ public class Move implements Serializable{
         private int spaces;
 
         /**
-         *
-         * @param spaces
+         * Sets how many spaces a move will take.
+         * @param spaces the amount of spaces a move will take
          */
         Type(int spaces){
             this.spaces=spaces;
