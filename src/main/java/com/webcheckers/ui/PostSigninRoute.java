@@ -47,8 +47,7 @@ public class PostSigninRoute implements Route {
         vm.put(GetSigninRoute.TITLE_PARAM, GetSigninRoute.PAGE_TITLE);
 
         if (validateName(name)) {
-            Player player = new Player(name);
-
+            Player player = playerLobby.signin(name);
             if (player != null) {
                 session.attribute(PLAYER_KEY, player);
                 response.redirect(WebServer.HOME_URL);
