@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.model.Color;
 import spark.*;
 
@@ -45,14 +46,14 @@ public class GetGameRoute implements Route {
         if(httpSession.attribute(BOARD_ATTRIBUTE_KEY) == null) {
             Player player1 = new Player("Bob");
             Player player2 = new Player("Billy");
-            vm.put("currentPlayer", player1);
+            vm.put("currentPlayer", player2);
             ViewMode view = ViewMode.PLAY;
             vm.put("viewMode", view);
             vm.put("redPlayer", player1);
             vm.put("whitePlayer", player2);
             Board board = new Board(player1,player2);
             httpSession.attribute(BOARD_ATTRIBUTE_KEY,board);
-            vm.put("board", board);
+            vm.put("board", new BoardView(board,Color.WHITE));
             vm.put("activeColor", board.whoseTurn());
 
         }else{

@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import freemarker.template.utility.RichObjectWrapper;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
