@@ -36,6 +36,9 @@ public class Game {
         lastPlayed = new Stack<>();
     }
 
+    public boolean isGameOver(){
+        return board.isGameOver();
+    }
     public Board getBoard(){
         return board;
     }
