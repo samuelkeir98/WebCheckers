@@ -3,16 +3,18 @@ package com.webcheckers.model.moves;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Piece;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Value object representing one move
  * @author Adrian Postolache
  */
-public class Move {
+public class Move implements Serializable{
 
     Position start, end;
-    Type type = Type.OTHER;
+    Type type;
+
     public Move(Piece piece, Direction direction, Type type,Color color){
         this(piece.getPosition(),
                 new Position(piece.getPosition().getRow() + direction.getRow() * type.getSpaces() * color.getMovementFactor(),
@@ -24,6 +26,10 @@ public class Move {
         this.start = start;
         this.end = end;
         this.type = type;
+    }
+
+    public Move(Position start,Position end){
+        this(start,end,Type.OTHER);
     }
 
     @Override
@@ -76,6 +82,6 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Start: "+ start +" EndPos: "+ end +" Type: "+ type.toString();
+        return "Start: "+ start +" EndPos: "+ end ;
     }
 }

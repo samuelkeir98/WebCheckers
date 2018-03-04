@@ -1,12 +1,13 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.model.Board;
+import com.webcheckers.model.Color;
 import com.webcheckers.model.moves.Move;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -27,12 +28,22 @@ public class PostValidateMoveRoute implements Route {
 
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
+
+		final Session httpSession = request.session();
 		final String requestBody = request.body();
 		final Move move = gson.fromJson(requestBody,Move.class);
-		System.out.println(requestBody);
+		Board board = httpSession.attribute(GetGameRoute.BOARD_ATTRIBUTE_KEY);
+		board.makeMove(move);
+		Map<String, Object> vm = new HashMap<>();
+		vm.put("title", "Game");
+		vm.put("currentPlayer",board.getPlayer(board.whoseTurn()));
+		vm.put("viewMode",ViewMode.PLAY);
+		vm.put("redPlayer", board.getPlayer(Color.RED));
+		vm.put("whitePlayer", board.getPlayer(Color.WHITE));
+		vm.put("board",board);
+		vm.put("activeColor", board.whoseTurn());
 
-		System.out.println(move);
-		return null;
+		return templateEngine.render(new ModelAndView(vm, "game.ftl"));
 
 
 	}
