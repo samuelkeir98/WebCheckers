@@ -11,11 +11,24 @@
     <h1>Web Checkers</h1>
     
     <div class="navigation">
-      <a href="/">my home</a>
+        <#if currentPlayer??>
+            <a href="/">my home</a> |
+            <a href="/signout">sign out [${currentPlayer.name}]</a>
+        <#else>
+            <a href="/signin">sign in</a>
+        </#if>
     </div>
     
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
+      <p>Number of people playing: ${numPlayers}</p>
+      <#if otherPlayers??>
+        <ul>
+        <#list otherPlayers as player>
+          <li>${player.name}</li>
+        </#list>
+        </ul>
+      </#if>
     </div>
     
   </div>
