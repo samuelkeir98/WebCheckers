@@ -158,14 +158,9 @@ public class Board implements Iterable<Row> {
 
 
     /**
-     * Reverts a move
-     * Expects that the move is the last one made
-     * Will deny
-     * @param move
+     * does a brief instantiation and move test
+     * @param args
      */
-    //TODO
-    void undo(Move move){}
-
     public static void main(String[] args){
         Board board = new Board(new Player("joe"),new Player("jim"));
         System.out.println(board);
@@ -175,6 +170,19 @@ public class Board implements Iterable<Row> {
 		System.out.println(board);
 	}
 
+    /**
+     * Reverts a move
+     * Expects that the move is the last one made
+     * Will deny impossible moves
+     * @param move move to undo
+     */
+    //TODO
+    void undo(Move move){}
+
+    /**
+     * Represents the board in an easy to read format
+     * @return
+     */
     @Override
     public String toString() {
         String out = " ";
