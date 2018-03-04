@@ -1,6 +1,9 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Color;
+import com.webcheckers.model.Game;
 import spark.*;
 
 import com.webcheckers.model.Board;
@@ -24,7 +27,10 @@ public class GetGameRoute implements Route {
 
     private final TemplateEngine templateEngine;
 
-    public GetGameRoute(TemplateEngine templateEngine) {
+    private final GameLobby gameLobby;
+
+    public GetGameRoute(TemplateEngine templateEngine, GameLobby gameLobby) {
+        this.gameLobby = gameLobby;
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
 
@@ -37,34 +43,28 @@ public class GetGameRoute implements Route {
         final Session httpSession = request.session();
 
         LOG.finer("GetGameRoute is invoked");
-
-        Map<String, Object> vm = new HashMap<>();
+        Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
+        final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
 
+        if(gameLobby.inGame(player)) {
+            Player player1 = gameLobby.getGames().get(player).getRedPlayer();
+            Player player2 = gameLobby.getGames().get(player).getWhitePlayer();
+            Game game = gameLobby.getGames().get(player);
 
-        if(httpSession.attribute(BOARD_ATTRIBUTE_KEY) == null) {
-            Player player1 = new Player("Bob");
-            Player player2 = new Player("Billy");
-            vm.put("currentPlayer", player1);
+            vm.put("currentPlayer", player);
             ViewMode view = ViewMode.PLAY;
             vm.put("viewMode", view);
             vm.put("redPlayer", player1);
             vm.put("whitePlayer", player2);
-            Board board = new Board(player1,player2);
-            httpSession.attribute(BOARD_ATTRIBUTE_KEY,board);
-            vm.put("board", board);
-            vm.put("activeColor", board.whoseTurn());
-
-        }else{
-            Board board = httpSession.attribute(BOARD_ATTRIBUTE_KEY);
-            vm.put("currentPlayer",board.getPlayer(board.whoseTurn()));
-            vm.put("viewMode",ViewMode.PLAY);
-            vm.put("redPlayer", board.getPlayer(Color.RED));
-            vm.put("whitePlayer", board.getPlayer(Color.WHITE));
-            vm.put("board",board);
-            vm.put("activeColor", board.whoseTurn());
+            vm.put("activeColor", Color.RED);
+            vm.put("board", new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
+            return templateEngine.render(new ModelAndView(vm, "game.ftl"));
         }
 
-        return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+        else {
+            response.redirect("/");
+            return null;
+        }
     }
 }
