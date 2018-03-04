@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Board;
@@ -41,7 +42,7 @@ public class PostGameRoute implements Route {
         vm.put("redPlayer", player1);
         vm.put("whitePlayer", player2);
         vm.put("activeColor", Color.RED);
-        vm.put("board", new Board(player1, player2));
+        vm.put("board", new BoardView(game.getBoard(),Color.RED));
         return templateEngine.render(new ModelAndView(vm, "game.ftl"));
     }
 }
