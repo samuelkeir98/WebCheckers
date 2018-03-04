@@ -67,17 +67,17 @@ public class Board implements Iterable<Row> {
     boolean canJump(Piece piece){return false;}
 
     Piece getPiece(Position position){
-        return rows.get(position.getRow()).getPieceAt(position.getCol());
+        return rows.get(position.getRow()).getPieceAt(position.getCell());
     }
 
     boolean isValid(Position position){
-        return rows.get(position.getRow()).isValid(position.getCol());
+        return rows.get(position.getRow()).isValid(position.getCell());
     }
 
     //TODO
     boolean isValidMove(Move move){
-        Position startPos = move.getStartPos();
-        Position endPos = move.getEndPos();
+        Position startPos = move.getStart();
+        Position endPos = move.getEnd();
         if(getPiece(startPos)==null || getPiece(startPos).getColor()!=curTurn || !isValid(endPos)){
             return false;
         }
@@ -118,14 +118,14 @@ public class Board implements Iterable<Row> {
     void makeMove(Move move){
 
         if(isValidMove(move)){
-			Position startPos = move.getStartPos();
-            Position endPos = move.getEndPos();
+			Position startPos = move.getStart();
+            Position endPos = move.getEnd();
 
             Piece myPiece = getPiece(startPos);
             Row row = rows.get(startPos.getRow());
-            row.removePiece(startPos.getCol());
+            row.removePiece(startPos.getCell());
             row = rows.get(endPos.getRow());
-            row.placePiece(myPiece,endPos.getCol());
+            row.placePiece(myPiece,endPos.getCell());
             if(curTurn == Color.RED){
                 curTurn = Color.WHITE;
             } else{
