@@ -115,7 +115,6 @@ public class Board implements Iterable<Row> {
         return out;
     }
 
-    //TODO
     void makeMove(Move move){
 
         if(isValidMove(move)){
