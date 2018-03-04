@@ -21,14 +21,13 @@
     
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
+      <p>Number of people playing: ${numPlayers}</p>
       <#if otherPlayers??>
         <ul>
         <#list otherPlayers as player>
           <li>${player.name}</li>
         </#list>
         </ul>
-       <#else>
-          <p>Number of people playing: ${numPlayers}</p>
       </#if>
     </div>
     
