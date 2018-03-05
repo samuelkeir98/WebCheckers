@@ -4,7 +4,9 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import spark.*;
 
@@ -25,6 +27,7 @@ public class GetHomeRoute implements Route {
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
 
+  private final GameLobby gameLobby;
   /**
    * Create the Spark Route (UI controller) for the
    * {@code GET /} HTTP request.
@@ -32,13 +35,14 @@ public class GetHomeRoute implements Route {
    * @param templateEngine
    *   the HTML template rendering engine
    */
-  public GetHomeRoute(final TemplateEngine templateEngine, final PlayerLobby playerLobby) {
+  public GetHomeRoute(final TemplateEngine templateEngine, final PlayerLobby playerLobby, final GameLobby gameLobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(playerLobby, "playerLobby must not be null");
     //
     this.templateEngine = templateEngine;
     this.playerLobby = playerLobby;
+    this.gameLobby = gameLobby;
     //
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -67,16 +71,23 @@ public class GetHomeRoute implements Route {
       Player player = session.attribute(PLAYER_KEY);
       vm.put(USER_PARAM, player);
 
-      List<Player> otherPlayers = playerLobby.getPlayers()
-              .stream()
-              .filter(p -> !p.equals(player))
-              .collect(Collectors.toList());
+      if(playerLobby.numPlayers() > 1) {
 
-      vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
+        List<Player> otherPlayers = playerLobby.getPlayers()
+                .stream()
+                .filter(p -> !p.equals(player))
+                .collect(Collectors.toList());
+        vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
+      }
+      if(gameLobby.inGame(player)) {
+        response.redirect("/game");
+      }
+
+      String message = session.attribute("message");
+      vm.put("message", message);
 
     }
 
     return templateEngine.render(new ModelAndView(vm , "home.ftl"));
   }
-
 }
