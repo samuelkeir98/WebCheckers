@@ -2,14 +2,14 @@ package com.webcheckers.model;
 
 /**
  * Player model class
- *
  * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class Player {
     private final String name;
 
     /**
-     * constructor
+     * Constructor
      * @param name name of player
      */
     public Player(String name) {
@@ -17,15 +17,16 @@ public class Player {
     }
 
     /**
-     * grabs name of player
+     * Grabs name of player
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * equals method for value object semantics
+     * Equals method for value object semantics
      * @param other other object to compare this object to.
+     * @return equivalency
      */
     @Override
     public boolean equals(Object other) {
@@ -37,7 +38,7 @@ public class Player {
     }
 
     /**
-     * implementation for hashCode
+     * Implementation for hashCode
      */
     @Override
     public int hashCode() {

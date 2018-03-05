@@ -10,6 +10,7 @@ import java.util.Set;
 /**
  * Player Lobby Service class
  * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class PlayerLobby {
     private Set<Player> players = new HashSet<>();
@@ -31,7 +32,7 @@ public class PlayerLobby {
     }
 
     /**
-     * returns a list of all currently signed in players
+     * Returns a list of all currently signed in players
      * @return list of player names
      */
     public Set<Player> getPlayers() {
@@ -39,7 +40,7 @@ public class PlayerLobby {
     }
 
     /**
-     * returns number of players signed in
+     * Returns number of players signed in
      * @return # of players
      */
     public synchronized int numPlayers() {

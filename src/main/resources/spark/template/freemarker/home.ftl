@@ -21,10 +21,13 @@
     
     <div class="body">
       <p>Welcome to the world of online Checkers.</p>
+
       <#if message??>
         <div class="error">${message}</div>
       </#if>
       
+      <p>Number of people playing: ${numPlayers}</p>
+
       <#if otherPlayers??>
         <form action="/game" method="POST">
           <#list otherPlayers as player>
@@ -34,7 +37,6 @@
         </form>
       </#if>
 
-      <p>Number of people playing: ${numPlayers}</p>
     </div>
     
   </div>

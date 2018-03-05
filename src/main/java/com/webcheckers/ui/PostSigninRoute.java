@@ -12,6 +12,8 @@ import java.util.Objects;
 
 /**
  * UI controller for route for POST /signin
+ * @author Anthony Massicci
+ * Tested by Samuel Keir
  */
 public class PostSigninRoute implements Route {
 
@@ -20,10 +22,8 @@ public class PostSigninRoute implements Route {
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
-
-
     /**
-     * constructor
+     * Constructor
      * @param templateEngine template engine to render pages
      */
     public PostSigninRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {
@@ -35,7 +35,7 @@ public class PostSigninRoute implements Route {
     }
 
     /**
-     * implementation of handle
+     * Implementation of handle
      * @param request HTTP request
      * @param response HTTP response object
      * @return rendered HTML page
@@ -46,16 +46,42 @@ public class PostSigninRoute implements Route {
         final Session session = request.session();
         final Map<String, Object> vm = new HashMap<>();
 
-        Player player = playerLobby.signin(name);
-        if (player != null) {
-            session.attribute(PLAYER_KEY, player);
-            response.redirect(WebServer.HOME_URL);
-            halt();
-            return null;
+        vm.put(GetSigninRoute.TITLE_PARAM, GetSigninRoute.PAGE_TITLE);
+
+        if (validateName(name)) {
+            Player player = playerLobby.signin(name);
+            if (player != null) {
+                session.attribute(PLAYER_KEY, player);
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            } else {
+                return templateEngine.render(error(vm, "User name is already taken!"));
+            }
         } else {
-            vm.put(GetSigninRoute.TITLE_PARAM, GetSigninRoute.PAGE_TITLE);
-            vm.put(GetSigninRoute.MESSAGE_PARAM, "User name is already taken!");
-            return templateEngine.render(new ModelAndView(vm, GetSigninRoute.TEMPLATE_NAME));
+            return templateEngine.render(
+                    error(vm, "Names can only have alphanumeric characters or spaces")
+            );
         }
+    }
+
+    /**
+     * Error message production
+     * @param vm the map
+     * @param message error message
+     * @return
+     */
+    private ModelAndView error(Map<String, Object> vm, String message) {
+        vm.put(GetSigninRoute.MESSAGE_PARAM, message);
+        return new ModelAndView(vm, GetSigninRoute.TEMPLATE_NAME);
+    }
+
+    /**
+     * Validates the given name
+     * @param name the given name
+     * @return
+     */
+    private boolean validateName(String name) {
+        return name.matches("[0-9a-zA-Z\\s]+");
     }
 }
