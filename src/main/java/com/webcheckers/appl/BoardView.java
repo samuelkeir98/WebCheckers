@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * BoardView class
+ */
 public class BoardView implements Iterable<RowView> {
 
 	private List<RowView> rowViews;

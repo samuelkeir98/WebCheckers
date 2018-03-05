@@ -61,6 +61,9 @@ public class WebServer {
    */
   public static final String SIGNIN_URL = "/signin";
 
+  /**
+   * The URL pattern to request the game page.
+   */
   public static final String GAME_URL = "/game";
 
   //
@@ -89,8 +92,8 @@ public class WebServer {
    */
   public WebServer(final TemplateEngine templateEngine, final Gson gson,
                    final PlayerLobby playerLobby, GameLobby gameLobby) {
-      this.playerLobby = playerLobby;
-      this.gameLobby = gameLobby;
+    this.playerLobby = playerLobby;
+    this.gameLobby = gameLobby;
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -155,7 +158,7 @@ public class WebServer {
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
     post(SIGNIN_URL, new PostSigninRoute(templateEngine, playerLobby));
     get(GAME_URL, new GetGameRoute(templateEngine, gameLobby));
-    post(GAME_URL, new PostGameRoute(templateEngine, playerLobby, gameLobby));
+    post(GAME_URL, new PostGameRoute(templateEngine, gameLobby));
 
     //
     LOG.config("WebServer is initialized.");

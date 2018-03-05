@@ -15,20 +15,23 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
- *
+ * UI Controller to GET game page
  *
  * @author Andy Gin
  */
 public class GetGameRoute implements Route {
 
     static final String BOARD_ATTRIBUTE_KEY = "BOARD";
-
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
-
     private final TemplateEngine templateEngine;
-
     private final GameLobby gameLobby;
 
+    /**
+     * Create the spark component for the
+     * {@code GET /game} HTTP request.
+     * @param templateEngine ftl template engine
+     * @param gameLobby keeps track of all games
+     */
     public GetGameRoute(TemplateEngine templateEngine, GameLobby gameLobby) {
         this.gameLobby = gameLobby;
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
@@ -37,8 +40,14 @@ public class GetGameRoute implements Route {
         LOG.config("GetGameRoute is initialized.");
     }
 
+    /**
+     * Render the game page
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return rendered game page
+     */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
 
         final Session httpSession = request.session();
 

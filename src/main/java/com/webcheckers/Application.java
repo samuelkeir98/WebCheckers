@@ -63,6 +63,7 @@ public final class Application {
     // PlayerLobby application service instance
     final PlayerLobby playerLobby = new PlayerLobby();
 
+    //GameLobby application service instance
     final GameLobby gameLobby = new GameLobby();
 
     // inject the game center and freemarker engine into web server

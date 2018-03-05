@@ -13,21 +13,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * UI Controller for POST /game
+ *
+ * @author Andy Gin
+ */
 public class PostGameRoute implements Route {
 
     private final TemplateEngine templateEngine;
-    private final PlayerLobby lobby;
     private final GameLobby gameLobby;
 
-    public PostGameRoute(TemplateEngine templateEngine, PlayerLobby lobby, GameLobby gameLobby) {
+    /**
+     * Create the spark component for the
+     * {@code POST /game} HTTP request.
+     * @param templateEngine ftl engine
+     * @param gameLobby keeps track of games
+     */
+    public PostGameRoute(TemplateEngine templateEngine, GameLobby gameLobby) {
         this.gameLobby = gameLobby;
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
-        this.lobby = lobby;
     }
 
+    /**
+     * Renders game page if opponent not in game
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return rendered game page
+     */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         final String opponent = request.queryParams("name");
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");

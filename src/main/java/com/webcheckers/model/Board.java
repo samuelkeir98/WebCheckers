@@ -181,7 +181,7 @@ public class Board implements Iterable<Row> {
 
     /**
      * Represents the board in an easy to read format
-     * @return
+     * @return formatted board string
      */
     @Override
     public String toString() {

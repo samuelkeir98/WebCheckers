@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * RowView class
+ */
 public class RowView implements Iterable<Space> {
 
 	private List<Space> spaces;
