@@ -31,6 +31,10 @@ public class PlayerLobby {
         return newPlayer;
     }
 
+    public synchronized void signout(Player player) {
+        players.remove(player);
+    }
+
     /**
      * Returns a list of all currently signed in players
      * @return list of player names

@@ -26,8 +26,8 @@ public class GetHomeRoute implements Route {
 
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
-
   private final GameLobby gameLobby;
+
   /**
    * Create the Spark Route (UI controller) for the
    * {@code GET /} HTTP request.
@@ -72,13 +72,13 @@ public class GetHomeRoute implements Route {
       vm.put(USER_PARAM, player);
 
       if(playerLobby.numPlayers() > 1) {
-
         List<Player> otherPlayers = playerLobby.getPlayers()
                 .stream()
                 .filter(p -> !p.equals(player))
                 .collect(Collectors.toList());
         vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
       }
+
       if(gameLobby.inGame(player)) {
         response.redirect("/game");
       }
