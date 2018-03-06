@@ -44,8 +44,8 @@ public class Game {
             matrix = whitePlayMatrix;
         }
 
-        Position newStart = matrix[move.getStartPos().getRow()][move.getStartPos().getCol()];
-        Position newEnd = matrix[move.getEndPos().getRow()][move.getEndPos().getCol()];
+        Position newStart = matrix[move.getStart().getRow()][move.getStart().getCell()];
+        Position newEnd = matrix[move.getStart().getRow()][move.getStart().getCell()];
         Move newMove = new Move(newStart,newEnd,move.getType());
 
         if(board.isValidMove(newMove)){
@@ -59,6 +59,7 @@ public class Game {
 
     public Board getBoard(){
         return board;
+
     }
 
     public Player getWinner(){
@@ -68,5 +69,16 @@ public class Game {
     //TODO
     public void undoMove(){}
 
+    public Player getWhitePlayer() {
+        return whitePlayer;
+    }
+
+    public Player getRedPlayer() {
+        return redPlayer;
+    }
+
+    public boolean hasPlayer(Player player) {
+        return player.equals(redPlayer) || player.equals(whitePlayer);
+    }
 
 }
