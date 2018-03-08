@@ -8,7 +8,8 @@ public class Space {
 
     private int cellIdx;
 
-    public Space(boolean isValid){
+    public Space(int cellIdx, boolean isValid){
+        this.cellIdx = cellIdx;
         this.isValid = isValid;
         this.piece = null;
     }
