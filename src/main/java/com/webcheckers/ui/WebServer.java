@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
 import spark.TemplateEngine;
 
@@ -60,6 +61,12 @@ public class WebServer {
    */
   public static final String SIGNIN_URL = "/signin";
 
+  /**
+   * The URL pattern to request the game page.
+   */
+  public static final String GAME_URL = "/game";
+
+  public static final String SIGNOUT_URL = "/signout";
 
   //
   // Attributes
@@ -68,6 +75,7 @@ public class WebServer {
   private final TemplateEngine templateEngine;
   private final Gson gson;
   private final PlayerLobby playerLobby;
+  private final GameLobby gameLobby;
   //
   // Constructor
   //
@@ -80,19 +88,20 @@ public class WebServer {
    * @param gson
    *    The Google JSON parser object used to render Ajax responses.
    *
+   * @param playerLobby
    * @throws NullPointerException
    *    If any of the parameters are {@code null}.
    */
   public WebServer(final TemplateEngine templateEngine, final Gson gson,
-                   final PlayerLobby playerLobby) {
+                   final PlayerLobby playerLobby, GameLobby gameLobby) {
+    this.playerLobby = playerLobby;
+    this.gameLobby = gameLobby;
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
-    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
     //
     this.templateEngine = templateEngine;
     this.gson = gson;
-    this.playerLobby = playerLobby;
   }
 
   //
@@ -147,9 +156,12 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, gameLobby));
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));
     post(SIGNIN_URL, new PostSigninRoute(templateEngine, playerLobby));
+    get(GAME_URL, new GetGameRoute(templateEngine, gameLobby));
+    post(GAME_URL, new PostGameRoute(templateEngine, gameLobby));
+    get(SIGNOUT_URL, new GetSignoutRoute(templateEngine, playerLobby));
 
     //
     LOG.config("WebServer is initialized.");

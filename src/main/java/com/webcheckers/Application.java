@@ -6,6 +6,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.ui.WebServer;
 
@@ -18,6 +19,7 @@ import spark.template.freemarker.FreeMarkerEngine;
  *
  * @author <a href='mailto:bdbvse@rit.edu'>Bryan Basham</a>
  */
+
 public final class Application {
   private static final Logger LOG = Logger.getLogger(Application.class.getName());
 
@@ -61,8 +63,11 @@ public final class Application {
     // PlayerLobby application service instance
     final PlayerLobby playerLobby = new PlayerLobby();
 
+    //GameLobby application service instance
+    final GameLobby gameLobby = new GameLobby();
+
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby);
+    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby, gameLobby);
 
     // inject web server into application
     final Application app = new Application(webServer);
