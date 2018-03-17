@@ -207,7 +207,7 @@ public class Board implements Iterable<Row> {
         row.placePiece(myPiece,endPos.getCell());
     }
 
-    public void sumbitTurn(){
+    public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
     }
 }

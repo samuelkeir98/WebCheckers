@@ -52,14 +52,14 @@ public class GetGameRoute implements Route {
         final Session httpSession = request.session();
 
         LOG.finer("GetGameRoute is invoked");
-        Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
+        Player player = httpSession.attribute(PostSigninRoute.PLAYER_KEY);
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
 
         if(gameLobby.inGame(player)) {
-            Player player1 = gameLobby.getGames().get(player).getRedPlayer();
-            Player player2 = gameLobby.getGames().get(player).getWhitePlayer();
             Game game = gameLobby.getGames().get(player);
+            Player player1 = game.getRedPlayer();
+            Player player2 = game.getWhitePlayer();
 
             vm.put("currentPlayer", player);
             ViewMode view = ViewMode.PLAY;

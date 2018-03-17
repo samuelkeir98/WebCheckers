@@ -60,7 +60,7 @@ public class PostGameRoute implements Route {
             vm.put("redPlayer", player1);
             vm.put("whitePlayer", player2);
             vm.put("activeColor", game.getTurn());
-            vm.put("board", new BoardView(gameLobby.getGames().get(player2).getBoard(), Color.RED));
+            vm.put("board", new BoardView(gameLobby.getGames().get(player2).getBoard(), game.getTurn()));
             return templateEngine.render(new ModelAndView(vm, "game.ftl"));
         }
 

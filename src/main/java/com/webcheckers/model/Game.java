@@ -76,7 +76,7 @@ public class Game {
 
     public void submitTurn(){
         lastPlayed.clear();
-        board.sumbitTurn();
+        board.submitTurn();
     }
 
     public Player getWinner(){
