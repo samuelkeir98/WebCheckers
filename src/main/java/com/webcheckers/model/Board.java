@@ -52,7 +52,7 @@ public class Board implements Iterable<Row> {
         this.redPieces = new HashSet<>();
         this.whitePlayer = whitePlayer;
         this.whitePieces = new HashSet<>();
-        this.curTurn = Color.WHITE;
+        this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
         for(int i = 0;i<NUM_ROWS;i++){
             rows.add(new Row(i));
