@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.Message;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.moves.Move;
@@ -17,34 +19,21 @@ public class PostValidateMoveRoute implements Route {
 
 	private final TemplateEngine templateEngine;
 	private final Gson gson;
+	private final GameLobby gameLobby;
 
-	public PostValidateMoveRoute(TemplateEngine templateEngine, Gson gson) {
+	public PostValidateMoveRoute(TemplateEngine templateEngine, Gson gson, GameLobby gameLobby) {
 		Objects.requireNonNull(templateEngine, "templateEngine must not be null");
 		this.templateEngine = templateEngine;
 		this.gson = gson;
+		this.gameLobby = gameLobby;
 
-		LOG.config("GetGameRoute is initialized.");
+		LOG.config("PostValidateMoveRoute is initialized.");
 	}
 
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
-
-		final Session httpSession = request.session();
-		final String requestBody = request.body();
-		final Move move = gson.fromJson(requestBody,Move.class);
-		Board board = httpSession.attribute(GetGameRoute.BOARD_ATTRIBUTE_KEY);
-		board.makeMove(move);
-		Map<String, Object> vm = new HashMap<>();
-		vm.put("title", "Game");
-		vm.put("currentPlayer",board.getPlayer(board.whoseTurn()));
-		vm.put("viewMode",ViewMode.PLAY);
-		vm.put("redPlayer", board.getPlayer(Color.RED));
-		vm.put("whitePlayer", board.getPlayer(Color.WHITE));
-		vm.put("board",board);
-		vm.put("activeColor", board.whoseTurn());
-
-		return gson.toJson(board);
-
-
+		Move move = gson.fromJson(request.body(),Move.class);
+		System.out.println(move);
+		return gson.toJson(new Message("hi", Message.Type.info));
 	}
 }

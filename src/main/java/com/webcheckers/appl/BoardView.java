@@ -38,7 +38,7 @@ public class BoardView implements Iterable<RowView> {
 		return board.getPlayer(color);
 	}
 
-	public Color whoseTurn(){
+	public Player whoseTurn(){
 		return board.whoseTurn();
 	}
 

@@ -36,6 +36,8 @@ public class Game {
         lastPlayed = new Stack<>();
     }
 
+    public Color getTurn(){return board.whoseTurn();}
+
     public void makeMove(Player player, Move move){
         Position[][] matrix;
         if(player == redPlayer){
@@ -59,7 +61,11 @@ public class Game {
 
     public Board getBoard(){
         return board;
+    }
 
+    public void submitTurn(){
+        lastPlayed.clear();
+        board.sumbitTurn();
     }
 
     public Player getWinner(){
@@ -68,6 +74,10 @@ public class Game {
 
     //TODO
     public void undoMove(){}
+
+    public Player getPlayer(Color color){
+        return (color == Color.RED ? redPlayer : whitePlayer);
+    }
 
     public Player getWhitePlayer() {
         return whitePlayer;

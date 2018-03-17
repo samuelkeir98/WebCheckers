@@ -52,7 +52,7 @@ public class Board implements Iterable<Row> {
         this.redPieces = new HashSet<>();
         this.whitePlayer = whitePlayer;
         this.whitePieces = new HashSet<>();
-        this.curTurn = Color.RED;
+        this.curTurn = Color.WHITE;
         this.rows = new ArrayList<>(NUM_ROWS);
         for(int i = 0;i<NUM_ROWS;i++){
             rows.add(new Row(i));
@@ -207,13 +207,11 @@ public class Board implements Iterable<Row> {
             row.removePiece(startPos.getCell());
             row = rows.get(endPos.getRow());
             row.placePiece(myPiece,endPos.getCell());
-            if(curTurn == Color.RED){
-                curTurn = Color.WHITE;
-            } else{
-                curTurn = Color.RED;
-            }
-
         }
 
+    }
+
+    public void sumbitTurn(){
+        this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
     }
 }
