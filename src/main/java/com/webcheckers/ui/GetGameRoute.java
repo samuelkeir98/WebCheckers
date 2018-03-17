@@ -66,7 +66,7 @@ public class GetGameRoute implements Route {
             vm.put("viewMode", view);
             vm.put("redPlayer", player1);
             vm.put("whitePlayer", player2);
-            vm.put("activeColor", Color.WHITE);
+            vm.put("activeColor", game.getTurn());
             vm.put("board", new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
             return templateEngine.render(new ModelAndView(vm, "game.ftl"));
         }

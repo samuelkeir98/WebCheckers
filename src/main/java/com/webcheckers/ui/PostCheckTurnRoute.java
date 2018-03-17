@@ -34,7 +34,7 @@ public class PostCheckTurnRoute implements Route {
     public Object handle(Request request, Response response) throws Exception {
         Player player = request.session().attribute("player");
         Game game = gameLobby.getGames().get(player);
-        if(game.getTurn() == player){
+        if(game.getCurPlayer() == player){
             return gson.toJson(new Message("true", Message.Type.info));
         }else{
             return gson.toJson(new Message("false", Message.Type.info));

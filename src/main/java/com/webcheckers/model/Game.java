@@ -38,7 +38,7 @@ public class Game {
 
     public Color getTurn(){return board.whoseTurn();}
 
-    public void makeMove(Player player, Move move){
+    public Move translateMove(Player player, Move move){
         Position[][] matrix;
         if(player == redPlayer){
             matrix = redPlayMatrix;
@@ -48,8 +48,11 @@ public class Game {
 
         Position newStart = matrix[move.getStart().getRow()][move.getStart().getCell()];
         Position newEnd = matrix[move.getStart().getRow()][move.getStart().getCell()];
-        Move newMove = new Move(newStart,newEnd,move.getType());
+        return new Move(newStart,newEnd,move.getType());
+    }
 
+    public void makeMove(Player player, Move move){
+        Move newMove = translateMove(player, move);
         if(board.isValidMove(newMove)){
             board.makeMove(move);
         }
@@ -61,6 +64,11 @@ public class Game {
 
     public Board getBoard(){
         return board;
+    }
+
+    public boolean isValidMove(Player player, Move move){
+        Move newMove = translateMove(player, move);
+        return board.isValidMove(move);
     }
 
     public void submitTurn(){
@@ -75,8 +83,8 @@ public class Game {
     //TODO
     public void undoMove(){}
 
-    public Player getPlayer(Color color){
-        return (color == Color.RED ? redPlayer : whitePlayer);
+    public Player getCurPlayer(){
+        return (board.whoseTurn() == Color.RED ? redPlayer : whitePlayer);
     }
 
     public Player getWhitePlayer() {
