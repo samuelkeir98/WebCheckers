@@ -14,7 +14,7 @@ public class Row implements Iterable<Space>{
         this.index = index;
         spaces = new ArrayList<>(ROW_SIZE);
         for(int i = 0; i<ROW_SIZE; i++){
-            spaces.add(new Space((i+index)%2==1));
+            spaces.add(new Space(i,(i+index)%2==1));
         }
     }
 
