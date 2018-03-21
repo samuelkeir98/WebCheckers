@@ -35,7 +35,7 @@ public class PostValidateMoveRoute implements Route {
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
 		Move move = gson.fromJson(request.body(),Move.class);
-		Player player = request.session().attribute("player"); //REFACTOR TO CONSTANT
+		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY); //REFACTOR TO CONSTANT
 		Game game = gameLobby.getGames().get(player);
 		if(!game.isValidMove(player,move)){
 			return gson.toJson(new Message("Invalid Move", Message.Type.error));

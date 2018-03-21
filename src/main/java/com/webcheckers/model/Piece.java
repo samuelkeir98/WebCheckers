@@ -10,22 +10,26 @@ import java.util.Objects;
 public class Piece {
 
 	private static int pieceID = 0;
+	public static final String RED_CHARACTER = "R";
+	public static final String WHITE_CHARACTER = "W";
 
-	enum Type{
-		SINGLE,
-		KING
-	}
+	private static final Object lock = new Object();
+	private Direction directions;
 	private Position position;
 	private Color color;
 	private int id;
 	private Type type;
-
-
 	public Piece(Position position,Color color){
 		this.position = position;
-		this.id = pieceID++;
+		synchronized (lock) {
+			this.id = pieceID++;
+		}
 		this.type = Type.SINGLE;
 		this.color = color;
+	}
+
+	public void becomeKing(){
+		this.type = Type.KING;
 	}
 
 	public Position getPosition() {
@@ -38,6 +42,13 @@ public class Piece {
 
 	public Type getType() {
 		return type;
+	}
+
+	public void unbecomeKing(){ this.type = Type.SINGLE;}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Piece && id == ((Piece) obj).id;
 	}
 
 	Direction[] getDirections(){
@@ -54,15 +65,12 @@ public class Piece {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Piece){
-			return id == ((Piece)obj).id;
-		}
-		return false;
+	public String toString() {
+		return (color == Color.RED ? RED_CHARACTER : WHITE_CHARACTER);
 	}
 
-	@Override
-	public String toString() {
-		return (color == Color.RED ? "R" : "W");
+	enum Type{
+		SINGLE(),
+		KING
 	}
 }
