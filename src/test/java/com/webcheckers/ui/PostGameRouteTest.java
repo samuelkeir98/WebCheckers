@@ -6,7 +6,6 @@ import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,12 +33,7 @@ public class PostGameRouteTest {
     private static final String PLAYER_NAME = "name";
     private static final String OPPONENT = "opponent";
 
-    /**
-     * The component-under-test (CuT)
-     * This is a stateless component so we only need one.
-     * The GameLobby component is thoroughly tested so
-     * we can use it safely as a "friendly" dependency.
-     */
+    /** The component-under-test (CuT) */
     private PostGameRoute CuT;
 
     //friendly objects
@@ -81,7 +74,7 @@ public class PostGameRouteTest {
         when(session.attribute(PostSigninRoute.PLAYER_KEY)).thenReturn(player);
         when(request.queryParams("name")).thenReturn(OPPONENT);
 
-        //Invoke test
+        //setup test
         CuT = new PostGameRoute(engine, gameLobby);
     }
 
