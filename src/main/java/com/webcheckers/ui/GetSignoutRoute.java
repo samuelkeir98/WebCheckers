@@ -16,16 +16,18 @@ import java.util.Objects;
  */
 public class GetSignoutRoute implements Route {
     private final PlayerLobby playerLobby;
+    private final TemplateEngine templateEngine;
 
     /**
      * Create the spark component for the
      * {@code GET /signout} HTTP request.
      * @param playerLobby tracks all signed in players
      */
-    public GetSignoutRoute(PlayerLobby playerLobby) {
+    public GetSignoutRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {
         Objects.requireNonNull(playerLobby, "playerLobby must not be null");
 
         this.playerLobby = playerLobby;
+        this.templateEngine = templateEngine;
     }
 
     /**
