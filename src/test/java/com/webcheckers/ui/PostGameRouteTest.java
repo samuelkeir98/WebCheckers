@@ -6,6 +6,7 @@ import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
