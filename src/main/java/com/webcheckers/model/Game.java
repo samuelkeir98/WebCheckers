@@ -36,7 +36,10 @@ public class Game {
         lastPlayed = new Stack<>();
     }
 
-    public void makeMove(Player player, Move move){
+    public Color getTurn(){return board.whoseTurn();}
+
+    public Move translateMove(Player player, Move move){
+//        System.out.println(move);
         Position[][] matrix;
         if(player == redPlayer){
             matrix = redPlayMatrix;
@@ -45,10 +48,15 @@ public class Game {
         }
 
         Position newStart = matrix[move.getStart().getRow()][move.getStart().getCell()];
-        Position newEnd = matrix[move.getStart().getRow()][move.getStart().getCell()];
+        Position newEnd = matrix[move.getEnd().getRow()][move.getEnd().getCell()];
         Move newMove = new Move(newStart,newEnd,move.getType());
+//        System.out.println(newMove);
+        return newMove;
+    }
 
-        if(board.isValidMove(newMove)){
+    public void makeMove(Player player, Move move){
+        //Move newMove = translateMove(player, move);
+        if(board.isValidMove(move)){
             board.makeMove(move);
         }
     }
@@ -59,7 +67,16 @@ public class Game {
 
     public Board getBoard(){
         return board;
+    }
 
+    public boolean isValidMove(Player player, Move move){
+        //Move newMove = translateMove(player, move);
+        return board.isValidMove(move);
+    }
+
+    public void submitTurn(){
+        lastPlayed.clear();
+        board.submitTurn();
     }
 
     public Player getWinner(){
@@ -68,6 +85,10 @@ public class Game {
 
     //TODO
     public void undoMove(){}
+
+    public Player getCurPlayer(){
+        return (board.whoseTurn() == Color.RED ? redPlayer : whitePlayer);
+    }
 
     public Player getWhitePlayer() {
         return whitePlayer;
