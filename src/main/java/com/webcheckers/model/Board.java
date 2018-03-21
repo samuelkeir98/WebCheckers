@@ -197,16 +197,20 @@ public class Board implements Iterable<Row> {
     }
 
     public void makeMove(Move move){
-		Position startPos = move.getStart();
-        Position endPos = move.getEnd();
 
-        Piece myPiece = getPiece(startPos);
-        Row row = rows.get(startPos.getRow());
-        row.removePiece(startPos.getCell());
-        row = rows.get(endPos.getRow());
-        row.placePiece(myPiece,endPos.getCell());
+        if(isValidMove(move)){
+			Position startPos = move.getStart();
+            Position endPos = move.getEnd();
+
+            Piece myPiece = getPiece(startPos);
+            Row row = rows.get(startPos.getRow());
+            row.removePiece(startPos.getCell());
+            row = rows.get(endPos.getRow());
+            row.placePiece(myPiece,endPos.getCell());
+
+        }
+
     }
-
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
     }
