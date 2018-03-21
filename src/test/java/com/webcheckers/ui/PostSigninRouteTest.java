@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
  */
 
 @Tag("UI-tier")
-public class PostSigninRouteTester {
+public class PostSigninRouteTest {
     // component under test
     private PostSigninRoute CuT;
 
@@ -42,6 +42,9 @@ public class PostSigninRouteTester {
         CuT = new PostSigninRoute(templateEngine, playerLobby);
     }
 
+    /**
+     * test for successful login attempt
+     */
     @Test
     public void successful_login_test() {
         final String USERNAME = "bob";
@@ -57,6 +60,10 @@ public class PostSigninRouteTester {
 
     }
 
+    /**
+     * test for if user tries to login with the same name as someone who
+     * is already logged in.
+     */
     @Test
     public void already_logged_in_test() {
         final String USERNAME = "bob";
@@ -77,6 +84,9 @@ public class PostSigninRouteTester {
 
     }
 
+    /**
+     * test for login attempt with user name with invalid characters.
+     */
     @Test
     public void invalid_username_test() {
         final String USERNAME = "+Bob+";
