@@ -12,6 +12,11 @@ import spark.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * unit test for UI route POST /signin
+ * @author Anthony Massicci
+ */
+
 @Tag("UI-tier")
 public class PostSigninRouteTester {
     // component under test
@@ -62,10 +67,33 @@ public class PostSigninRouteTester {
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
 
+        CuT.handle(request, response);
+
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
 
+        testHelper.assertViewName(GetSigninRoute.TEMPLATE_NAME);
+        testHelper.assertViewModelAttribute(GetSigninRoute.MESSAGE_PARAM, "User name is already taken!");
 
+    }
+
+    @Test
+    public void invalid_username_test() {
+        final String USERNAME = "+Bob+";
+
+        when(request.queryParams("name")).thenReturn(USERNAME);
+
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(templateEngine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        CuT.handle(request, response);
+
+        testHelper.assertViewModelExists();
+        testHelper.assertViewModelIsaMap();
+
+        testHelper.assertViewName(GetSigninRoute.TEMPLATE_NAME);
+        testHelper.assertViewModelAttribute(GetSigninRoute.MESSAGE_PARAM,
+                "Names can only have alphanumeric characters or spaces");
 
     }
 
