@@ -6,6 +6,7 @@ import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,13 @@ import spark.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+
+
 
 /**
  * Unit test suite for the  component.
@@ -86,7 +90,7 @@ public class PostGameRouteTest {
      */
     @Test
     public void game_entered() {
-        //test scenario: opponent not in game
+        //test scenario: opponent not in other game
         when(gameLobby.inGame(eq(opponent))).thenReturn(false);
         when(gameLobby.getGames()).thenReturn(games);
         when(games.get(any(Player.class))).thenReturn(game);
@@ -112,6 +116,31 @@ public class PostGameRouteTest {
         testHelper.assertViewModelAttribute(PostGameRoute.BOARD_ATTR, board);
         //test view name
         testHelper.assertViewName(PostGameRoute.TEMPLATE_NAME);
+    }
+
+    /**
+     * Test that the "challenge" action fails to enter game (opponent in game)
+     */
+    @Test
+    public void game_not_entered_1() {
+        //test scenario: opponent in game
+        when(gameLobby.inGame(eq(opponent))).thenReturn(true);
+
+        //invoke test
+        CuT.handle(request, response);
+
+        //response redirected
+    }
+
+    /**
+     * Test that the "challenge" action fails to enter game (opponent in game)
+     */
+    @Test
+    public void game_not_entered_2() throws NullPointerException {
+        //test scenario: opponent logged out
+        when(gameLobby.inGame(eq(opponent))).thenThrow(NullPointerException.class);
+
+        //response redirected
     }
 
 }

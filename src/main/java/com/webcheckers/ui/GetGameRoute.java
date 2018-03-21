@@ -48,9 +48,6 @@ public class GetGameRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-
-        final Session httpSession = request.session();
-
         LOG.finer("GetGameRoute is invoked");
         Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
         final Map<String, Object> vm = new HashMap<>();
@@ -61,14 +58,14 @@ public class GetGameRoute implements Route {
             Player player2 = gameLobby.getGames().get(player).getWhitePlayer();
             Game game = gameLobby.getGames().get(player);
 
-            vm.put("currentPlayer", player);
             ViewMode view = ViewMode.PLAY;
-            vm.put("viewMode", view);
-            vm.put("redPlayer", player1);
-            vm.put("whitePlayer", player2);
-            vm.put("activeColor", Color.RED);
-            vm.put("board", new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
-            return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+            vm.put(PostGameRoute.CURRENT_PLAYER_ATTR, player);
+            vm.put(PostGameRoute.VIEW_MODE_ATTR, view);
+            vm.put(PostGameRoute.RED_PLAYER_ATTR, player1);
+            vm.put(PostGameRoute.WHITE_PLAYER_ATTR, player2);
+            vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, Color.RED);
+            vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
+            return templateEngine.render(new ModelAndView(vm, PostGameRoute.TEMPLATE_NAME));
         }
 
         else {

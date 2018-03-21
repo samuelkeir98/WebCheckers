@@ -20,6 +20,14 @@ import java.util.Objects;
  */
 public class PostGameRoute implements Route {
 
+    public static final String CURRENT_PLAYER_ATTR = "currentPlayer";
+    public static final String VIEW_MODE_ATTR = "viewMode";
+    public static final String RED_PLAYER_ATTR = "redPlayer";
+    public static final String WHITE_PLAYER_ATTR = "whitePlayer";
+    public static final String ACTIVE_COLOR_ATTR = "activeColor";
+    public static final String BOARD_ATTR = "board";
+    public static final String TEMPLATE_NAME = "game.ftl";
+
     private final TemplateEngine templateEngine;
     private final GameLobby gameLobby;
 
@@ -54,14 +62,14 @@ public class PostGameRoute implements Route {
             gameLobby.getGames().put(player2, game);
             gameLobby.getGames().put(player1, game);
 
-            vm.put("currentPlayer", player1);
             ViewMode view = ViewMode.PLAY;
-            vm.put("viewMode", view);
-            vm.put("redPlayer", player1);
-            vm.put("whitePlayer", player2);
-            vm.put("activeColor", Color.RED);
-            vm.put("board", gameLobby.getGames().get(player2).getBoard());
-            return templateEngine.render(new ModelAndView(vm, "game.ftl"));
+            vm.put(CURRENT_PLAYER_ATTR, player1);
+            vm.put(VIEW_MODE_ATTR, view);
+            vm.put(RED_PLAYER_ATTR, player1);
+            vm.put(WHITE_PLAYER_ATTR, player2);
+            vm.put(ACTIVE_COLOR_ATTR, Color.RED);
+            vm.put(BOARD_ATTR, gameLobby.getGames().get(player2).getBoard());
+            return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
         }
 
         else {
