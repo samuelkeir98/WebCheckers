@@ -134,21 +134,6 @@ public class Board implements Iterable<Row> {
         }
         return true;
     }
-
-
-    /**
-     * does a brief instantiation and move test
-     * @param args
-     */
-    public static void main(String[] args){
-        Board board = new Board();
-        System.out.println(board);
-
-        Move move = new Move(new Position(5,1),new Position(4,2),Move.Type.OTHER);
-        board.makeMove(move);
-		System.out.println(board);
-	}
-
     /**
      * Reverts a move
      * Expects that the move is the last one made
