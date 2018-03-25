@@ -41,6 +41,7 @@ public class SpaceTester {
 		assertEquals(EMPTY_SPACE,space.toString());
 		Piece piece = mock(Piece.class);
 		when(piece.toString()).thenReturn(TEST_STRING);
+		space.setPiece(piece);
 		assertEquals(TEST_STRING,space.toString());
 		space.removePiece();
 		System.out.println(space.getPiece());
