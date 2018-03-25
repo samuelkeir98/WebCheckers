@@ -1,21 +1,20 @@
 ---
 geometry: margin=1in
 ---
-# PROJECT Design Documentation
-
-> The following template provides the headings for your Design Documentation.  As you edit each section make sure you remove these commentary 'blockquotes'; the lines that start with a > character.
+# WebCheckers Design Documentation
 
 # Team Information
-* Team name: TEAMNAME
+* Team name: D
 * Team members
-  * MEMBER1
-  * MEMBER2
-  * MEMBER3
-  * MEMBER4
+  * Andy Gin
+  * Anthony Amassicci
+  * Adrian Postolache
+  * Samuel Keir
+  * Zachary Eberhardt
 
 ## Executive Summary
 
-This is a summary of the project.
+This is the design documentation for the WebCheckers application. The documentation first covers purpose and requirements of the application, describing the vision of the project. Following is the Application Domain, illustrating the problem space of the application and the entities involved in playing a checkers game. The Web Architecture is next described, illustrating a high level view of the tiers and models and how the web technologies fit in the application. An overview of the User Interface is then shown, giving a user an idea of what he/she might expect to see throughout the application's pages. Finally, a summary of how the application works at each tier in the architecture is given to revel more of the design's inner workings.
 
 ### Purpose
 > Provide a very brief statement about the project and the most important user group and user goals.
@@ -48,10 +47,13 @@ This section describes the features of the application.
 
 This section describes the application domain.
 
-![The WebCheckers Domain Model](domain-model-placeholder.png)
-> Replace the placeholder image above with your team's own domain model. 
+![The WebCheckers Domain Model](DomainModel.png)
 
-> Provide a high-level overview of the domain for this application. You can discuss the more important domain entities and their relationship to each other.
+The domain model above models the problem space of a Checkers game and covers the different parts of a game. Starting at the top is the WebCheckers Game, which is the overarching entity that the rest of the model considers to illustrate the different parts of the game.
+
+The game is played on an 8x8 Checker Board which is made of 64 alternating black and white squares. There may be pieces on the squares, which can be normal pieces or a king pieces. Furthermore, 2 Players play the game, taking turns to make Moves that transition the pieces and move the game along.
+
+A Move entity is broken down into two categories: a Jump, which is further broken down into a Multi Jump and a Single Jump, and a Simple Move, which is further broken down into a Normal Move and a King Move. All Moves adhere to the rules of Checkers.
 
 
 
@@ -80,10 +82,19 @@ Details of the components within these tiers are supplied below
 This section describes the web interface flow; this is how the user views and interacts
 with the WebCheckers application.
 
-![The WebCheckers Web Interface Statechart](web-interface-placeholder.png)
-> Replace the placeholder image above with your team's own web interface state model. 
+![The WebCheckers Web Interface Statechart](Statechart.png)
 
-> Provide a summary of the application's user interface.  Describe, from the user's perspective, the flow of the pages in the web application.
+Users initially have no connection to the page. A user is directed to the Home page upon making a connection to the server. At the Home page, the number of users is displayed along with a link to signin.
+
+The signin link directs the user to the Sign In page with one text field to input a name and a button to sign in. If the name is taken, it will display a error message on the same page. If the name is available, the user is redirected to the home page, now with a list of online players displayed and a signout link instead of a signin one.
+
+The Home page refreshes every 5 seconds, updating the player list and number of players. If the user signs out, the signin button is displayed again and the player list is no longer displayed.
+
+Otherwise, the user may select an online player and issue a challenge, in which case the user is directed to the Game page. The game components are rendered with the user playing as red and the opponent playing as black.
+
+If the user is challenged by another player in the home page, the Game page is also rendered with the user playing as black and the opponent as red.
+
+When the game is over, the user may click on the home link to return to the Home page.
 
 
 ### UI Tier
