@@ -22,17 +22,9 @@ public class Board implements Iterable<Row> {
      */
     private Color curTurn;
     /**
-     * The red player
-     */
-    private Player redPlayer;
-    /**
      * All of the red player's pieces
      */
     private Set<Piece> redPieces;
-    /**
-     * The white Player
-     */
-    private Player whitePlayer;
     /**
      * All of whitey's pieces
      */
@@ -48,9 +40,7 @@ public class Board implements Iterable<Row> {
      * @param whitePlayer Player 2
      */
     public Board(Player redPlayer, Player whitePlayer){
-        this.redPlayer = redPlayer;
         this.redPieces = new HashSet<>();
-        this.whitePlayer = whitePlayer;
         this.whitePieces = new HashSet<>();
         this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
@@ -105,15 +95,6 @@ public class Board implements Iterable<Row> {
      * @return the color of the player whose turn it is
      */
     public Color whoseTurn(){return curTurn;}
-
-    /**
-     * Get the player corresponding to the passed color
-     * @param color color of the player
-     * @return the corresponding player
-     */
-    public Player getPlayer(Color color){
-        return (color == Color.RED ? redPlayer : whitePlayer);
-    }
 
 
     /**

@@ -14,16 +14,13 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public class PostSubmitTurnRoute implements Route {
-    private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
 
 
-    private final TemplateEngine templateEngine;
     private final Gson gson;
     private final GameLobby gameLobby;
 
-    public PostSubmitTurnRoute(TemplateEngine templateEngine, Gson gson, GameLobby gameLobby) {
-        Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-        this.templateEngine = templateEngine;
+    public PostSubmitTurnRoute(Gson gson, GameLobby gameLobby) {
         this.gson = gson;
         this.gameLobby = gameLobby;
 
@@ -32,7 +29,7 @@ public class PostSubmitTurnRoute implements Route {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY); //REFACTOR TO CONSTANT
+        Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGames().get(player);
         game.submitTurn();
         return gson.toJson(new Message("Move made", Message.Type.info));
