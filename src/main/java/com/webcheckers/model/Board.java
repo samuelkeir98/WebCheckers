@@ -36,10 +36,8 @@ public class Board implements Iterable<Row> {
 
     /**
      * Builds a board in the starting configuration for Checkers
-     * @param redPlayer Player 1
-     * @param whitePlayer Player 2
      */
-    public Board(Player redPlayer, Player whitePlayer){
+    public Board(){
         this.redPieces = new HashSet<>();
         this.whitePieces = new HashSet<>();
         this.curTurn = Color.RED;
@@ -143,7 +141,7 @@ public class Board implements Iterable<Row> {
      * @param args
      */
     public static void main(String[] args){
-        Board board = new Board(new Player("joe"),new Player("jim"));
+        Board board = new Board();
         System.out.println(board);
 
         Move move = new Move(new Position(5,1),new Position(4,2),Move.Type.OTHER);
