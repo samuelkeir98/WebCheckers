@@ -66,7 +66,7 @@ public class GetGameRoute implements Route {
             vm.put(PostGameRoute.VIEW_MODE_ATTR, view);
             vm.put(PostGameRoute.RED_PLAYER_ATTR, player1);
             vm.put(PostGameRoute.WHITE_PLAYER_ATTR, player2);
-            vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, Color.RED);
+            vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, game.getCurPlayer() == player2 ? Color.WHITE : Color.RED);
             vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
             return templateEngine.render(new ModelAndView(vm, PostGameRoute.TEMPLATE_NAME));
         }

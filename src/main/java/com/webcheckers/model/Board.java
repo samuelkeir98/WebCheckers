@@ -97,11 +97,12 @@ public class Board implements Iterable<Row> {
 
     /**
      * Can this piece make any jump moves
-     * @param piece The iece to check
+     * @param piece The piece to check
      * @return whether it can jump or not
      */
-    //TODO
-    boolean canJump(Piece piece){return false;}
+    boolean canJump(Piece piece) {
+        return false;
+    }
 
     /**
      * Gets the piece in the passed position
