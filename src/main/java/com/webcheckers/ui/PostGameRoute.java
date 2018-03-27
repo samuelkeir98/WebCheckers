@@ -59,8 +59,8 @@ public class PostGameRoute implements Route {
 
         if(!gameLobby.inGame(player2)) {
             Game game = new Game(player1, player2);
-            gameLobby.getGames().put(player2, game);
-            gameLobby.getGames().put(player1, game);
+            gameLobby.enterGame(player2, game);
+            gameLobby.enterGame(player1, game);
 
             ViewMode view = ViewMode.PLAY;
             vm.put(CURRENT_PLAYER_ATTR, player1);
@@ -68,7 +68,7 @@ public class PostGameRoute implements Route {
             vm.put(RED_PLAYER_ATTR, player1);
             vm.put(WHITE_PLAYER_ATTR, player2);
             vm.put(ACTIVE_COLOR_ATTR, Color.RED);
-            vm.put(BOARD_ATTR, gameLobby.getGames().get(player2).getBoard());
+            vm.put(BOARD_ATTR, gameLobby.getGame(player2).getBoard());
             return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
         }
 

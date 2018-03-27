@@ -30,7 +30,7 @@ public class PostSubmitTurnRoute implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
-        Game game = gameLobby.getGames().get(player);
+        Game game = gameLobby.getGame(player);
         game.submitTurn();
         return gson.toJson(new Message("Move made", Message.Type.info));
     }

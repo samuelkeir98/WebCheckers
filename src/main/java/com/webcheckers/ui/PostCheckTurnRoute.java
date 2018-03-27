@@ -30,7 +30,7 @@ public class PostCheckTurnRoute implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
-        Game game = gameLobby.getGames().get(player);
+        Game game = gameLobby.getGame(player);
         if(game.getCurPlayer().equals(player)){
             return gson.toJson(new Message("true", Message.Type.info));
         }else{
