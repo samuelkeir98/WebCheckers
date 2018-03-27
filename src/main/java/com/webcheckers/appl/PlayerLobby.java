@@ -2,10 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Player Lobby Service class
@@ -49,6 +46,22 @@ public class PlayerLobby {
      */
     public synchronized int numPlayers() {
         return players.size();
+    }
+
+    /**
+     * Gets player from player lobby
+     * @param name name of player to get
+     * @return player that was being searched
+     */
+    public Player getPlayer(String name) {
+        Iterator<Player> iterator = players.iterator();
+        while(iterator.hasNext()) {
+            Player player = iterator.next();
+            if(player.getName().equals(name)) {
+                return player;
+            }
+        }
+        return null;
     }
 
 }
