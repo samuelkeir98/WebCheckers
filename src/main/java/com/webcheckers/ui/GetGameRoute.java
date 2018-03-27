@@ -49,7 +49,6 @@ public class GetGameRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         LOG.finer("GetGameRoute is invoked");
-
         Session httpSession = request.session();
         Player player = httpSession.attribute(PostSigninRoute.PLAYER_KEY);
         final Map<String, Object> vm = new HashMap<>();
