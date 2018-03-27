@@ -22,17 +22,9 @@ public class Board implements Iterable<Row> {
      */
     private Color curTurn;
     /**
-     * The red player
-     */
-    private Player redPlayer;
-    /**
      * All of the red player's pieces
      */
     private Set<Piece> redPieces;
-    /**
-     * The white Player
-     */
-    private Player whitePlayer;
     /**
      * All of whitey's pieces
      */
@@ -44,13 +36,9 @@ public class Board implements Iterable<Row> {
 
     /**
      * Builds a board in the starting configuration for Checkers
-     * @param redPlayer Player 1
-     * @param whitePlayer Player 2
      */
-    public Board(Player redPlayer, Player whitePlayer){
-        this.redPlayer = redPlayer;
+    public Board(){
         this.redPieces = new HashSet<>();
-        this.whitePlayer = whitePlayer;
         this.whitePieces = new HashSet<>();
         this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
@@ -106,15 +94,6 @@ public class Board implements Iterable<Row> {
      */
     public Color whoseTurn(){return curTurn;}
 
-    /**
-     * Get the player corresponding to the passed color
-     * @param color color of the player
-     * @return the corresponding player
-     */
-    public Player getPlayer(Color color){
-        return (color == Color.RED ? redPlayer : whitePlayer);
-    }
-
 
     /**
      * Can this piece make any jump moves
@@ -155,21 +134,6 @@ public class Board implements Iterable<Row> {
         }
         return true;
     }
-
-
-    /**
-     * does a brief instantiation and move test
-     * @param args
-     */
-    public static void main(String[] args){
-        Board board = new Board(new Player("joe"),new Player("jim"));
-        System.out.println(board);
-
-        Move move = new Move(new Position(5,1),new Position(4,2),Move.Type.OTHER);
-        board.makeMove(move);
-		System.out.println(board);
-	}
-
     /**
      * Reverts a move
      * Expects that the move is the last one made
@@ -197,16 +161,20 @@ public class Board implements Iterable<Row> {
     }
 
     public void makeMove(Move move){
-		Position startPos = move.getStart();
-        Position endPos = move.getEnd();
 
-        Piece myPiece = getPiece(startPos);
-        Row row = rows.get(startPos.getRow());
-        row.removePiece(startPos.getCell());
-        row = rows.get(endPos.getRow());
-        row.placePiece(myPiece,endPos.getCell());
+        if(isValidMove(move)){
+			Position startPos = move.getStart();
+            Position endPos = move.getEnd();
+
+            Piece myPiece = getPiece(startPos);
+            Row row = rows.get(startPos.getRow());
+            row.removePiece(startPos.getCell());
+            row = rows.get(endPos.getRow());
+            row.placePiece(myPiece,endPos.getCell());
+
+        }
+
     }
-
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
     }

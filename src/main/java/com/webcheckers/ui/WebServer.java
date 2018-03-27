@@ -66,9 +66,6 @@ public class WebServer {
    */
   public static final String GAME_URL = "/game";
 
-  /**
-   * The URL pattern to request the signout page.
-   */
   public static final String SIGNOUT_URL = "/signout";
 
   public static final String VALIDATE_URL = "/validateMove";
@@ -170,10 +167,10 @@ public class WebServer {
     post(SIGNIN_URL, new PostSigninRoute(templateEngine, playerLobby));
     get(GAME_URL, new GetGameRoute(templateEngine, gameLobby));
     post(GAME_URL, new PostGameRoute(templateEngine, gameLobby));
-    get(SIGNOUT_URL, new GetSignoutRoute(playerLobby));
-    post(VALIDATE_URL, new PostValidateMoveRoute(templateEngine,gson,gameLobby));
-    post(CHECK_TURN_URL, new PostCheckTurnRoute(templateEngine,gson,gameLobby));
-    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(templateEngine,gson,gameLobby));
+    get(SIGNOUT_URL, new GetSignoutRoute(templateEngine, playerLobby));
+    post(VALIDATE_URL, new PostValidateMoveRoute(gson,gameLobby));
+    post(CHECK_TURN_URL, new PostCheckTurnRoute(gson,gameLobby));
+    post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(gson,gameLobby));
     //
     LOG.config("WebServer is initialized.");
   }

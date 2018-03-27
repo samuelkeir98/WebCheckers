@@ -14,25 +14,22 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public class PostCheckTurnRoute implements Route {
-    private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
+    private static final Logger LOG = Logger.getLogger(PostCheckTurnRoute.class.getName());
 
 
-    private final TemplateEngine templateEngine;
     private final Gson gson;
     private final GameLobby gameLobby;
 
-    public PostCheckTurnRoute(TemplateEngine templateEngine, Gson gson, GameLobby gameLobby) {
-        Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-        this.templateEngine = templateEngine;
+    public PostCheckTurnRoute(Gson gson, GameLobby gameLobby) {
         this.gson = gson;
         this.gameLobby = gameLobby;
 
-        LOG.config("PostValidateMoveRoute is initialized.");
+        LOG.config("PostCheckTurnRoute is initialized.");
     }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        Player player = request.session().attribute("player");
+        Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGames().get(player);
         if(game.getCurPlayer().equals(player)){
             return gson.toJson(new Message("true", Message.Type.info));
