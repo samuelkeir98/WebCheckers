@@ -14,9 +14,7 @@ import java.util.Map;
 public class GameLobby {
 
     /** Games being played */
-    private Map<Player, Game> players = new HashMap<>();
-
-    private Map<Game, Player> games = new HashMap<>();
+    private Map<Player, Game> games = new HashMap<>();
 
     /**
      * Returns whether or not player is in a game
@@ -24,7 +22,7 @@ public class GameLobby {
      * @return true if player is in game, false otherwise
      */
     public boolean inGame(Player player) {
-        return players.containsKey(player);
+        return games.containsKey(player);
     }
 
     /**
@@ -33,10 +31,10 @@ public class GameLobby {
      * @return
      */
     public Game getGame(Player player) {
-        return players.get(player);
+        return games.get(player);
     }
 
     public void enterGame(Player player, Game game) {
-        players.put(player, game);
+        games.put(player, game);
     }
 }
