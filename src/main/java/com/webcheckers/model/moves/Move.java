@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Value object representing one move
  * @author Adrian Postolache
- * Tested by Samuel Keir
+ * Tested by Sam Keir
  */
 public class Move implements Serializable{
 
