@@ -33,6 +33,11 @@ public class Board implements Iterable<Row> {
     private List<Row> rows;
 
     /**
+     * Set of available moves
+     */
+    private Set<Move> moves;
+
+    /**
      * Builds a board in the starting configuration for Checkers
      */
     public Board(){
@@ -92,25 +97,43 @@ public class Board implements Iterable<Row> {
      */
     public Color whoseTurn(){return curTurn;}
 
-
     /**
      * Can this piece make any jump moves
      * @param piece The piece to check
      * @return whether it can jump or not
      */
-    boolean canJump(Piece piece) {
+    public void addJumps(Piece piece) {
         Position pos = piece.getPosition();
         Direction[] directions = piece.getDirections();
         for(Direction dir : directions) {
-            Row row = rows.get(pos.getRow() + dir.getRow());
+            int rowNum = pos.getRow() + dir.getRow();
+            int col = pos.getCell() + dir.getCol();
+            Row row = canJump(rowNum, col) ? rows.get(rowNum) : null;
             if(row != null && row.isPieceAt(pos.getCell() + dir.getCol())) {
                 Row nextRow = rows.get(row.getIndex() + dir.getRow());
+                Piece pieceTaken = nextRow.getPieceAt(pos.getCell() + dir.getCol());
                 if(nextRow != null && !nextRow.isPieceAt(pos.getCell() + 2 * dir.getCol())) {
-                    return true;
+                    Move move = new Jump(piece, dir, curTurn, pieceTaken);
+                    moves.add(move);
                 }
             }
         }
-        return false;
+    }
+
+    public void addMoves(Piece piece) {
+
+    }
+
+    public void addAllMoves() {
+        Iterator iter = curTurn == Color.RED ? whitePieces.iterator() : redPieces.iterator();
+        while(iter.hasNext()) {
+            this.addJumps((Piece) iter.next());
+        }
+
+    }
+
+    public boolean canJump(int row, int col) {
+        return row > 0 && row < NUM_ROWS && col > 0 && col < NUM_ROWS;
     }
 
     /**
