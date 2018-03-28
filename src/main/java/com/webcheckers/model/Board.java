@@ -1,9 +1,7 @@
 package com.webcheckers.model;
 
-import com.webcheckers.model.moves.Jump;
-import com.webcheckers.model.moves.Move;
-import com.webcheckers.model.moves.Position;
-import com.webcheckers.model.moves.Step;
+import com.webcheckers.model.moves.*;
+
 import java.util.*;
 
 /**
@@ -101,6 +99,17 @@ public class Board implements Iterable<Row> {
      * @return whether it can jump or not
      */
     boolean canJump(Piece piece) {
+        Position pos = piece.getPosition();
+        Direction[] directions = piece.getDirections();
+        for(Direction dir : directions) {
+            Row row = rows.get(pos.getRow() + dir.getRow());
+            if(row != null && row.isPieceAt(pos.getCell() + dir.getCol())) {
+                Row nextRow = rows.get(row.getIndex() + dir.getRow());
+                if(nextRow != null && !nextRow.isPieceAt(pos.getCell() + 2 * dir.getCol())) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
