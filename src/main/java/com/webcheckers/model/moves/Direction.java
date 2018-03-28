@@ -9,11 +9,13 @@ package com.webcheckers.model.moves;
 public interface Direction {
 
     /**
+     * Method to return the row component
      * @return The row component of the direction
      */
     int getRow();
 
     /**
+     * Method to return the column component
      * @return The column component of the direction
      */
     int getCol();
