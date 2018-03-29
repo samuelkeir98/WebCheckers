@@ -31,10 +31,11 @@ public class PostValidateMoveRoute implements Route {
 		Move move = gson.fromJson(request.body(), Move.class);
 		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
 		Game game = gameLobby.getGame(player);
-		if(!game.isValidMove(player, move)){
+		game.generateMoves();
+		/**if(!game.isValidMove(move)){
 			return gson.toJson(new Message("Invalid Move", Message.Type.error));
-		}
-		game.makeMove(player,move);
+		}*/
+		game.storeMove(move);
 		return gson.toJson(new Message("Move made", Message.Type.info));
 	}
 }

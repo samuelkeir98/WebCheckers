@@ -22,6 +22,10 @@ public class Space {
         return piece == null && isValid;
     }
 
+    public boolean hasPiece() {
+        return piece != null;
+    }
+
     public Piece getPiece() {
         return piece;
     }

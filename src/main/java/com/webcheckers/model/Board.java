@@ -45,6 +45,7 @@ public class Board implements Iterable<Row> {
         this.whitePieces = new HashSet<>();
         this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
+        this.moves = new HashSet<>();
         for(int i = 0;i<NUM_ROWS;i++){
             rows.add(new Row(i));
         }
@@ -105,6 +106,16 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Helper method to check if dimension of space is in bounds of board
+     * @param row row to check
+     * @param col column to check
+     * @return true if row and column are within board's dimensions, false otherwise
+     */
+    public boolean inBounds(int row, int col) {
+        return row > 0 && row < NUM_ROWS && col > 0 && col < NUM_ROWS;
+    }
+
+    /**
      * Finds and adds possible jump moves of a piece to set
      * @param piece piece to find jump moves for
      */
@@ -112,14 +123,14 @@ public class Board implements Iterable<Row> {
         Position pos = piece.getPosition();
         Direction[] directions = piece.getDirections();
         for(Direction dir : directions) {
-            int rowNum = pos.getRow() + dir.getRow();
-            int col = pos.getCell() + dir.getCol();
+            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
             Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
 
             //checks next row and column in directions of piece for an opponent piece
             if(row != null && row.isPieceAt(col, getOpponent())) {
-                int rowNum2 = rowNum + dir.getRow();
-                int col2 = col + dir.getCol();
+                int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
+                int col2 = col + dir.getCol() * curTurn.getMovementFactor();
                 Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
                 Piece pieceTaken =  row.getPieceAt(col);
 
@@ -140,13 +151,14 @@ public class Board implements Iterable<Row> {
         Position pos = piece.getPosition();
         Direction[] directions = piece.getDirections();
         for(Direction dir : directions) {
-            int rowNum = pos.getRow() + dir.getRow();
-            int col = pos.getCell() + dir.getCol();
+            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
             Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
 
             if (row != null && !row.isPieceAt(col)) {
                 Move step = new Step(piece, dir, curTurn);
                 moves.add(step);
+                System.out.println(step);
             }
         }
     }
@@ -155,29 +167,20 @@ public class Board implements Iterable<Row> {
      * Adds all valid moves of all pieces to set
      */
     public void addMoves() {
-        Iterator iter = curTurn == Color.RED ? whitePieces.iterator() : redPieces.iterator();
+        Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
         while(iter.hasNext()) {
             this.addJumps((Piece) iter.next());
         }
 
         //only add steps if no jumps are possible
         if(moves.isEmpty()) {
-            Iterator iter2 = curTurn == Color.RED ? whitePieces.iterator() : redPieces.iterator();
+            Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
             while(iter2.hasNext()) {
-                this.addSteps((Piece) iter.next());
+                this.addSteps((Piece) iter2.next());
             }
+            System.out.println();
         }
 
-    }
-
-    /**
-     * Helper method to check if dimension of space is in bounds of board
-     * @param row row to check
-     * @param col column to check
-     * @return true if row and column are within board's dimensions, false otherwise
-     */
-    public boolean inBounds(int row, int col) {
-        return row > 0 && row < NUM_ROWS && col > 0 && col < NUM_ROWS;
     }
 
     /**
@@ -204,12 +207,7 @@ public class Board implements Iterable<Row> {
      * @return whether it can be made
      */
     boolean isValidMove(Move move){
-        Position startPos = move.getStart();
-        Position endPos = move.getEnd();
-        if(getPiece(startPos)==null || getPiece(startPos).getColor()!=curTurn || !isValid(endPos)){
-            return false;
-        }
-        return true;
+        return moves.contains(move);
     }
     /**
      * Reverts a move
@@ -254,5 +252,7 @@ public class Board implements Iterable<Row> {
     }
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
+        System.out.println(moves);
+        this.moves.removeAll(moves);
     }
 }

@@ -31,7 +31,18 @@ public class Row implements Iterable<Space>{
     }
 
     public boolean isPieceAt(int index){
-        return spaces.get(index).isValid();
+        return spaces.get(index).hasPiece();
+    }
+
+    /**
+     * Checks if piece of certain color on space
+     * @param index space to check
+     * @param color color of piece to check
+     * @return
+     */
+    public boolean isPieceAt(int index, Color color) {
+        Space space = spaces.get(index);
+        return (isPieceAt(index) && space.hasPiece() && space.getPiece().getColor() == color);
     }
 
     public void removePiece(int index){

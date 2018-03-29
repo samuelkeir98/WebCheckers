@@ -6,21 +6,6 @@ import com.webcheckers.model.moves.Position;
 import java.util.Stack;
 
 public class Game {
-    /**
-     * Matrices used to translate relative coordinates (like those of the player who sees the board rotated 180 degrees)
-     * to actual coordinates that the board understands
-     */
-    private static final Position[][] redPlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
-    private static final Position[][] whitePlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
-    static {
-        for (int row = 0; row < Board.NUM_ROWS; row++) {
-            for (int col = 0; col < Row.ROW_SIZE; col++) {
-                Position position = new Position(row, col);
-                redPlayMatrix[row][col] = position;
-                whitePlayMatrix[Board.NUM_ROWS - row - 1][Row.ROW_SIZE - col - 1] = position;
-            }
-        }
-    }
 
     private Board board;
     private Player whitePlayer,redPlayer;
@@ -38,27 +23,16 @@ public class Game {
 
     public Color getTurn(){return board.whoseTurn();}
 
-    public Move translateMove(Player player, Move move){
-//        System.out.println(move);
-        Position[][] matrix;
-        if(player == redPlayer){
-            matrix = redPlayMatrix;
-        }else{
-            matrix = whitePlayMatrix;
-        }
-
-        Position newStart = matrix[move.getStart().getRow()][move.getStart().getCell()];
-        Position newEnd = matrix[move.getEnd().getRow()][move.getEnd().getCell()];
-        Move newMove = new Move(newStart,newEnd,move.getType());
-//        System.out.println(newMove);
-        return newMove;
+    public void makeMove(Move move){
+        //if(board.isValidMove(move)){
+            board.makeMove(move);
+        //}
     }
 
-    public void makeMove(Player player, Move move){
-        //Move newMove = translateMove(player, move);
-        if(board.isValidMove(move)){
-            board.makeMove(move);
-        }
+    public void storeMove(Move move) {
+        //if(board.isValidMove(move)) {
+            lastPlayed.push(move);
+        //}
     }
 
     public boolean isGameOver(){
@@ -69,12 +43,18 @@ public class Game {
         return board;
     }
 
-    public boolean isValidMove(Player player, Move move){
-        //Move newMove = translateMove(player, move);
+    public boolean isValidMove(Move move){
         return board.isValidMove(move);
     }
 
+    public void generateMoves() {
+        board.addMoves();
+    }
+
     public void submitTurn(){
+        while(!lastPlayed.empty()) {
+            makeMove(lastPlayed.pop());
+        }
         lastPlayed.clear();
         board.submitTurn();
     }
