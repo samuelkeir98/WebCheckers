@@ -3,6 +3,8 @@ package com.webcheckers.model;
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Game {
@@ -11,6 +13,7 @@ public class Game {
     private Player whitePlayer,redPlayer;
     private boolean gameOver;
     private Stack<Move> lastPlayed;
+    private List<Move> movesMade;
 
     //TODO
     public Game(Player redPlayer,Player whitePlayer){
@@ -19,20 +22,23 @@ public class Game {
         board = new Board();
         gameOver = false;
         lastPlayed = new Stack<>();
+        movesMade = new ArrayList<>();
     }
 
     public Color getTurn(){return board.whoseTurn();}
 
     public void makeMove(Move move){
-        //if(board.isValidMove(move)){
+        if(board.isValidMove(move)){
             board.makeMove(move);
-        //}
+        }
     }
 
     public void storeMove(Move move) {
-        //if(board.isValidMove(move)) {
-            lastPlayed.push(move);
-        //}
+        if(board.isValidMove(move)) {
+            Move actualMove = board.getMove(move);
+            lastPlayed.push(actualMove);
+            movesMade.add(actualMove);
+        }
     }
 
     public boolean isGameOver(){
@@ -52,10 +58,11 @@ public class Game {
     }
 
     public void submitTurn(){
-        while(!lastPlayed.empty()) {
-            makeMove(lastPlayed.pop());
+        for(Move move : movesMade) {
+            makeMove(move);
         }
         lastPlayed.clear();
+        movesMade.clear();
         board.submitTurn();
     }
 

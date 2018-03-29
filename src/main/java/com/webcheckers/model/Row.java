@@ -42,7 +42,7 @@ public class Row implements Iterable<Space>{
      */
     public boolean isPieceAt(int index, Color color) {
         Space space = spaces.get(index);
-        return (isPieceAt(index) && space.hasPiece() && space.getPiece().getColor() == color);
+        return (isPieceAt(index) && space.getPiece().getColor() == color);
     }
 
     public void removePiece(int index){

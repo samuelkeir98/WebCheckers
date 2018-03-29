@@ -134,9 +134,8 @@ public class Board implements Iterable<Row> {
                 Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
                 Piece pieceTaken =  row.getPieceAt(col);
 
-
                 if(nextRow != null && !nextRow.isPieceAt(col2)) {
-                    Move jump = new Jump(piece, dir, curTurn, pieceTaken);
+                    Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
                     moves.add(jump);
                 }
             }
@@ -158,7 +157,6 @@ public class Board implements Iterable<Row> {
             if (row != null && !row.isPieceAt(col)) {
                 Move step = new Step(piece, dir, curTurn);
                 moves.add(step);
-                System.out.println(step);
             }
         }
     }
@@ -178,9 +176,23 @@ public class Board implements Iterable<Row> {
             while(iter2.hasNext()) {
                 this.addSteps((Piece) iter2.next());
             }
-            System.out.println();
         }
 
+    }
+
+    /**
+     * Gets move with information using move from JSON
+     * @param move move with only start and end from JSON
+     * @return move generated with information
+     */
+    public Move getMove(Move move) {
+        Iterator iter = moves.iterator();
+        while(iter.hasNext()) {
+            Move infoMove = (Move) iter.next();
+            if(move.equals(infoMove))
+                return infoMove;
+        }
+        return null;
     }
 
     /**
@@ -245,14 +257,21 @@ public class Board implements Iterable<Row> {
             Row row = rows.get(startPos.getRow());
             row.removePiece(startPos.getCell());
             row = rows.get(endPos.getRow());
+
+            myPiece.setPosition(endPos);
             row.placePiece(myPiece,endPos.getCell());
+
+            if(move.getType() == Move.Type.JUMP) {
+                Piece pieceTaken = ((Jump) move).getJumped();
+                Row takenRow = rows.get(pieceTaken.getPosition().getRow());
+                takenRow.removePiece(pieceTaken.getPosition().getCell());
+            }
 
         }
 
     }
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
-        System.out.println(moves);
         this.moves.removeAll(moves);
     }
 }
