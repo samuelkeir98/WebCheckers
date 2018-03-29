@@ -98,9 +98,15 @@ public class Board implements Iterable<Row> {
     public Color whoseTurn(){return curTurn;}
 
     /**
-     * Can this piece make any jump moves
-     * @param piece The piece to check
-     * @return whether it can jump or not
+     * @return color of opponent
+     */
+    public Color getOpponent() {
+        return curTurn == Color.RED ? Color.WHITE : Color.RED;
+    }
+
+    /**
+     * Finds and adds possible jump moves of a piece to set
+     * @param piece piece to find jump moves for
      */
     public void addJumps(Piece piece) {
         Position pos = piece.getPosition();
@@ -108,31 +114,69 @@ public class Board implements Iterable<Row> {
         for(Direction dir : directions) {
             int rowNum = pos.getRow() + dir.getRow();
             int col = pos.getCell() + dir.getCol();
-            Row row = canJump(rowNum, col) ? rows.get(rowNum) : null;
-            if(row != null && row.isPieceAt(pos.getCell() + dir.getCol())) {
-                Row nextRow = rows.get(row.getIndex() + dir.getRow());
-                Piece pieceTaken = nextRow.getPieceAt(pos.getCell() + dir.getCol());
-                if(nextRow != null && !nextRow.isPieceAt(pos.getCell() + 2 * dir.getCol())) {
-                    Move move = new Jump(piece, dir, curTurn, pieceTaken);
-                    moves.add(move);
+            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+
+            //checks next row and column in directions of piece for an opponent piece
+            if(row != null && row.isPieceAt(col, getOpponent())) {
+                int rowNum2 = rowNum + dir.getRow();
+                int col2 = col + dir.getCol();
+                Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
+                Piece pieceTaken =  row.getPieceAt(col);
+
+
+                if(nextRow != null && !nextRow.isPieceAt(col2)) {
+                    Move jump = new Jump(piece, dir, curTurn, pieceTaken);
+                    moves.add(jump);
                 }
             }
         }
     }
 
-    public void addMoves(Piece piece) {
+    /**
+     * Finds and adds possible steps of a piece to set
+     * @param piece piece to check available steps
+     */
+    public void addSteps(Piece piece) {
+        Position pos = piece.getPosition();
+        Direction[] directions = piece.getDirections();
+        for(Direction dir : directions) {
+            int rowNum = pos.getRow() + dir.getRow();
+            int col = pos.getCell() + dir.getCol();
+            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
 
+            if (row != null && !row.isPieceAt(col)) {
+                Move step = new Step(piece, dir, curTurn);
+                moves.add(step);
+            }
+        }
     }
 
-    public void addAllMoves() {
+    /**
+     * Adds all valid moves of all pieces to set
+     */
+    public void addMoves() {
         Iterator iter = curTurn == Color.RED ? whitePieces.iterator() : redPieces.iterator();
         while(iter.hasNext()) {
             this.addJumps((Piece) iter.next());
         }
 
+        //only add steps if no jumps are possible
+        if(moves.isEmpty()) {
+            Iterator iter2 = curTurn == Color.RED ? whitePieces.iterator() : redPieces.iterator();
+            while(iter2.hasNext()) {
+                this.addSteps((Piece) iter.next());
+            }
+        }
+
     }
 
-    public boolean canJump(int row, int col) {
+    /**
+     * Helper method to check if dimension of space is in bounds of board
+     * @param row row to check
+     * @param col column to check
+     * @return true if row and column are within board's dimensions, false otherwise
+     */
+    public boolean inBounds(int row, int col) {
         return row > 0 && row < NUM_ROWS && col > 0 && col < NUM_ROWS;
     }
 
