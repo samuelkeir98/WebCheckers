@@ -32,9 +32,9 @@ public class PostValidateMoveRoute implements Route {
 		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
 		Game game = gameLobby.getGame(player);
 		game.generateMoves();
-		/**if(!game.isValidMove(move)){
+		if(!game.isValidMove(move)){
 			return gson.toJson(new Message("Invalid Move", Message.Type.error));
-		}*/
+		}
 		game.storeMove(move);
 		return gson.toJson(new Message("Move made", Message.Type.info));
 	}
