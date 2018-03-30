@@ -10,31 +10,22 @@ import java.util.*;
  */
 public class Board implements Iterable<Row> {
 
-    /**
-     * Amount of rows in a board
-     */
+    /** Amount of rows in a board */
     public static final int NUM_ROWS = 8;
 
-    /**
-     * The color of the player whose turn it is
-     */
+    /** The color of the player whose turn it is */
     private Color curTurn;
-    /**
-     * All of the red player's pieces
-     */
+
+    /** All of the red player's pieces */
     private Set<Piece> redPieces;
-    /**
-     * All of whitey's pieces
-     */
+
+    /** All of whitey's pieces */
     private Set<Piece> whitePieces;
-    /**
-     * The collection of Rows
-     */
+
+    /** The collection of Rows */
     private List<Row> rows;
 
-    /**
-     * Set of available moves
-     */
+    /** Set of available moves */
     private Map<Move, Move> moves;
 
     /**
@@ -72,12 +63,13 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * @return The iterator containing Rows
+     * Reverts a move
+     * Expects that the move is the last one made
+     * Will deny impossible moves
+     * @param move move to undo
      */
-    @Override
-    public Iterator<Row> iterator() {
-        return rows.iterator();
-    }
+    //TODO
+    void undo(Move move){}
 
     /**
      * Tells whether or not the game is over
@@ -199,6 +191,15 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Checks if a move is legal to make in the current state of the board
+     * @param move the move being tested
+     * @return whether it can be made
+     */
+    boolean isValidMove(Move move){
+        return moves.containsKey(move);
+    }
+
+    /**
      * Tells whether or not the specified position is a valid place for a piece to move
      * @param position position to check
      * @return whether or not a piece can move there
@@ -208,47 +209,13 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Checks if a move is legal to make in the current state of the board
-     * @param move the move being tested
-     * @return whether it can be made
-     */
-    boolean isValidMove(Move move){
-        return moves.containsKey(move);
-    }
-    /**
-     * Reverts a move
-     * Expects that the move is the last one made
-     * Will deny impossible moves
-     * @param move move to undo
-     */
-    //TODO
-    void undo(Move move){}
-
-    /**
-     * Represents the board in an easy to read format
-     * @return formatted board string
-     */
-    @Override
-    public String toString() {
-        String out = " ";
-        for(int i = 0;i<Row.ROW_SIZE;i++){
-            out+=i;
-        }
-        out+="\n";
-        for(int i = 0; i<NUM_ROWS;i++) {
-            out+=rows.get(i).toString() + "\n";
-        }
-        return out;
-    }
-
-    /**
      * Handles a step or jump move on board
      * @param move move to be made
      */
     public void makeMove(Move move){
 
         if(isValidMove(move)){
-			Position startPos = move.getStart();
+            Position startPos = move.getStart();
             Position endPos = move.getEnd();
 
             Piece myPiece = getPiece(startPos);
@@ -266,7 +233,6 @@ public class Board implements Iterable<Row> {
             }
 
         }
-
     }
 
     /**
@@ -275,5 +241,30 @@ public class Board implements Iterable<Row> {
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
         this.moves.clear();
+    }
+
+    /**
+     * @return The iterator containing Rows
+     */
+    @Override
+    public Iterator<Row> iterator() {
+        return rows.iterator();
+    }
+
+    /**
+     * Represents the board in an easy to read format
+     * @return formatted board string
+     */
+    @Override
+    public String toString() {
+        String out = " ";
+        for(int i = 0;i<Row.ROW_SIZE;i++){
+            out+=i;
+        }
+        out+="\n";
+        for(int i = 0; i<NUM_ROWS;i++) {
+            out+=rows.get(i).toString() + "\n";
+        }
+        return out;
     }
 }

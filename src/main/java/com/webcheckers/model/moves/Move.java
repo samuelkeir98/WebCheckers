@@ -12,8 +12,45 @@ import java.util.Objects;
  */
 public class Move implements Serializable{
 
+    /**
+     * Start and end position of a move
+     */
     Position start, end;
+
+    /**
+     * Type of move
+     */
     Type type;
+
+    /**
+     * Represent whether a move is a one-tile step or two-tile jump.
+     * Includes those values to keep the actual code generic.
+     */
+    public enum Type{
+        STEP(1), //Regular, one-tile movement
+        JUMP(2), //Attacking, two-tile movement
+        OTHER(0); //Used for player-input moves that may or may not be valid
+        /**
+         * How many spaces this type of move will take.
+         */
+        private int spaces;
+
+        /**
+         * Sets how many spaces a move will take.
+         * @param spaces the amount of spaces a move will take
+         */
+        Type(int spaces){
+            this.spaces=spaces;
+        }
+
+        /**
+         * gets the number of spaces.
+         * @return the number of spaces.
+         */
+        public int getSpaces() {
+            return spaces;
+        }
+    }
 
     /**
      * Represents a piece moving.
@@ -51,15 +88,6 @@ public class Move implements Serializable{
     }
 
     /**
-     * Hashes based on the start and end position.
-     * @return the hash code
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(start.hashCode(), end.hashCode());
-    }
-
-    /**
      * Returns the type of the piece.
      * @return the type of the piece.
      */
@@ -84,33 +112,12 @@ public class Move implements Serializable{
     }
 
     /**
-     * Represent whether a move is a one-tile step or two-tile jump.
-     * Includes those values to keep the actual code generic.
+     * Hashes based on the start and end position.
+     * @return the hash code
      */
-    public enum Type{
-        STEP(1), //Regular, one-tile movement
-        JUMP(2), //Attacking, two-tile movement
-        OTHER(0); //Used for player-input moves that may or may not be valid
-        /**
-         * How many spaces this type of move will take.
-         */
-        private int spaces;
-
-        /**
-         * Sets how many spaces a move will take.
-         * @param spaces the amount of spaces a move will take
-         */
-        Type(int spaces){
-            this.spaces=spaces;
-        }
-
-        /**
-         * gets the number of spaces.
-         * @return the number of spaces.
-         */
-        public int getSpaces() {
-            return spaces;
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(start.hashCode(), end.hashCode());
     }
 
     /**

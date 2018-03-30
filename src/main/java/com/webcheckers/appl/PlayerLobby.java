@@ -10,6 +10,8 @@ import java.util.*;
  * Tested by Samuel Keir
  */
 public class PlayerLobby {
+
+    /** Map of all players in lobby */
     private Map<String, Player> players = new HashMap<>();
 
     /**
@@ -28,6 +30,10 @@ public class PlayerLobby {
         return newPlayer;
     }
 
+    /**
+     * Signs player out of application
+     * @param player player to signout
+     */
     public synchronized void signout(Player player) {
         players.remove(player.getName());
     }
