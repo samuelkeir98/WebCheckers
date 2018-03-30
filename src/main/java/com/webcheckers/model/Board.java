@@ -203,10 +203,15 @@ public class Board implements Iterable<Row> {
         }
 
     }
+
+    public void submitTurn(){
+        this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
+    }
+
     public void submitTurn(List<Move> moves){
         for(Move move: moves){
             makeMove(move);
         }
-        this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
+        submitTurn();
     }
 }

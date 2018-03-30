@@ -20,6 +20,7 @@ public class Game {
     public Game(Player redPlayer,Player whitePlayer){
         this.redPlayer = redPlayer;
         this.whitePlayer = whitePlayer;
+        gameOver = false;
         board = new Board();
         turnBoard =new Board();
         gameOver = false;
@@ -33,12 +34,13 @@ public class Game {
     public void makeMove(Move move){
         if(turnBoard.isValidMove(move)){
             turnBoard.makeMove(move);
-            movesMade.add(move);//add to undo stack
+            movesMade.add(move);
+            //add to undo stack
         }
     }
 
     public boolean isGameOver(){
-        return board.isGameOver();
+        return gameOver || board.isGameOver();
     }
 
     public Board getBoard(Player player){
@@ -52,6 +54,8 @@ public class Game {
     public void submitTurn(){
         lastPlayed.clear();
         board.submitTurn(movesMade);
+        turnBoard.submitTurn();
+        movesMade.clear();
     }
 
     public Player getWinner(){

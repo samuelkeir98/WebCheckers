@@ -67,7 +67,7 @@ public class PostGameRouteTest {
         //friendlies
         player = new Player(PLAYER_NAME);
         opponent = new Player(OPPONENT);
-        board = new Board(player, opponent);
+        board = new Board();
 
         //return certain params when functions called
         when(request.session()).thenReturn(session);
@@ -75,7 +75,7 @@ public class PostGameRouteTest {
         when(request.queryParams("name")).thenReturn(OPPONENT);
 
         //setup test
-        CuT = new PostGameRoute(engine, gameLobby);
+        //CuT = new PostGameRoute(engine, gameLobby);
     }
 
     /**
@@ -85,9 +85,9 @@ public class PostGameRouteTest {
     public void game_entered() {
         //test scenario: opponent not in other game
         when(gameLobby.inGame(eq(opponent))).thenReturn(false);
-        when(gameLobby.getGames()).thenReturn(games);
+        //when(gameLobby.getGames()).thenReturn(games);
         when(games.get(any(Player.class))).thenReturn(game);
-        when(game.getBoard()).thenReturn(board);
+        //when(game.getBoard()).thenReturn(board);
 
         //mock render for analysis
         final TemplateEngineTester testHelper = new TemplateEngineTester();
