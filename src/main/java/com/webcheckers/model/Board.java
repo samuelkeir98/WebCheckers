@@ -65,6 +65,23 @@ public class Board implements Iterable<Row> {
         }
     }
 
+    public Board(Board old){
+        this.redPieces = new HashSet<>(old.redPieces);
+        this.whitePieces = new HashSet<>(old.whitePieces);
+        rows = new ArrayList<>();
+        for(int i = 0;i<NUM_ROWS;i++){
+            rows.add(new Row(i));
+        }
+        for(Piece piece: redPieces){
+            Position position = piece.getPosition();
+            rows.get(position.getRow()).placePiece(piece,position.getCell());
+        }
+        for(Piece piece: whitePieces){
+            Position position = piece.getPosition();
+            rows.get(position.getRow()).placePiece(piece,position.getCell());
+        }
+    }
+
     /**
      * @return The iterator containing Rows
      */
@@ -185,7 +202,10 @@ public class Board implements Iterable<Row> {
         }
 
     }
-    public void submitTurn(){
+    public void submitTurn(List<Move> moves){
+        for(Move move: moves){
+            makeMove(move);
+        }
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
     }
 }
