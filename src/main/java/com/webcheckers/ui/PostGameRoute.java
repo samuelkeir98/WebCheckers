@@ -70,7 +70,7 @@ public class PostGameRoute implements Route {
             vm.put(RED_PLAYER_ATTR, player1);
             vm.put(WHITE_PLAYER_ATTR, player2);
             vm.put(ACTIVE_COLOR_ATTR, game.getCurPlayer() == player1 ? Color.RED : Color.WHITE);
-            vm.put(BOARD_ATTR, gameLobby.getGame(player2).getBoard());
+            vm.put(BOARD_ATTR, new BoardView(gameLobby.getGame(player2).getBoard(player1),Color.RED));
             return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
         }
 

@@ -68,6 +68,7 @@ public class Board implements Iterable<Row> {
     public Board(Board old){
         this.redPieces = new HashSet<>(old.redPieces);
         this.whitePieces = new HashSet<>(old.whitePieces);
+        this.curTurn = old.curTurn;
         rows = new ArrayList<>();
         for(int i = 0;i<NUM_ROWS;i++){
             rows.add(new Row(i));
