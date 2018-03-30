@@ -10,7 +10,7 @@ import java.util.*;
  * Tested by Samuel Keir
  */
 public class PlayerLobby {
-    private Set<Player> players = new HashSet<>();
+    private Map<String, Player> players = new HashMap<>();
 
     /**
      * Signs a player into the web checkers app
@@ -21,23 +21,24 @@ public class PlayerLobby {
     public synchronized Player signin(String playerName) {
         Player newPlayer = new Player(playerName);
 
-        if (players.contains(newPlayer))
+        if(players.containsKey(newPlayer))
             return null;
 
-        players.add(newPlayer);
+        players.put(playerName, newPlayer);
         return newPlayer;
     }
 
     public synchronized void signout(Player player) {
-        players.remove(player);
+        players.remove(player.getName());
     }
 
     /**
      * Returns a list of all currently signed in players
      * @return list of player names
      */
-    public Set<Player> getPlayers() {
-        return Collections.unmodifiableSet(players);
+    public Collection<Player> getPlayers() {
+        return players.values();
+        //return Collections.unmodifiableSet(players);
     }
 
     /**
@@ -54,14 +55,7 @@ public class PlayerLobby {
      * @return player that was being searched
      */
     public Player getPlayer(String name) {
-        Iterator<Player> iterator = players.iterator();
-        while(iterator.hasNext()) {
-            Player player = iterator.next();
-            if(player.getName().equals(name)) {
-                return player;
-            }
-        }
-        return null;
+        return players.get(name);
     }
 
 }

@@ -35,7 +35,7 @@ public class Board implements Iterable<Row> {
     /**
      * Set of available moves
      */
-    private Set<Move> moves;
+    private Map<Move, Move> moves;
 
     /**
      * Builds a board in the starting configuration for Checkers
@@ -45,7 +45,7 @@ public class Board implements Iterable<Row> {
         this.whitePieces = new HashSet<>();
         this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
-        this.moves = new HashSet<>();
+        this.moves = new HashMap<>();
         for(int i = 0;i<NUM_ROWS;i++){
             rows.add(new Row(i));
         }
@@ -116,7 +116,7 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Finds and adds possible jump moves of a piece to set
+     * Finds and adds possible jump moves of a piece to map
      * @param piece piece to find jump moves for
      */
     public void addJumps(Piece piece) {
@@ -136,14 +136,14 @@ public class Board implements Iterable<Row> {
 
                 if(nextRow != null && !nextRow.isPieceAt(col2)) {
                     Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
-                    moves.add(jump);
+                    moves.put(jump, jump);
                 }
             }
         }
     }
 
     /**
-     * Finds and adds possible steps of a piece to set
+     * Finds and adds possible steps of a piece to map
      * @param piece piece to check available steps
      */
     public void addSteps(Piece piece) {
@@ -156,13 +156,13 @@ public class Board implements Iterable<Row> {
 
             if (row != null && !row.isPieceAt(col)) {
                 Move step = new Step(piece, dir, curTurn);
-                moves.add(step);
+                moves.put(step, step);
             }
         }
     }
 
     /**
-     * Adds all valid moves of all pieces to set
+     * Adds all valid moves of all pieces to map
      */
     public void addMoves() {
         Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
@@ -183,16 +183,10 @@ public class Board implements Iterable<Row> {
     /**
      * Gets move with information using move from JSON
      * @param move move with only start and end from JSON
-     * @return move generated with information
+     * @return move with information
      */
     public Move getMove(Move move) {
-        Iterator iter = moves.iterator();
-        while(iter.hasNext()) {
-            Move infoMove = (Move) iter.next();
-            if(move.equals(infoMove))
-                return infoMove;
-        }
-        return null;
+        return moves.get(move);
     }
 
     /**
@@ -219,7 +213,7 @@ public class Board implements Iterable<Row> {
      * @return whether it can be made
      */
     boolean isValidMove(Move move){
-        return moves.contains(move);
+        return moves.containsKey(move);
     }
     /**
      * Reverts a move
@@ -247,6 +241,10 @@ public class Board implements Iterable<Row> {
         return out;
     }
 
+    /**
+     * Handles a step or jump move on board
+     * @param move move to be made
+     */
     public void makeMove(Move move){
 
         if(isValidMove(move)){
@@ -270,8 +268,12 @@ public class Board implements Iterable<Row> {
         }
 
     }
+
+    /**
+     * Switches turns and clears moves
+     */
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
-        this.moves.removeAll(moves);
+        this.moves.clear();
     }
 }
