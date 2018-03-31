@@ -10,27 +10,23 @@ import java.util.*;
  */
 public class Board implements Iterable<Row> {
 
-    /**
-     * Amount of rows in a board
-     */
+    /** Amount of rows in a board */
     public static final int NUM_ROWS = 8;
 
-    /**
-     * The color of the player whose turn it is
-     */
+    /** The color of the player whose turn it is */
     private Color curTurn;
-    /**
-     * All of the red player's pieces
-     */
+
+    /** All of the red player's pieces */
     private Set<Piece> redPieces;
-    /**
-     * All of whitey's pieces
-     */
+
+    /** All of whitey's pieces */
     private Set<Piece> whitePieces;
-    /**
-     * The collection of Rows
-     */
+
+    /** The collection of Rows */
     private List<Row> rows;
+
+    /** Set of available moves */
+    private Map<Move, Move> moves;
 
     /**
      * Builds a board in the starting configuration for Checkers
@@ -40,6 +36,7 @@ public class Board implements Iterable<Row> {
         this.whitePieces = new HashSet<>();
         this.curTurn = Color.RED;
         this.rows = new ArrayList<>(NUM_ROWS);
+        this.moves = new HashMap<>();
         for(int i = 0;i<NUM_ROWS;i++){
             rows.add(new Row(i));
         }
@@ -65,31 +62,14 @@ public class Board implements Iterable<Row> {
         }
     }
 
-    public Board(Board old){
-        this.redPieces = new HashSet<>(old.redPieces);
-        this.whitePieces = new HashSet<>(old.whitePieces);
-        this.curTurn = old.curTurn;
-        rows = new ArrayList<>();
-        for(int i = 0;i<NUM_ROWS;i++){
-            rows.add(new Row(i));
-        }
-        for(Piece piece: redPieces){
-            Position position = piece.getPosition();
-            rows.get(position.getRow()).placePiece(piece,position.getCell());
-        }
-        for(Piece piece: whitePieces){
-            Position position = piece.getPosition();
-            rows.get(position.getRow()).placePiece(piece,position.getCell());
-        }
-    }
-
     /**
-     * @return The iterator containing Rows
+     * Reverts a move
+     * Expects that the move is the last one made
+     * Will deny impossible moves
+     * @param move move to undo
      */
-    @Override
-    public Iterator<Row> iterator() {
-        return rows.iterator();
-    }
+    //TODO
+    void undo(Move move){}
 
     /**
      * Tells whether or not the game is over
@@ -110,25 +90,95 @@ public class Board implements Iterable<Row> {
      */
     public Color whoseTurn(){return curTurn;}
 
+    /**
+     * @return color of opponent
+     */
+    public Color getOpponent() {
+        return curTurn == Color.RED ? Color.WHITE : Color.RED;
+    }
 
     /**
-     * Can this piece make any jump moves
-     * @param piece The piece to check
-     * @return whether it can jump or not
+     * Helper method to check if dimension of space is in bounds of board
+     * @param row row to check
+     * @param col column to check
+     * @return true if row and column are within board's dimensions, false otherwise
      */
-    boolean canJump(Piece piece) {
+    public boolean inBounds(int row, int col) {
+        return row > 0 && row < NUM_ROWS && col > 0 && col < NUM_ROWS;
+    }
+
+    /**
+     * Finds and adds possible jump moves of a piece to map
+     * @param piece piece to find jump moves for
+     */
+    public void addJumps(Piece piece) {
         Position pos = piece.getPosition();
         Direction[] directions = piece.getDirections();
         for(Direction dir : directions) {
-            Row row = rows.get(pos.getRow() + dir.getRow());
-            if(row != null && row.isPieceAt(pos.getCell() + dir.getCol())) {
-                Row nextRow = rows.get(row.getIndex() + dir.getRow());
-                if(nextRow != null && !nextRow.isPieceAt(pos.getCell() + 2 * dir.getCol())) {
-                    return true;
+            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
+            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+
+            //checks next row and column in directions of piece for an opponent piece
+            if(row != null && row.isPieceAt(col, getOpponent())) {
+                int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
+                int col2 = col + dir.getCol() * curTurn.getMovementFactor();
+                Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
+                Piece pieceTaken =  row.getPieceAt(col);
+
+                if(nextRow != null && !nextRow.isPieceAt(col2)) {
+                    Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
+                    moves.put(jump, jump);
                 }
             }
         }
-        return false;
+    }
+
+    /**
+     * Finds and adds possible steps of a piece to map
+     * @param piece piece to check available steps
+     */
+    public void addSteps(Piece piece) {
+        Position pos = piece.getPosition();
+        Direction[] directions = piece.getDirections();
+        for(Direction dir : directions) {
+            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
+            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+
+            if (row != null && !row.isPieceAt(col)) {
+                Move step = new Step(piece, dir, curTurn);
+                moves.put(step, step);
+            }
+        }
+    }
+
+    /**
+     * Adds all valid moves of all pieces to map
+     */
+    public void addMoves() {
+        Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
+        while(iter.hasNext()) {
+            this.addJumps((Piece) iter.next());
+        }
+
+        //only add steps if no jumps are possible
+        if(moves.isEmpty()) {
+            Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
+            while(iter2.hasNext()) {
+                this.addSteps((Piece) iter2.next());
+            }
+        }
+
+    }
+
+    /**
+     * Gets move with information using move from JSON
+     * @param move move with only start and end from JSON
+     * @return move with information
+     */
+    public Move getMove(Move move) {
+        return moves.get(move);
     }
 
     /**
@@ -141,6 +191,15 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Checks if a move is legal to make in the current state of the board
+     * @param move the move being tested
+     * @return whether it can be made
+     */
+    boolean isValidMove(Move move){
+        return moves.containsKey(move);
+    }
+
+    /**
      * Tells whether or not the specified position is a valid place for a piece to move
      * @param position position to check
      * @return whether or not a piece can move there
@@ -150,26 +209,47 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Checks if a move is legal to make in the current state of the board
-     * @param move the move being tested
-     * @return whether it can be made
+     * Handles a step or jump move on board
+     * @param move move to be made
      */
-    boolean isValidMove(Move move){
-        Position startPos = move.getStart();
-        Position endPos = move.getEnd();
-        if(getPiece(startPos)==null || getPiece(startPos).getColor()!=curTurn || !isValid(endPos)){
-            return false;
+    public void makeMove(Move move){
+
+        if(isValidMove(move)){
+            Position startPos = move.getStart();
+            Position endPos = move.getEnd();
+
+            Piece myPiece = getPiece(startPos);
+            Row row = rows.get(startPos.getRow());
+            row.removePiece(startPos.getCell());
+            row = rows.get(endPos.getRow());
+
+            myPiece.setPosition(endPos);
+            row.placePiece(myPiece,endPos.getCell());
+
+            if(move.getType() == Move.Type.JUMP) {
+                Piece pieceTaken = ((Jump) move).getJumped();
+                Row takenRow = rows.get(pieceTaken.getPosition().getRow());
+                takenRow.removePiece(pieceTaken.getPosition().getCell());
+            }
+
         }
-        return true;
     }
+
     /**
-     * Reverts a move
-     * Expects that the move is the last one made
-     * Will deny impossible moves
-     * @param move move to undo
+     * Switches turns and clears moves
      */
-    //TODO
-    void undo(Move move){}
+    public void submitTurn(){
+        this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
+        this.moves.clear();
+    }
+
+    /**
+     * @return The iterator containing Rows
+     */
+    @Override
+    public Iterator<Row> iterator() {
+        return rows.iterator();
+    }
 
     /**
      * Represents the board in an easy to read format
@@ -186,32 +266,5 @@ public class Board implements Iterable<Row> {
             out+=rows.get(i).toString() + "\n";
         }
         return out;
-    }
-
-    public void makeMove(Move move){
-
-        if(isValidMove(move)){
-			Position startPos = move.getStart();
-            Position endPos = move.getEnd();
-
-            Piece myPiece = getPiece(startPos);
-            Row row = rows.get(startPos.getRow());
-            row.removePiece(startPos.getCell());
-            row = rows.get(endPos.getRow());
-            row.placePiece(myPiece,endPos.getCell());
-
-        }
-
-    }
-
-    public void submitTurn(){
-        this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
-    }
-
-    public void submitTurn(List<Move> moves){
-        for(Move move: moves){
-            makeMove(move);
-        }
-        submitTurn();
     }
 }

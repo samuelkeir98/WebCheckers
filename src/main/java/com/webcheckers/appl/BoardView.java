@@ -10,13 +10,21 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * BoardView class
+ * BoardView class that renders how board is viewed
  */
 public class BoardView implements Iterable<RowView> {
 
+	/** list of rowViews to display */
 	private List<RowView> rowViews;
+
+	/** checkers game board */
 	private Board board;
 
+	/**
+	 * Determines view of the board respective to player color
+	 * @param board board to view
+	 * @param player player to view board as
+	 */
 	public BoardView(Board board, Color player){
 		rowViews = new ArrayList<>();
 		this.board = board;
@@ -29,14 +37,20 @@ public class BoardView implements Iterable<RowView> {
 		}
 	}
 
-	@Override
-	public Iterator<RowView> iterator() {
-		return rowViews.iterator();
-	}
-
+	/**
+	 * checks whose turn it is
+	 * @return the color of the current player's turn
+	 */
 	public Color whoseTurn(){
 		return board.whoseTurn();
 	}
 
+	/**
+	 * @return iterator of rowViews List
+	 */
+	@Override
+	public Iterator<RowView> iterator() {
+		return rowViews.iterator();
+	}
 
 }

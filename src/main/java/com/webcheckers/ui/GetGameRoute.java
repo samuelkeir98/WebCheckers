@@ -21,7 +21,6 @@ import java.util.logging.Logger;
  */
 public class GetGameRoute implements Route {
 
-    static final String BOARD_ATTRIBUTE_KEY = "BOARD";
     static final String TITLE_ATTR = "title";
     static final String TITLE = "Game";
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
