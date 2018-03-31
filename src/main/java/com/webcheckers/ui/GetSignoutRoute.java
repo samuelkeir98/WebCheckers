@@ -9,18 +9,31 @@ import spark.TemplateEngine;
 
 import java.util.Objects;
 
+/**
+ * UI Controller for GET /signout route
+ *
+ * @author Andy Gin
+ */
 public class GetSignoutRoute implements Route {
-    private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
 
-    public GetSignoutRoute(TemplateEngine templateEngine, PlayerLobby playerLobby) {
-        Objects.requireNonNull(templateEngine, "templateEngine must not be null");
+    /**
+     * Create the spark component for the
+     * {@code GET /signout} HTTP request.
+     * @param playerLobby tracks all signed in players
+     */
+    public GetSignoutRoute(PlayerLobby playerLobby) {
         Objects.requireNonNull(playerLobby, "playerLobby must not be null");
 
-        this.templateEngine = templateEngine;
         this.playerLobby = playerLobby;
     }
 
+    /**
+     * Redirect to home after signing out
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return null
+     */
     @Override
     public Object handle(Request request, Response response) {
         Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
