@@ -9,6 +9,7 @@ import java.util.Objects;
 /**
  * Value object representing one move
  * @author Adrian Postolache
+ * Tested by Sam Keir
  */
 public class Move implements Serializable{
 
@@ -52,7 +53,7 @@ public class Move implements Serializable{
 
     /**
      * Hashes based on the start and end position.
-     * @return the hash code
+     * @return The hash code
      */
     @Override
     public int hashCode() {
@@ -61,7 +62,7 @@ public class Move implements Serializable{
 
     /**
      * Returns the type of the piece.
-     * @return the type of the piece.
+     * @return The type of the piece.
      */
     public Type getType() {
         return type;
@@ -69,7 +70,7 @@ public class Move implements Serializable{
 
     /**
      * Returns the starting position.
-     * @return the starting position.
+     * @return The starting position.
      */
     public Position getStart() {
         return start;
@@ -77,7 +78,7 @@ public class Move implements Serializable{
 
     /**
      * Returns the ending position.
-     * @return the ending position.
+     * @return The ending position.
      */
     public Position getEnd() {
         return end;
@@ -98,15 +99,15 @@ public class Move implements Serializable{
 
         /**
          * Sets how many spaces a move will take.
-         * @param spaces the amount of spaces a move will take
+         * @param spaces The amount of spaces a move will take
          */
         Type(int spaces){
             this.spaces=spaces;
         }
 
         /**
-         * gets the number of spaces.
-         * @return the number of spaces.
+         * Gets the number of spaces.
+         * @return The number of spaces.
          */
         public int getSpaces() {
             return spaces;
@@ -115,7 +116,7 @@ public class Move implements Serializable{
 
     /**
      * Sees if two moves are the same
-     * @param obj the object we are comparing to
+     * @param obj The object we are comparing to
      * @return True if equal false if not equal.
      */
     @Override
@@ -129,7 +130,7 @@ public class Move implements Serializable{
 
     /**
      * Converts a move to string form
-     * @return the string representation of a move
+     * @return The string representation of a move
      */
     @Override
     public String toString() {

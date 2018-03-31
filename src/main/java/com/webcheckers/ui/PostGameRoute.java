@@ -30,6 +30,7 @@ public class PostGameRoute implements Route {
 
     private final TemplateEngine templateEngine;
     private final GameLobby gameLobby;
+    private final PlayerLobby playerLobby;
 
     /**
      * Create the spark component for the
@@ -37,8 +38,9 @@ public class PostGameRoute implements Route {
      * @param templateEngine ftl engine
      * @param gameLobby keeps track of games
      */
-    public PostGameRoute(TemplateEngine templateEngine, GameLobby gameLobby) {
+    public PostGameRoute(TemplateEngine templateEngine, GameLobby gameLobby, PlayerLobby playerLobby) {
         this.gameLobby = gameLobby;
+        this.playerLobby = playerLobby;
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;
     }
@@ -55,20 +57,20 @@ public class PostGameRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
         Player player1 = request.session().attribute(PostSigninRoute.PLAYER_KEY);
-        Player player2 = new Player(opponent);
+        Player player2 = playerLobby.getPlayer(opponent);
 
         if(!gameLobby.inGame(player2)) {
             Game game = new Game(player1, player2);
-            gameLobby.getGames().put(player2, game);
-            gameLobby.getGames().put(player1, game);
+            gameLobby.enterGame(player2, game);
+            gameLobby.enterGame(player1, game);
 
             ViewMode view = ViewMode.PLAY;
             vm.put(CURRENT_PLAYER_ATTR, player1);
             vm.put(VIEW_MODE_ATTR, view);
             vm.put(RED_PLAYER_ATTR, player1);
             vm.put(WHITE_PLAYER_ATTR, player2);
-            vm.put(ACTIVE_COLOR_ATTR, Color.RED);
-            vm.put(BOARD_ATTR, gameLobby.getGames().get(player2).getBoard());
+            vm.put(ACTIVE_COLOR_ATTR, game.getCurPlayer() == player1 ? Color.RED : Color.WHITE);
+            vm.put(BOARD_ATTR, new BoardView(gameLobby.getGame(player2).getBoard(player1),Color.RED));
             return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
         }
 

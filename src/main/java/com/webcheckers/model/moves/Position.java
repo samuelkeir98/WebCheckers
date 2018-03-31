@@ -5,6 +5,8 @@ import java.util.Objects;
 
 /**
  * An easy value object method to pass positions around without needing too many parameters
+ * @author: Adrian Postolache
+ * Tested by Sam Keir
  */
 public class Position implements Serializable{
 
@@ -15,8 +17,8 @@ public class Position implements Serializable{
 
     /**
      * Creates the position value object
-     * @param row the row
-     * @param cell the column
+     * @param row The row
+     * @param cell The column
      */
     public Position(int row,int cell){
         this.row = row;
@@ -25,7 +27,7 @@ public class Position implements Serializable{
 
     /**
      * Gets the row
-     * @return the row
+     * @return The row
      */
     public int getRow() {
         return row;
@@ -33,7 +35,7 @@ public class Position implements Serializable{
 
     /**
      * Gets the column
-     * @return the column
+     * @return The column
      */
     public int getCell() {
         return cell;
@@ -46,7 +48,7 @@ public class Position implements Serializable{
 
     /**
      * Equals method for Position
-     * @param obj object being compared to
+     * @param obj Object being compared to
      * @return
      */
     @Override
@@ -58,6 +60,10 @@ public class Position implements Serializable{
         return false;
     }
 
+    /**
+     * Override for the toString method
+     * @return  The row and cell representing the position
+     */
     @Override
     public String toString() {
         return "Position row: "+row+" Cell: "+cell;

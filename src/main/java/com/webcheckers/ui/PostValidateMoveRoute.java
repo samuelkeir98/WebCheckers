@@ -10,22 +10,16 @@ import com.webcheckers.model.Player;
 import com.webcheckers.model.moves.Move;
 import spark.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 public class PostValidateMoveRoute implements Route {
 	private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
 
-	private final TemplateEngine templateEngine;
 	private final Gson gson;
 	private final GameLobby gameLobby;
 
-	public PostValidateMoveRoute(TemplateEngine templateEngine, Gson gson, GameLobby gameLobby) {
-		Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-		this.templateEngine = templateEngine;
+	public PostValidateMoveRoute(Gson gson, GameLobby gameLobby) {
 		this.gson = gson;
 		this.gameLobby = gameLobby;
 
@@ -34,13 +28,13 @@ public class PostValidateMoveRoute implements Route {
 
 	@Override
 	public Object handle(Request request, Response response) throws Exception {
-		Move move = gson.fromJson(request.body(),Move.class);
-		Player player = request.session().attribute("player"); //REFACTOR TO CONSTANT
-		Game game = gameLobby.getGames().get(player);
-		if(!game.isValidMove(player,move)){
+		Move move = gson.fromJson(request.body(), Move.class);
+		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
+		Game game = gameLobby.getGame(player);
+		if(!game.isValidMove(move)){
 			return gson.toJson(new Message("Invalid Move", Message.Type.error));
 		}
-		game.makeMove(player,move);
+		game.makeMove(move);
 		return gson.toJson(new Message("Move made", Message.Type.info));
 	}
 }
