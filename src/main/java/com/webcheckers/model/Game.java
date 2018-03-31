@@ -40,7 +40,7 @@ public class Game {
         this.whitePlayer = whitePlayer;
         gameOver = false;
         board = new Board();
-        turnBoard =new Board();
+        turnBoard = new Board();
         gameOver = false;
         lastPlayed = new Stack<>();
         movesMade = new ArrayList<>();
@@ -51,25 +51,16 @@ public class Game {
      */
     public Color getTurn(){return board.whoseTurn();}
 
-
-    public void makeMove(Move move){
-        if(turnBoard.isValidMove(move)){
-            turnBoard.makeMove(move);
-            movesMade.add(move);
-            //add to undo stack
-        }
-    }
-
     /**
      * Stores moves in stack and list to submit or back up moves
      * @param move
      */
-    public void storeMove(Move move) {
-        if(board.isValidMove(move)) {
-            Move actualMove = board.getMove(move);
-            lastPlayed.push(actualMove);
-            movesMade.add(actualMove);
-        }
+    public void makeMove(Move move){
+        //get move with info
+        Move actualMove = turnBoard.getMove(move);
+        lastPlayed.push(actualMove);
+        movesMade.add(actualMove);
+        turnBoard.makeMove(actualMove);
     }
 
     /**
@@ -108,17 +99,17 @@ public class Game {
      * Generates all the legal move the current player can make
      */
     public void generateMoves() {
-        board.addMoves();
+        turnBoard.addMoves();
     }
 
     /**
      * Makes all moves stored in list and switches turn
      */
     public void submitTurn(){
-        lastPlayed.clear();
         board.submitTurn(movesMade);
         turnBoard.submitTurn();
         movesMade.clear();
+        lastPlayed.clear();
     }
 
     /**
