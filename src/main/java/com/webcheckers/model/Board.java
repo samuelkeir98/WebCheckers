@@ -1,5 +1,6 @@
 package com.webcheckers.model;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.webcheckers.model.moves.*;
 
 import java.util.*;
@@ -104,7 +105,7 @@ public class Board implements Iterable<Row> {
      * @return true if row and column are within board's dimensions, false otherwise
      */
     public boolean inBounds(int row, int col) {
-        return row > 0 && row < NUM_ROWS && col > 0 && col < NUM_ROWS;
+        return row >= 0 && row < NUM_ROWS && col >= 0 && col < NUM_ROWS;
     }
 
     /**
@@ -166,7 +167,8 @@ public class Board implements Iterable<Row> {
         if(moves.isEmpty()) {
             Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
             while(iter2.hasNext()) {
-                this.addSteps((Piece) iter2.next());
+                Piece t = (Piece) iter2.next();
+                this.addSteps(t);
             }
         }
 
@@ -213,25 +215,21 @@ public class Board implements Iterable<Row> {
      * @param move move to be made
      */
     public void makeMove(Move move){
+        Position startPos = move.getStart();
+        Position endPos = move.getEnd();
 
-        if(isValidMove(move)){
-            Position startPos = move.getStart();
-            Position endPos = move.getEnd();
+        Piece myPiece = getPiece(startPos);
+        Row row = rows.get(startPos.getRow());
+        row.removePiece(startPos.getCell());
+        row = rows.get(endPos.getRow());
 
-            Piece myPiece = getPiece(startPos);
-            Row row = rows.get(startPos.getRow());
-            row.removePiece(startPos.getCell());
-            row = rows.get(endPos.getRow());
+        myPiece.setPosition(endPos);
+        row.placePiece(myPiece,endPos.getCell());
 
-            myPiece.setPosition(endPos);
-            row.placePiece(myPiece,endPos.getCell());
-
-            if(move.getType() == Move.Type.JUMP) {
-                Piece pieceTaken = ((Jump) move).getJumped();
-                Row takenRow = rows.get(pieceTaken.getPosition().getRow());
-                takenRow.removePiece(pieceTaken.getPosition().getCell());
-            }
-
+        if(move.getType() == Move.Type.JUMP) {
+            Piece pieceTaken = ((Jump) move).getJumped();
+            Row takenRow = rows.get(pieceTaken.getPosition().getRow());
+            takenRow.removePiece(pieceTaken.getPosition().getCell());
         }
     }
 
@@ -243,6 +241,10 @@ public class Board implements Iterable<Row> {
         this.moves.clear();
     }
 
+    /**
+     * Makes moves to board and submits turn
+     * @param moves moves to make to board
+     */
     public void submitTurn(List<Move> moves){
         for(Move move: moves){
             makeMove(move);
