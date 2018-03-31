@@ -8,7 +8,7 @@ import java.util.HashSet;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * unit test for player lobby component
@@ -49,7 +49,7 @@ public class PlayerLobbyTest {
      */
     public void getPlayersCollection() {
         // perform action
-        Set<Player> players = CuT.getPlayers();
+        Collection<Player> players = CuT.getPlayers();
         // analyze results
         assertTrue(players.size() == 0);
     }
