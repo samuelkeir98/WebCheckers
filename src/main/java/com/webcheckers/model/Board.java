@@ -243,6 +243,13 @@ public class Board implements Iterable<Row> {
         this.moves.clear();
     }
 
+    public void submitTurn(List<Move> moves){
+        for(Move move: moves){
+            makeMove(move);
+        }
+        submitTurn();
+    }
+
     /**
      * @return The iterator containing Rows
      */

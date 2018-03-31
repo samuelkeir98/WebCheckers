@@ -14,6 +14,8 @@ public class Game {
 
     /** Board game is played on */
     private Board board;
+
+    /** Board of curent turn */
     private Board turnBoard;
 
     /** Players of the game */
@@ -80,9 +82,15 @@ public class Game {
     /**
      * @return the game board
      */
-    public Board getBoard(){
+    public Board getBoard() {
         return board;
+    }
 
+    /**
+     * Gets board of certain player
+     * @param player player to get board for
+     * @return player's board
+     */
     public Board getBoard(Player player){
         return (player.equals(getCurPlayer()) ? turnBoard : board);
     }
@@ -107,9 +115,6 @@ public class Game {
      * Makes all moves stored in list and switches turn
      */
     public void submitTurn(){
-        for(Move move : movesMade) {
-            makeMove(move);
-        }
         lastPlayed.clear();
         board.submitTurn(movesMade);
         turnBoard.submitTurn();
