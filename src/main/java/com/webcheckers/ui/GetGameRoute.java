@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 public class GetGameRoute implements Route {
 
     static final String BOARD_ATTRIBUTE_KEY = "BOARD";
+    static final String TITLE_ATTR = "title";
+    static final String TITLE = "Game";
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final GameLobby gameLobby;
@@ -52,10 +54,10 @@ public class GetGameRoute implements Route {
         Session httpSession = request.session();
         Player player = httpSession.attribute(PostSigninRoute.PLAYER_KEY);
         final Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Game");
+        vm.put(TITLE_ATTR, TITLE);
 
         if(gameLobby.inGame(player)) {
-            Game game = gameLobby.getGames().get(player);
+            Game game = gameLobby.getGame(player);
             Player player1 = game.getRedPlayer();
             Player player2 = game.getWhitePlayer();
 
@@ -64,8 +66,8 @@ public class GetGameRoute implements Route {
             vm.put(PostGameRoute.VIEW_MODE_ATTR, view);
             vm.put(PostGameRoute.RED_PLAYER_ATTR, player1);
             vm.put(PostGameRoute.WHITE_PLAYER_ATTR, player2);
-            vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, Color.RED);
-            vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
+            vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, game.getCurPlayer() == player2 ? Color.WHITE : Color.RED);
+            vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(player),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
             return templateEngine.render(new ModelAndView(vm, PostGameRoute.TEMPLATE_NAME));
         }
 

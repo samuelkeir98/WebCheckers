@@ -26,10 +26,20 @@ public class GameLobby {
     }
 
     /**
-     * Returns map of all ongoing games
-     * @return ongoing games
+     * Gets game player is in
+     * @param player player to look for in game
+     * @return game that player is in
      */
-    public Map<Player, Game> getGames() {
-        return games;
+    public Game getGame(Player player) {
+        return games.get(player);
+    }
+
+    /**
+     * Places player into game
+     * @param player player to put into game
+     * @param game game to put player in
+     */
+    public void enterGame(Player player, Game game) {
+        games.put(player, game);
     }
 }

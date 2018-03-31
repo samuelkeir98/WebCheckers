@@ -1,9 +1,7 @@
 package com.webcheckers.model;
 
-import com.webcheckers.model.moves.Jump;
-import com.webcheckers.model.moves.Move;
-import com.webcheckers.model.moves.Position;
-import com.webcheckers.model.moves.Step;
+import com.webcheckers.model.moves.*;
+
 import java.util.*;
 
 /**
@@ -67,6 +65,24 @@ public class Board implements Iterable<Row> {
         }
     }
 
+    public Board(Board old){
+        this.redPieces = new HashSet<>(old.redPieces);
+        this.whitePieces = new HashSet<>(old.whitePieces);
+        this.curTurn = old.curTurn;
+        rows = new ArrayList<>();
+        for(int i = 0;i<NUM_ROWS;i++){
+            rows.add(new Row(i));
+        }
+        for(Piece piece: redPieces){
+            Position position = piece.getPosition();
+            rows.get(position.getRow()).placePiece(piece,position.getCell());
+        }
+        for(Piece piece: whitePieces){
+            Position position = piece.getPosition();
+            rows.get(position.getRow()).placePiece(piece,position.getCell());
+        }
+    }
+
     /**
      * @return The iterator containing Rows
      */
@@ -97,11 +113,23 @@ public class Board implements Iterable<Row> {
 
     /**
      * Can this piece make any jump moves
-     * @param piece The iece to check
+     * @param piece The piece to check
      * @return whether it can jump or not
      */
-    //TODO
-    boolean canJump(Piece piece){return false;}
+    boolean canJump(Piece piece) {
+        Position pos = piece.getPosition();
+        Direction[] directions = piece.getDirections();
+        for(Direction dir : directions) {
+            Row row = rows.get(pos.getRow() + dir.getRow());
+            if(row != null && row.isPieceAt(pos.getCell() + dir.getCol())) {
+                Row nextRow = rows.get(row.getIndex() + dir.getRow());
+                if(nextRow != null && !nextRow.isPieceAt(pos.getCell() + 2 * dir.getCol())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Gets the piece in the passed position
@@ -175,7 +203,15 @@ public class Board implements Iterable<Row> {
         }
 
     }
+
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
+    }
+
+    public void submitTurn(List<Move> moves){
+        for(Move move: moves){
+            makeMove(move);
+        }
+        submitTurn();
     }
 }

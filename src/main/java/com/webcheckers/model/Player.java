@@ -6,6 +6,7 @@ package com.webcheckers.model;
  * Tested by Samuel Keir
  */
 public class Player {
+    public static final int MAX_NAME_DISPLAY_LENGTH = 15;
     private final String name;
 
     /**
@@ -20,7 +21,7 @@ public class Player {
      * Grabs name of player
      */
     public String getName() {
-        return this.name;
+        return (this.name.length()<MAX_NAME_DISPLAY_LENGTH ? this.name : this.name.substring(0,MAX_NAME_DISPLAY_LENGTH)+"...");
     }
 
     /**
