@@ -126,6 +126,21 @@ public class Game {
     public void backUpMove(){}
 
     /**
+     * @return if current turn is over
+     */
+    public boolean isTurnOver() {
+        return turnBoard.isTurnOver();
+    }
+
+    /**
+     * Tells if first move made for current player
+     * @return
+     */
+    public boolean isMoveMade() {
+        return board.isMoveMade();
+    }
+
+    /**
      * @return player whose turn it is
      */
     public Player getCurPlayer(){

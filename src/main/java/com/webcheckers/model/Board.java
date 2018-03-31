@@ -17,6 +17,12 @@ public class Board implements Iterable<Row> {
     /** The color of the player whose turn it is */
     private Color curTurn;
 
+    /** Tells if turn is over */
+    private boolean turnOver = false;
+
+    /** Stops generation of new steps */
+    private boolean moveMade = false;
+
     /** All of the red player's pieces */
     private Set<Piece> redPieces;
 
@@ -109,47 +115,54 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Finds and adds possible jump moves of a piece to map
-     * @param piece piece to find jump moves for
+     * Finds and adds possible jump moves of a pieces to map
      */
-    public void addJumps(Piece piece) {
-        Position pos = piece.getPosition();
-        Direction[] directions = piece.getDirections();
-        for(Direction dir : directions) {
-            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
-            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
-            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+    public void addJumps() {
+        Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
+        while(iter.hasNext()) {
+            Piece piece = (Piece) iter.next();
+            Position pos = piece.getPosition();
+            Direction[] directions = piece.getDirections();
+            for (Direction dir : directions) {
+                int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+                int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
+                Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
 
-            //checks next row and column in directions of piece for an opponent piece
-            if(row != null && row.isPieceAt(col, getOpponent())) {
-                int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
-                int col2 = col + dir.getCol() * curTurn.getMovementFactor();
-                Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
-                Piece pieceTaken =  row.getPieceAt(col);
+                //checks next row and column in directions of piece for an opponent piece
+                if (row != null && row.isPieceAt(col, getOpponent())) {
+                    int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
+                    int col2 = col + dir.getCol() * curTurn.getMovementFactor();
+                    Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
+                    Piece pieceTaken = row.getPieceAt(col);
 
-                if(nextRow != null && !nextRow.isPieceAt(col2)) {
-                    Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
-                    moves.put(jump, jump);
+                    if (nextRow != null && !nextRow.isPieceAt(col2)) {
+                        Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
+                        moves.put(jump, jump);
+                    }
                 }
             }
         }
     }
 
     /**
-     * Finds and adds possible steps of a piece to map
-     * @param piece piece to check available steps
+     * Finds and adds possible steps of a pieces to map
      */
-    public void addSteps(Piece piece) {
-        Position pos = piece.getPosition();
-        Direction[] directions = piece.getDirections();
-        for(Direction dir : directions) {
-            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
-            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
-            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+    public void addSteps() {
+        Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
 
-            if (row != null && !row.isPieceAt(col)) {
-                Move step = new Step(piece, dir, curTurn);
-                moves.put(step, step);
+        while(iter.hasNext()) {
+            Piece piece = (Piece) iter.next();
+            Position pos = piece.getPosition();
+            Direction[] directions = piece.getDirections();
+            for (Direction dir : directions) {
+                int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+                int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
+                Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+
+                if (row != null && !row.isPieceAt(col)) {
+                    Move step = new Step(piece, dir, curTurn);
+                    moves.put(step, step);
+                }
             }
         }
     }
@@ -158,20 +171,16 @@ public class Board implements Iterable<Row> {
      * Adds all valid moves of all pieces to map
      */
     public void addMoves() {
-        Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
-        while(iter.hasNext()) {
-            this.addJumps((Piece) iter.next());
+        moves.clear();
+        addJumps();
+
+        if(!moveMade && moves.isEmpty()) {
+            addSteps();
         }
 
-        //only add steps if no jumps are possible
         if(moves.isEmpty()) {
-            Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
-            while(iter2.hasNext()) {
-                Piece t = (Piece) iter2.next();
-                this.addSteps(t);
-            }
+            turnOver = true;
         }
-
     }
 
     /**
@@ -230,7 +239,19 @@ public class Board implements Iterable<Row> {
             Piece pieceTaken = ((Jump) move).getJumped();
             Row takenRow = rows.get(pieceTaken.getPosition().getRow());
             takenRow.removePiece(pieceTaken.getPosition().getCell());
+        } else {
+            turnOver = true;
         }
+
+        moveMade = true;
+        addMoves();
+    }
+
+    /**
+     * @return if turn is over
+     */
+    public boolean isTurnOver() {
+        return turnOver;
     }
 
     /**
@@ -239,6 +260,8 @@ public class Board implements Iterable<Row> {
     public void submitTurn(){
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
         this.moves.clear();
+        turnOver = false;
+        moveMade = false;
     }
 
     /**
@@ -250,6 +273,13 @@ public class Board implements Iterable<Row> {
             makeMove(move);
         }
         submitTurn();
+    }
+
+    /**
+     * @return if first move is made
+     */
+    public boolean isMoveMade() {
+        return moveMade;
     }
 
     /**
