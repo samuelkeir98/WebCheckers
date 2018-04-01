@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import spark.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
@@ -25,7 +24,7 @@ import static org.mockito.ArgumentMatchers.eq;
 
 
 /**
- * Unit test suite for the  component.
+ * Unit test suite for the PostGameRoute component.
  *
  * @author Andy Gin
  */
@@ -52,7 +51,6 @@ public class PostGameRouteTest {
     private Map<Player, Game> games;
     private Game game;
     private PlayerLobby playerLobby;
-    private BoardView boardView;
     private Color color;
 
     /**
@@ -68,7 +66,6 @@ public class PostGameRouteTest {
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
         playerLobby = mock(PlayerLobby.class);
-        boardView = mock(BoardView.class);
 
         //friendlies
         player = new Player(PLAYER_NAME);

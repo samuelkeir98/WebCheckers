@@ -3,8 +3,6 @@ package com.webcheckers.ui;
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.appl.Message;
-import com.webcheckers.model.Board;
-import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.moves.Move;
@@ -16,6 +14,10 @@ import java.util.logging.Logger;
  * UI controller for the POST validateMove route
  */
 public class PostValidateMoveRoute implements Route {
+
+	public static final String INVALID_MOVE = "Invalid Move";
+	public static final String VALID_MOVE = "Move made";
+
 	private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
 	private final Gson gson;
@@ -45,9 +47,9 @@ public class PostValidateMoveRoute implements Route {
 		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
 		Game game = gameLobby.getGame(player);
 		if(!game.isValidMove(move)){
-			return gson.toJson(new Message("Invalid Move", Message.Type.error));
+			return gson.toJson(new Message(INVALID_MOVE, Message.Type.error));
 		}
 		game.makeMove(move);
-		return gson.toJson(new Message("Move made", Message.Type.info));
+		return gson.toJson(new Message(VALID_MOVE, Message.Type.info));
 	}
 }
