@@ -65,6 +65,19 @@ public class Board implements Iterable<Row> {
         }
     }
 
+    public Board emptyBoard(){
+        Board board = new Board();
+        for(int i = 0; i<NUM_ROWS;i++){
+            for(int j = 0;j<Row.ROW_SIZE;j++){
+                placePiece(null,new Position(i,j));
+            }
+        }
+
+        redPieces.clear();
+        whitePieces.clear();
+        return board;
+    }
+
     /**
      * Reverts a move
      * Expects that the move is the last one made
@@ -207,6 +220,14 @@ public class Board implements Iterable<Row> {
      */
     Piece getPiece(Position position){
         return rows.get(position.getRow()).getPieceAt(position.getCell());
+    }
+
+    void placePiece(Piece piece,Position position){
+        Set<Piece> set =(piece.getColor()==Color.RED?redPieces:whitePieces);
+        if(!set.contains(piece)){
+            set.add(piece);
+        }
+        rows.get(position.getRow()).placePiece(piece,position.getCell());
     }
 
     /**
