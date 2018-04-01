@@ -23,7 +23,7 @@ public class PlayerLobby {
     public synchronized Player signin(String playerName) {
         Player newPlayer = new Player(playerName);
 
-        if(players.containsKey(newPlayer))
+        if(players.containsKey(playerName))
             return null;
 
         players.put(playerName, newPlayer);
