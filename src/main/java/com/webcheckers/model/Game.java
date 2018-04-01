@@ -3,101 +3,168 @@ package com.webcheckers.model;
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
+/**
+ * Represents a WebCheckers game
+ */
 public class Game {
-    /**
-     * Matrices used to translate relative coordinates (like those of the player who sees the board rotated 180 degrees)
-     * to actual coordinates that the board understands
-     */
-    private static final Position[][] redPlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
-    private static final Position[][] whitePlayMatrix = new Position[Board.NUM_ROWS][Row.ROW_SIZE];
-    static {
-        for (int row = 0; row < Board.NUM_ROWS; row++) {
-            for (int col = 0; col < Row.ROW_SIZE; col++) {
-                Position position = new Position(row, col);
-                redPlayMatrix[row][col] = position;
-                whitePlayMatrix[Board.NUM_ROWS - row - 1][Row.ROW_SIZE - col - 1] = position;
-            }
-        }
-    }
 
+    /** Board game is played on */
     private Board board;
+
+    /** Board of curent turn */
+    private Board turnBoard;
+
+    /** Players of the game */
     private Player whitePlayer,redPlayer;
+
+    /** Tells if game is over or not */
     private boolean gameOver;
+
+    /** Stack of moves to back up if necessary */
     private Stack<Move> lastPlayed;
 
-    //TODO
+    /** List of moves made in current turn to be submitted */
+    private List<Move> movesMade;
+
+    /**
+     * Initializes a game
+     * @param redPlayer player 1 in game
+     * @param whitePlayer player 2 in game
+     */
     public Game(Player redPlayer,Player whitePlayer){
         this.redPlayer = redPlayer;
         this.whitePlayer = whitePlayer;
-        board = new Board(redPlayer,whitePlayer);
+        gameOver = false;
+        board = new Board();
+        turnBoard = new Board();
         gameOver = false;
         lastPlayed = new Stack<>();
+        movesMade = new ArrayList<>();
+        turnBoard.addMoves();
     }
 
+    /**
+     * @return the current player's color
+     */
     public Color getTurn(){return board.whoseTurn();}
 
-    public Move translateMove(Player player, Move move){
-//        System.out.println(move);
-        Position[][] matrix;
-        if(player == redPlayer){
-            matrix = redPlayMatrix;
-        }else{
-            matrix = whitePlayMatrix;
-        }
+    /**
+     * Stores moves in stack and list to submit or back up moves
+     * @param move
+     */
+    public void makeMove(Move move){
+        //get move with info
+        Move actualMove = turnBoard.getMove(move);
+        lastPlayed.push(actualMove);
+        movesMade.add(actualMove);
+        turnBoard.makeMove(actualMove);
 
-        Position newStart = matrix[move.getStart().getRow()][move.getStart().getCell()];
-        Position newEnd = matrix[move.getEnd().getRow()][move.getEnd().getCell()];
-        Move newMove = new Move(newStart,newEnd,move.getType());
-//        System.out.println(newMove);
-        return newMove;
-    }
-
-    public void makeMove(Player player, Move move){
-        //Move newMove = translateMove(player, move);
-        if(board.isValidMove(move)){
-            board.makeMove(move);
+        if(actualMove.getType() == Move.Type.JUMP) {
+            Piece piece = turnBoard.getPiece(move.getEnd());
+            turnBoard.addMoves(piece);
         }
     }
 
+    /**
+     * @return true if game is over, false otherwise
+     */
     public boolean isGameOver(){
-        return board.isGameOver();
+        return gameOver || board.isGameOver();
     }
 
-    public Board getBoard(){
+    /**
+     * @return the game board
+     */
+    public Board getBoard() {
         return board;
     }
 
-    public boolean isValidMove(Player player, Move move){
-        //Move newMove = translateMove(player, move);
-        return board.isValidMove(move);
+    /**
+     * Gets board of certain player
+     * @param player player to get board for
+     * @return player's board
+     */
+    public Board getBoard(Player player){
+        return (player.equals(getCurPlayer()) ? turnBoard : board);
     }
 
+    /**
+     * Checks if a move is valid
+     * @param move move to check
+     * @return true if move follows rules, false otherwise
+     */
+    public boolean isValidMove(Move move){
+        return turnBoard.isValidMove(move);
+    }
+
+    /**
+     * Generates all the legal move the current player can make
+     */
+    public void generateMoves() {
+        turnBoard.addMoves();
+    }
+
+    /**
+     * Makes all moves stored in list and switches turn
+     */
     public void submitTurn(){
+        board.submitTurn(movesMade);
+        turnBoard.submitTurn();
+        movesMade.clear();
         lastPlayed.clear();
-        board.submitTurn();
+        turnBoard.addMoves();
     }
 
+    /**
+     * @return winner of the game
+     */
     public Player getWinner(){
         return board.getWinner();
     }
 
+    /**
+     * Backs up last move made
+     */
     //TODO
-    public void undoMove(){}
+    public void backUpMove(){}
 
+    /**
+     * @return if current turn is over
+     */
+    public boolean isTurnOver() {
+        return turnBoard.isTurnOver();
+    }
+
+    /**
+     * @return player whose turn it is
+     */
     public Player getCurPlayer(){
         return (board.whoseTurn() == Color.RED ? redPlayer : whitePlayer);
     }
 
+    /**
+     * @return player 2 of game
+     */
     public Player getWhitePlayer() {
         return whitePlayer;
     }
 
+    /**
+     * @return player 1 of game
+     */
     public Player getRedPlayer() {
         return redPlayer;
     }
 
+    /**
+     * Checks if player is in game
+     * @param player player to check for
+     * @return true if player is in game, false otherwise
+     */
     public boolean hasPlayer(Player player) {
         return player.equals(redPlayer) || player.equals(whitePlayer);
     }

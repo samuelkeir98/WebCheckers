@@ -19,6 +19,8 @@ This is the design documentation for the WebCheckers application. The documentat
 ### Purpose
 > Provide a very brief statement about the project and the most important user group and user goals.
 
+This project is about creating a checkers game online so that players can play against their friends or random opponents to have fun.
+
 ### Glossary and Acronyms
 > Provide a table of terms and acronyms.
 
@@ -36,12 +38,31 @@ This section describes the features of the application.
 ### Definition of MVP
 > Provide a simple description of the Minimum Viable Product.
 
+A MVP of this product is a checkers game that allows a user to chose their opponent from a list of other users in a lobby. 
+Once an opponent is chosen the two of you will be able to play a simple game of checkers in which you can move your pieces 
+forward by stepping or jumping over opponents pieces. A game will be won once either all your or your  opponents pieces 
+are taken or either player has no more moves. 
+
 ### MVP Features
 > Provide a list of top-level Epics and/or Stories of the MVP.
+
+Player Sign-in
+Start a Game
+Movement Epic
+    Step move
+    Simple Capture
+    Multi Jump
+    Become a King
+    King Movement
+    Backup Move
+Winning/Losing Game
+Resign
 
 ### Roadmap of Enhancements
 > Provide a list of top-level features in the order you plan to consider them.
 
+Spectator
+Player Help button and window
 
 ## Application Domain
 
@@ -86,7 +107,7 @@ with the WebCheckers application.
 
 Users initially have no connection to the page. A user is directed to the Home page upon making a connection to the server. At the Home page, the number of users is displayed along with a link to signin.
 
-The signin link directs the user to the Sign In page with one text field to input a name and a button to sign in. If the name is taken, it will display a error message on the same page. If the name is available, the user is redirected to the home page, now with a list of online players displayed and a signout link instead of a signin one.
+The sign in link directs the user to the Sign In page with one text field to input a name and a button to sign in. If the name is taken, it will display a error message on the same page. If the name is available, the user is redirected to the home page, now with a list of online players displayed and a signout link instead of a signin one.
 
 The Home page refreshes every 5 seconds, updating the player list and number of players. If the user signs out, the signin button is displayed again and the player list is no longer displayed.
 
@@ -102,7 +123,7 @@ When the game is over, the user may click on the home link to return to the Home
 > Describe the types of components in the tier and describe their responsibilities.
 
 #### Static models
-> Provide one or more static models (UML class or object diagrams) with some details such as critical attributes and methods.
+> Provide one or more static models (UML class or object diagrams) with details such as critical attributes and methods.
 
 #### Dynamic models
 > Provide any dynamic models, such as state and sequence diagrams, as is relevant to a particularly significant user story.

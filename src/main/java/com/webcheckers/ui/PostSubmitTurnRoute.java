@@ -13,13 +13,23 @@ import spark.TemplateEngine;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * UI Controller for the POST submitTurn route
+ */
 public class PostSubmitTurnRoute implements Route {
-    private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
 
+    public static final String MUST_MOVE = "Must make move";
+
+    private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
 
     private final Gson gson;
     private final GameLobby gameLobby;
 
+    /**
+     * Create the spark component for the HTTP request
+     * @param gson parses JSON objects
+     * @param gameLobby keeps track of games
+     */
     public PostSubmitTurnRoute(Gson gson, GameLobby gameLobby) {
         this.gson = gson;
         this.gameLobby = gameLobby;
@@ -27,11 +37,20 @@ public class PostSubmitTurnRoute implements Route {
         LOG.config("PostSubmitTurnRoute is initialized.");
     }
 
+    /**
+     *
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return Message telling game turn is over
+     */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
-        Game game = gameLobby.getGames().get(player);
-        game.submitTurn();
-        return gson.toJson(new Message("Move made", Message.Type.info));
+        Game game = gameLobby.getGame(player);
+        if(game.isTurnOver()) {
+            game.submitTurn();
+            return gson.toJson(new Message(PostValidateMoveRoute.VALID_MOVE, Message.Type.info));
+        }
+        return gson.toJson(new Message(MUST_MOVE, Message.Type.error));
     }
 }

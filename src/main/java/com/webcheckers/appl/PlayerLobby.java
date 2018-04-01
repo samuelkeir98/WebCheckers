@@ -2,10 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Player Lobby Service class
@@ -13,7 +10,9 @@ import java.util.Set;
  * Tested by Samuel Keir
  */
 public class PlayerLobby {
-    private Set<Player> players = new HashSet<>();
+
+    /** Map of all players in lobby */
+    private Map<String, Player> players = new HashMap<>();
 
     /**
      * Signs a player into the web checkers app
@@ -24,23 +23,28 @@ public class PlayerLobby {
     public synchronized Player signin(String playerName) {
         Player newPlayer = new Player(playerName);
 
-        if (players.contains(newPlayer))
+        if(players.containsKey(playerName))
             return null;
 
-        players.add(newPlayer);
+        players.put(playerName, newPlayer);
         return newPlayer;
     }
 
+    /**
+     * Signs player out of application
+     * @param player player to signout
+     */
     public synchronized void signout(Player player) {
-        players.remove(player);
+        players.remove(player.getName());
     }
 
     /**
      * Returns a list of all currently signed in players
      * @return list of player names
      */
-    public Set<Player> getPlayers() {
-        return Collections.unmodifiableSet(players);
+    public Collection<Player> getPlayers() {
+        return players.values();
+        //return Collections.unmodifiableSet(players);
     }
 
     /**
@@ -49,6 +53,15 @@ public class PlayerLobby {
      */
     public synchronized int numPlayers() {
         return players.size();
+    }
+
+    /**
+     * Gets player from player lobby
+     * @param name name of player to get
+     * @return player that was being searched
+     */
+    public Player getPlayer(String name) {
+        return players.get(name);
     }
 
 }

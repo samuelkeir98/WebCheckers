@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import spark.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
@@ -23,7 +24,7 @@ import static org.mockito.ArgumentMatchers.eq;
 
 
 /**
- * Unit test suite for the  component.
+ * Unit test suite for the PostGameRoute component.
  *
  * @author Andy Gin
  */
@@ -47,8 +48,9 @@ public class PostGameRouteTest {
     private Response response;
     private TemplateEngine engine;
     private GameLobby gameLobby;
-    private Map<Player, Game> games;
     private Game game;
+    private PlayerLobby playerLobby;
+    private Color color;
 
     /**
      * Setup mock objects before each test
@@ -61,21 +63,23 @@ public class PostGameRouteTest {
         response = mock(Response.class);
         engine = mock(TemplateEngine.class);
         gameLobby = mock(GameLobby.class);
-        games = mock(HashMap.class);
         game = mock(Game.class);
+        playerLobby = mock(PlayerLobby.class);
 
         //friendlies
         player = new Player(PLAYER_NAME);
         opponent = new Player(OPPONENT);
-        board = new Board(player, opponent);
+        board = new Board();
+        color = Color.RED;
 
         //return certain params when functions called
         when(request.session()).thenReturn(session);
         when(session.attribute(PostSigninRoute.PLAYER_KEY)).thenReturn(player);
         when(request.queryParams("name")).thenReturn(OPPONENT);
+        when(playerLobby.getPlayer(OPPONENT)).thenReturn(opponent);
 
         //setup test
-        CuT = new PostGameRoute(engine, gameLobby);
+        CuT = new PostGameRoute(engine, gameLobby, playerLobby);
     }
 
     /**
@@ -85,13 +89,13 @@ public class PostGameRouteTest {
     public void game_entered() {
         //test scenario: opponent not in other game
         when(gameLobby.inGame(eq(opponent))).thenReturn(false);
-        when(gameLobby.getGames()).thenReturn(games);
-        when(games.get(any(Player.class))).thenReturn(game);
-        when(game.getBoard()).thenReturn(board);
 
         //mock render for analysis
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        when(gameLobby.getGame(opponent)).thenReturn(game);
+        when(game.getBoard(player)).thenReturn(board);
 
         //invoke test
         CuT.handle(request, response);
@@ -105,8 +109,9 @@ public class PostGameRouteTest {
         testHelper.assertViewModelAttribute(PostGameRoute.VIEW_MODE_ATTR, ViewMode.PLAY);
         testHelper.assertViewModelAttribute(PostGameRoute.RED_PLAYER_ATTR, player);
         testHelper.assertViewModelAttribute(PostGameRoute.WHITE_PLAYER_ATTR, opponent);
-        testHelper.assertViewModelAttribute(PostGameRoute.ACTIVE_COLOR_ATTR, Color.RED);
-        testHelper.assertViewModelAttribute(PostGameRoute.BOARD_ATTR, board);
+        testHelper.assertViewModelAttribute(PostGameRoute.ACTIVE_COLOR_ATTR, color);
+
+        testHelper.assertViewModelAttribute(PostGameRoute.BOARD_ATTR, new BoardView(board, color));
         //test view name
         testHelper.assertViewName(PostGameRoute.TEMPLATE_NAME);
     }

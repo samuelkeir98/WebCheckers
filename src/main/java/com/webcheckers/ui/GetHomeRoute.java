@@ -22,6 +22,7 @@ public class GetHomeRoute implements Route {
   public static final String USER_PARAM = "currentPlayer";
   public static final String OTHER_PLAYERS_PARAM = "otherPlayers";
   public static final String PLAYER_KEY = "player";
+  public static final String TEMPLATE_NAME = "home.ftl";
 
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
@@ -89,6 +90,6 @@ public class GetHomeRoute implements Route {
 
     }
 
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+    return templateEngine.render(new ModelAndView(vm , TEMPLATE_NAME));
   }
 }
