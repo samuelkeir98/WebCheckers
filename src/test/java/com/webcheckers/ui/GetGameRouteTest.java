@@ -20,17 +20,17 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 /**
- * Unit test suite for the PostGameRoute component.
+ * Unit test suite for the GetGameRoute component.
  * @author Andy Gin
  */
 @Tag("UI-tier")
-public class PostGameRouteTest {
+public class GetGameRouteTest {
 
     private static final String PLAYER_NAME = "name";
     private static final String OPPONENT = "opponent";
 
     /** The component-under-test (CuT) */
-    private PostGameRoute CuT;
+    private GetGameRoute CuT;
 
     //friendly objects
     private Player player;
@@ -60,6 +60,7 @@ public class PostGameRouteTest {
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
         playerLobby = mock(PlayerLobby.class);
+        //opponent = mock(Player.class);
 
         //friendlies
         player = new Player(PLAYER_NAME);
@@ -70,27 +71,25 @@ public class PostGameRouteTest {
         //return certain params when functions called
         when(request.session()).thenReturn(session);
         when(session.attribute(PostSigninRoute.PLAYER_KEY)).thenReturn(player);
-        when(request.queryParams("name")).thenReturn(OPPONENT);
-        when(playerLobby.getPlayer(OPPONENT)).thenReturn(opponent);
+        when(game.getBoard(player)).thenReturn(board);
 
         //setup test
-        CuT = new PostGameRoute(engine, gameLobby, playerLobby);
+        CuT = new GetGameRoute(engine, gameLobby);
     }
 
     /**
-     * Test that the "challenge" action enters game
+     * Test player is in game
      */
     @Test
     public void game_entered() {
-        //test scenario: opponent not in other game
-        when(gameLobby.inGame(eq(opponent))).thenReturn(false);
+        when(gameLobby.getGame(eq(player))).thenReturn(game);
+        when(gameLobby.inGame(eq(player))).thenReturn(true);
+        when(game.getRedPlayer()).thenReturn(opponent);
+        when(game.getWhitePlayer()).thenReturn(player);
 
         //mock render for analysis
         final TemplateEngineTester testHelper = new TemplateEngineTester();
         when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
-
-        when(gameLobby.getGame(opponent)).thenReturn(game);
-        when(game.getBoard(player)).thenReturn(board);
 
         //invoke test
         CuT.handle(request, response);
@@ -102,11 +101,11 @@ public class PostGameRouteTest {
         //model contains all necessary View-Model data
         testHelper.assertViewModelAttribute(PostGameRoute.CURRENT_PLAYER_ATTR, player);
         testHelper.assertViewModelAttribute(PostGameRoute.VIEW_MODE_ATTR, ViewMode.PLAY);
-        testHelper.assertViewModelAttribute(PostGameRoute.RED_PLAYER_ATTR, player);
-        testHelper.assertViewModelAttribute(PostGameRoute.WHITE_PLAYER_ATTR, opponent);
+        testHelper.assertViewModelAttribute(PostGameRoute.RED_PLAYER_ATTR, opponent);
+        testHelper.assertViewModelAttribute(PostGameRoute.WHITE_PLAYER_ATTR, player);
         testHelper.assertViewModelAttribute(PostGameRoute.ACTIVE_COLOR_ATTR, color);
 
-        testHelper.assertViewModelAttribute(PostGameRoute.BOARD_ATTR, new BoardView(board, color));
+        testHelper.assertViewModelAttribute(PostGameRoute.BOARD_ATTR, new BoardView(board, Color.WHITE));
         //test view name
         testHelper.assertViewName(PostGameRoute.TEMPLATE_NAME);
     }
@@ -117,7 +116,7 @@ public class PostGameRouteTest {
     @Test
     public void game_not_entered_1() {
         //test scenario: opponent in game
-        when(gameLobby.inGame(eq(opponent))).thenReturn(true);
+        when(gameLobby.inGame(eq(player))).thenReturn(false);
 
         //invoke test
         CuT.handle(request, response);
@@ -126,12 +125,12 @@ public class PostGameRouteTest {
     }
 
     /**
-     * Test that the "challenge" action fails to enter game (opponent in game)
+     * Test that the player has signed out
      */
     @Test
     public void game_not_entered_2() throws NullPointerException {
         //test scenario: opponent logged out
-        when(gameLobby.inGame(eq(opponent))).thenThrow(NullPointerException.class);
+        when(gameLobby.inGame(eq(player))).thenThrow(NullPointerException.class);
 
         //response redirected
     }

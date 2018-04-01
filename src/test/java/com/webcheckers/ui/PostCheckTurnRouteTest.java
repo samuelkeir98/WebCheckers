@@ -2,37 +2,30 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.appl.Message;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.moves.Move;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import spark.Request;
 import spark.Response;
 import spark.Session;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
 
 /**
- * Unit test suites for the PostValidateMove component
+ * Unit test suites for the PostCheckTurn component
  * @author Andy Gin
  */
-@Tag("UI-Tier")
-public class PostValidateMoveRouteTester {
-
+@Tag("UI tier")
+public class PostCheckTurnRouteTest {
     private static final String PLAYER_NAME = "name";
 
     /** Component under test */
-    private PostValidateMoveRoute CuT;
+    private PostCheckTurnRoute CuT;
 
     //mock objects
     private Request request;
@@ -59,57 +52,39 @@ public class PostValidateMoveRouteTester {
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
         move = mock(Move.class);
-        gson = new Gson();
 
         //friendly
         player = new Player(PLAYER_NAME);
+        gson = new Gson();
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
         when(gameLobby.getGame(player)).thenReturn(game);
-        //when(gson.toJson(any(Message.class))).thenAnswer(new GsonAnswer());
+        when(game.getCurPlayer()).thenReturn(player);
 
         //setup test
-        CuT = new PostValidateMoveRoute(gson, gameLobby);
+        CuT = new PostCheckTurnRoute(gson, gameLobby);
     }
 
     /**
-     * Tests case where invalid move made
+     * Tests case where not user's turn
      */
     @Test
-    public void moveInvalid() {
-        when(game.isValidMove(move)).thenReturn(false);
+    public void isNotTurn() {
+        when(player.equals(eq(player))).thenReturn(false);
 
         //invoke test
-        String type = (String) CuT.handle(request, response);
-
-        //assertNotNull(type);
-        //assertEquals(PostValidateMoveRoute.INVALID_MOVE, type);
+        CuT.handle(request, response);
     }
 
     /**
-     * Tests case where valid move made
+     * Tests case where it is user's turn
      */
     @Test
-    public void moveValid() {
-        when(game.isValidMove(move)).thenReturn(true);
+    public void isTurn() {
+        when(player.equals(eq(player))).thenReturn(true);
 
         //invoke test
-        String type = (String) CuT.handle(request, response);
-
-        //assertNotNull(type);
-        //assertEquals(PostValidateMoveRoute.INVALID_MOVE, type);
-    }
-
-    /*
-     * help for gson mocking
-     */
-    private class GsonAnswer implements Answer<String> {
-
-        @Override
-        public String answer(InvocationOnMock invocationOnMock) {
-            Message msg = invocationOnMock.getArgument(0);
-            return msg.getType().toString();
-        }
+        CuT.handle(request, response);
     }
 }
