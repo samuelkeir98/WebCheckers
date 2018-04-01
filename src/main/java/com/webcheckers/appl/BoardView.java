@@ -53,4 +53,17 @@ public class BoardView implements Iterable<RowView> {
 		return rowViews.iterator();
 	}
 
+	/**
+	 * Tells if boardviews are same by board
+	 * @param obj other boardview to check
+	 * @return if boardview is same
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof BoardView) {
+			BoardView view = (BoardView)obj;
+			return view.board == this.board;
+		}
+		return false;
+	}
 }
