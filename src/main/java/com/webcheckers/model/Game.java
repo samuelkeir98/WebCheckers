@@ -64,13 +64,13 @@ public class Game {
     public void makeMove(Move move){
         //get move with info
         Move actualMove = turnBoard.getMove(move);
+        lastPlayed.push(actualMove);
+        movesMade.add(actualMove);
+        turnBoard.makeMove(actualMove);
         Position endPos = actualMove.getEnd();
         if (kingCheck(turnBoard.getPiece(endPos)) == true){
             turnBoard.getPiece(endPos).becomeKing();
         }
-        lastPlayed.push(actualMove);
-        movesMade.add(actualMove);
-        turnBoard.makeMove(actualMove);
     }
 
     /**
