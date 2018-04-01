@@ -173,7 +173,7 @@ public class Board implements Iterable<Row> {
 
         if(!moveMade && moves.isEmpty()) {
             Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
-            while(iter.hasNext()) {
+            while(iter2.hasNext()) {
                 Piece piece = (Piece) iter.next();
                 addSteps(piece);
             }
