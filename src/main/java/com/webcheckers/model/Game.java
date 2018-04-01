@@ -94,6 +94,7 @@ public class Game {
                 piece.becomeKing();
             }
         }
+        return false;
     }
 
     /**
