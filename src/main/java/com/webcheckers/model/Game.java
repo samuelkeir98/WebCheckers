@@ -64,8 +64,10 @@ public class Game {
     public void makeMove(Move move){
         //get move with info
         Move actualMove = turnBoard.getMove(move);
-        Position endPos = new Position(actualMove.getEnd().getRow(), actualMove.getEnd().getCell());
-        kingCheck(turnBoard.getPiece(endPos));
+        Position endPos = actualMove.getEnd();
+        if (kingCheck(turnBoard.getPiece(endPos)) == true){
+            turnBoard.getPiece(endPos).becomeKing();
+        }
         lastPlayed.push(actualMove);
         movesMade.add(actualMove);
         turnBoard.makeMove(actualMove);
