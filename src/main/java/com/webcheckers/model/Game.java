@@ -32,6 +32,12 @@ public class Game {
     /** List of moves made in current turn to be submitted */
     private List<Move> movesMade;
 
+    /** The end zone of the board for red pieces */
+    private static int redEnd = 7;
+
+    /** The end zne of  the board for white pieces */
+    private static int whiteEnd = 0;
+
     /**
      * Initializes a game
      * @param redPlayer Player 1 in game
@@ -69,6 +75,14 @@ public class Game {
             Piece piece = turnBoard.getPiece(move.getEnd());
             turnBoard.addMoves(piece);
         }
+    }
+
+    /**
+     * Turns a normal piece into a king piece
+     */
+    public void makeKing(Piece piece){
+        if (piece.getPosition().getRow() == )
+        piece.becomeKing();
     }
 
     /**
