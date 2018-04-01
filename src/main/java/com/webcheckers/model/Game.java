@@ -73,13 +73,16 @@ public class Game {
      * Turns a normal piece into a king piece
      */
     public void makeKing(Piece piece){
-        if(piece.getColor() == Color.RED){
-            if(piece.getPosition().getRow() == redEnd){
+        if (piece.getType() == Piece.Type.KING){
+            return;
+        }
+        if (piece.getColor() == Color.RED){
+            if (piece.getPosition().getRow() == redEnd){
                 piece.becomeKing();
             }
         }
-        if(piece.getColor() == Color.WHITE){
-            if(piece.getPosition().getRow() == whiteEnd){
+        if (piece.getColor() == Color.WHITE){
+            if (piece.getPosition().getRow() == whiteEnd){
                 piece.becomeKing();
             }
         }
