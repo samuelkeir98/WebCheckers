@@ -130,7 +130,7 @@ public class Game {
      * Backs up last move made
      */
     //TODO
-    public void backUpMove(){}
+    public boolean backUpMove(){ return false; }
 
     /**
      * @return if current turn is over
