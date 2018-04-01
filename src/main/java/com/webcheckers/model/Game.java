@@ -34,8 +34,8 @@ public class Game {
 
     /**
      * Initializes a game
-     * @param redPlayer player 1 in game
-     * @param whitePlayer player 2 in game
+     * @param redPlayer Player 1 in game
+     * @param whitePlayer Player 2 in game
      */
     public Game(Player redPlayer,Player whitePlayer){
         this.redPlayer = redPlayer;
@@ -49,13 +49,13 @@ public class Game {
     }
 
     /**
-     * @return the current player's color
+     * @return The current player's color
      */
     public Color getTurn(){return board.whoseTurn();}
 
     /**
      * Stores moves in stack and list to submit or back up moves
-     * @param move
+     * @param move The move to be stored
      */
     public void makeMove(Move move){
         //get move with info
@@ -72,14 +72,14 @@ public class Game {
     }
 
     /**
-     * @return true if game is over, false otherwise
+     * @return True if game is over, false otherwise
      */
     public boolean isGameOver(){
         return gameOver;
     }
 
     /**
-     * @return the game board
+     * @return The game board
      */
     public Board getBoard() {
         return board;
@@ -87,8 +87,8 @@ public class Game {
 
     /**
      * Gets board of certain player
-     * @param player player to get board for
-     * @return player's board
+     * @param player Player to get board for
+     * @return Player's board
      */
     public Board getBoard(Player player){
         return (player.equals(getCurPlayer()) ? turnBoard : board);
