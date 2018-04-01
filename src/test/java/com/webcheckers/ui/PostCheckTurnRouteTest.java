@@ -12,7 +12,6 @@ import spark.Request;
 import spark.Response;
 import spark.Session;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +22,7 @@ import static org.mockito.Mockito.when;
 @Tag("UI tier")
 public class PostCheckTurnRouteTest {
     private static final String PLAYER_NAME = "name";
+    private static final String OPPONENT_NAME = "opponent";
 
     /** Component under test */
     private PostCheckTurnRoute CuT;
@@ -38,6 +38,7 @@ public class PostCheckTurnRouteTest {
     //friendly
     private Gson gson;
     private Player player;
+    private Player opponent;
 
     /**
      * Setup objects before each test
@@ -55,12 +56,12 @@ public class PostCheckTurnRouteTest {
 
         //friendly
         player = new Player(PLAYER_NAME);
+        opponent = new Player(OPPONENT_NAME);
         gson = new Gson();
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
         when(gameLobby.getGame(player)).thenReturn(game);
-        when(game.getCurPlayer()).thenReturn(player);
 
         //setup test
         CuT = new PostCheckTurnRoute(gson, gameLobby);
@@ -71,7 +72,7 @@ public class PostCheckTurnRouteTest {
      */
     @Test
     public void isNotTurn() {
-        when(player.equals(eq(player))).thenReturn(false);
+        when(game.getCurPlayer()).thenReturn(opponent);
 
         //invoke test
         CuT.handle(request, response);
@@ -82,7 +83,7 @@ public class PostCheckTurnRouteTest {
      */
     @Test
     public void isTurn() {
-        when(player.equals(eq(player))).thenReturn(true);
+        when(game.getCurPlayer()).thenReturn(player);
 
         //invoke test
         CuT.handle(request, response);

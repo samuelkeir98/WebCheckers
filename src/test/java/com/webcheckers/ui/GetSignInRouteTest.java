@@ -26,31 +26,20 @@ public class GetSignInRouteTest {
     private Request request;
     private Response response;
     private Session session;
-    private TemplateEngine templateEngine;
-
+    private TemplateEngine engine;
 
     @BeforeEach
     public void setup() {
+
+        //mocks
         request = mock(Request.class);
         session = mock(Session.class);
         response = mock(Response.class);
         when(request.session()).thenReturn(session);
-        templateEngine = mock(TemplateEngine.class);
+        engine = mock(TemplateEngine.class);
 
         // component under test
-        CuT = new GetSigninRoute(templateEngine);
-    }
-
-    @Test
-    /**
-     * Test template engine being null
-     */
-    public void templateNull() {
-        // perform action
-        CuT = null;
-        // analyze results
-        //assertThrows(IllegalArgumentException.class, () -> {new GetSigninRoute(CuT);}, "templateEngine " +
-        //        "cannot be null");
+        CuT = new GetSigninRoute(engine);
     }
 
     @Test
@@ -59,11 +48,13 @@ public class GetSignInRouteTest {
      */
     public void signinRender() {
         final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
         // perform action
         CuT.handle(request, response);
         // analyze results
         testHelper.assertViewModelExists();
         testHelper.assertViewModelIsaMap();
+        testHelper.assertViewModelAttribute(GetSigninRoute.TITLE_PARAM, GetSigninRoute.PAGE_TITLE);
     }
 
 }

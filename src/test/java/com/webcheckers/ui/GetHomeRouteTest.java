@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import spark.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +39,7 @@ public class GetHomeRouteTest {
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
     private GameLobby gameLobby;
+    private List<Player> players;
 
     /**
      * Setup mock objects before each test
@@ -52,6 +56,7 @@ public class GetHomeRouteTest {
 
         //friendlies
         player = new Player(PLAYER_NAME);
+        players = new ArrayList<>();
 
         //return certain params when functions called
         when(request.session()).thenReturn(session);
@@ -122,6 +127,7 @@ public class GetHomeRouteTest {
     public void otherUsersPresent() {
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
         when(playerLobby.numPlayers()).thenReturn(2);
+        when(playerLobby.getPlayers()).thenReturn(players);
         when(gameLobby.inGame(player)).thenReturn(false);
 
         //mock render for analysis
@@ -139,9 +145,28 @@ public class GetHomeRouteTest {
         testHelper.assertViewModelAttribute("title", "Welcome!");
         testHelper.assertViewModelAttribute(GetHomeRoute.USER_PARAM, player);
         testHelper.assertViewModelAttribute(GetHomeRoute.NUM_PLAYER_PARAM, playerLobby.numPlayers());
+        testHelper.assertViewModelAttribute(GetHomeRoute.OTHER_PLAYERS_PARAM, players);
 
         //test view name
         testHelper.assertViewName(GetHomeRoute.TEMPLATE_NAME);
+    }
+
+    /**
+     * Player signed in, player in game
+     */
+    @Test
+    public void inGame() {
+        when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
+        when(playerLobby.numPlayers()).thenReturn(2);
+        when(playerLobby.getPlayers()).thenReturn(players);
+        when(gameLobby.inGame(player)).thenReturn(true);
+
+        //mock render for analysis
+        final TemplateEngineTester testHelper = new TemplateEngineTester();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(testHelper.makeAnswer());
+
+        //invoke test (redirect)
+        CuT.handle(request, response);
     }
 
 }
