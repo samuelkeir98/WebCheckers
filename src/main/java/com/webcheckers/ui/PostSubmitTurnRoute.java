@@ -17,6 +17,9 @@ import java.util.logging.Logger;
  * UI Controller for the POST submitTurn route
  */
 public class PostSubmitTurnRoute implements Route {
+
+    public static final String MUST_MOVE = "Must make move";
+
     private static final Logger LOG = Logger.getLogger(PostSubmitTurnRoute.class.getName());
 
     private final Gson gson;
@@ -46,8 +49,8 @@ public class PostSubmitTurnRoute implements Route {
         Game game = gameLobby.getGame(player);
         if(game.isTurnOver()) {
             game.submitTurn();
-            return gson.toJson(new Message("Move made", Message.Type.info));
+            return gson.toJson(new Message(PostValidateMoveRoute.VALID_MOVE, Message.Type.info));
         }
-        return gson.toJson(new Message("Must make move", Message.Type.error));
+        return gson.toJson(new Message(MUST_MOVE, Message.Type.error));
     }
 }

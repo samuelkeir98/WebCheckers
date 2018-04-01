@@ -48,7 +48,6 @@ public class PostGameRouteTest {
     private Response response;
     private TemplateEngine engine;
     private GameLobby gameLobby;
-    private Map<Player, Game> games;
     private Game game;
     private PlayerLobby playerLobby;
     private Color color;
