@@ -64,6 +64,8 @@ public class Game {
     public void makeMove(Move move){
         //get move with info
         Move actualMove = turnBoard.getMove(move);
+        Position endPos = new Position(actualMove.getEnd().getRow(), actualMove.getEnd().getCell());
+        kingCheck(turnBoard.getPiece(endPos));
         lastPlayed.push(actualMove);
         movesMade.add(actualMove);
         turnBoard.makeMove(actualMove);
@@ -72,18 +74,18 @@ public class Game {
     /**
      * Turns a normal piece into a king piece
      */
-    public void makeKing(Piece piece){
+    public boolean kingCheck(Piece piece){
         if (piece.getType() == Piece.Type.KING){
-            return;
+            return false;
         }
         if (piece.getColor() == Color.RED){
             if (piece.getPosition().getRow() == redEnd){
-                piece.becomeKing();
+                return true;
             }
         }
         if (piece.getColor() == Color.WHITE){
             if (piece.getPosition().getRow() == whiteEnd){
-                piece.becomeKing();
+                return true;
             }
         }
     }
