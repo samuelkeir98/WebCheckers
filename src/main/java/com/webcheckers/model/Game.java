@@ -9,6 +9,7 @@ import java.util.Stack;
 
 /**
  * Represents a WebCheckers game
+ * @author Sam Keir
  */
 public class Game {
 
@@ -68,7 +69,7 @@ public class Game {
         movesMade.add(actualMove);
         turnBoard.makeMove(actualMove);
         Position endPos = actualMove.getEnd();
-        if (kingCheck(turnBoard.getPiece(endPos)) == true){
+        if (kingCheck(turnBoard.getPiece(endPos))){
             turnBoard.getPiece(endPos).becomeKing();
         }
     }
