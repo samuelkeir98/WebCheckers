@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Tag("Model-Tier")
+@Tag("Model-tier")
 public class SpaceTester {
 	private static final String TEST_STRING = "???";
 	private static final String EMPTY_SPACE = " ";

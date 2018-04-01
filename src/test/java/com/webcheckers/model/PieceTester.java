@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.webcheckers.model.moves.*;
 
-@Tag("Model-Tier")
+@Tag("Model-tier")
 public class PieceTester {
 
 	/**
