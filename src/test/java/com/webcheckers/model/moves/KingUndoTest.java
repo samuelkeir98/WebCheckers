@@ -51,7 +51,6 @@ public class KingUndoTest {
 
         // verify method calls
         verify(board, times(1)).makeMove(undo);
-        verify(board, times(1)).placePiece(piece, piece.getPosition());
 
     }
 }
