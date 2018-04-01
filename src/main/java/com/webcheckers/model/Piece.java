@@ -44,8 +44,8 @@ public class Piece {
 
 	/**
 	 * Initializes a piece
-	 * @param position position to set piece to
-	 * @param color color of piece
+	 * @param position Position to set piece to
+	 * @param color Color of piece
 	 */
 	public Piece(Position position,Color color){
 		this.position = position;
