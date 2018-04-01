@@ -78,14 +78,6 @@ public class Board implements Iterable<Row> {
         return board;
     }
 
-    /**
-     * Reverts a move
-     * Expects that the move is the last one made
-     * Will deny impossible moves
-     * @param move move to undo
-     */
-    //TODO
-    void undo(Move move){}
 
     /**
      * Tells whether or not the game is over
@@ -240,15 +232,6 @@ public class Board implements Iterable<Row> {
     }
 
     /**
-     * Tells whether or not the specified position is a valid place for a piece to move
-     * @param position position to check
-     * @return whether or not a piece can move there
-     */
-    boolean isValid(Position position){
-        return rows.get(position.getRow()).isValid(position.getCell());
-    }
-
-    /**
      * Handles a step or jump move on board
      * @param move move to be made
      */
@@ -315,20 +298,4 @@ public class Board implements Iterable<Row> {
         return rows.iterator();
     }
 
-    /**
-     * Represents the board in an easy to read format
-     * @return formatted board string
-     */
-    @Override
-    public String toString() {
-    	String out = " ";
-        for(int i = 0;i<Row.ROW_SIZE;i++){
-            out+=i;
-        }
-        out+="\n";
-        for(int i = 0; i<NUM_ROWS;i++) {
-            out+=rows.get(i).toString() + "\n";
-        }
-        return out;
-    }
 }

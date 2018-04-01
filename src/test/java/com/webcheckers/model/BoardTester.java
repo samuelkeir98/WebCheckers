@@ -7,10 +7,14 @@ import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.Position;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Tag("Model-Tier")
+@Tag("Model-tier")
 public class BoardTester {
 
 	@Test
@@ -93,7 +97,7 @@ public class BoardTester {
 		Piece jumpee = new Piece(jumped,Color.WHITE);
 		board.placePiece(piece,start);
 		board.placePiece(jumpee,jumped);
-		board.addMoves();
+		board.addMoves(piece);
 		Move move = new Move(start,end);
 		Move stepMove = new Move(start,step);
 		Move onPieceMove = new Move(start,jumped);
@@ -108,4 +112,28 @@ public class BoardTester {
 		assertNull(board.getPiece(start));
 	}
 
+	@Test
+	public void regularSubmitTurn(){
+		Board board = new Board();
+		assertEquals(Color.RED,board.whoseTurn());
+		board.submitTurn();
+		assertEquals(Color.WHITE,board.whoseTurn());
+	}
+
+	@Test
+	public void moveSubmitTurn() {
+		Position start = new Position(7, 7);
+		Position end1 = new Position(6, 6);
+		Position end2 = new Position(5,5);
+		Piece piece = new Piece(start,Color.RED);
+		Board board = Board.emptyBoard();
+		board.placePiece(piece,start);
+		List<Move> moves = Arrays.asList(new Move(start,end1),new Move(end1,end2));
+		board.submitTurn(moves);
+		assertEquals(Color.WHITE,board.whoseTurn());
+		assertEquals(piece,board.getPiece(end2));
+		assertNull(board.getPiece(end1));
+		assertNull(board.getPiece(start));
+
+	}
 }

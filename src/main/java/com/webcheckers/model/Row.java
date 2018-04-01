@@ -100,16 +100,4 @@ public class Row implements Iterable<Space>{
         return spaces.iterator();
     }
 
-    /**
-     * @return String representation of a Row
-     */
-    @Override
-    public String toString() {
-        String out = "";
-        out += index;
-        for(int i = 0; i<ROW_SIZE; i++){
-            out+=spaces.get(i).toString();
-        }
-        return out;
-    }
 }
