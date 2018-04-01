@@ -1,6 +1,7 @@
 package com.webcheckers.model;
 
 import com.webcheckers.model.moves.Move;
+import com.webcheckers.model.moves.MoveAction;
 import com.webcheckers.model.moves.Position;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Game {
     private boolean gameOver;
 
     /** Stack of moves to back up if necessary */
-    private Stack<Move> lastPlayed;
+    private Stack<MoveAction> lastPlayed;
 
     /** List of moves made in current turn to be submitted */
     private List<Move> movesMade;
@@ -59,9 +60,10 @@ public class Game {
     public void makeMove(Move move){
         //get move with info
         Move actualMove = turnBoard.getMove(move);
-        lastPlayed.push(actualMove);
+        //lastPlayed.push(actualMove);
         movesMade.add(actualMove);
-        turnBoard.makeMove(actualMove);
+        MoveAction action = turnBoard.makeMove(actualMove);
+        lastPlayed.push(action);
 
         if(actualMove.getType() == Move.Type.JUMP) {
             Piece piece = turnBoard.getPiece(move.getEnd());
@@ -130,7 +132,15 @@ public class Game {
      * Backs up last move made
      */
     //TODO
-    public boolean backUpMove(){ return false; }
+    public boolean backUpMove() {
+        if (lastPlayed.empty())
+            return false;
+
+        MoveAction action = lastPlayed.pop();
+        action.execute();
+        movesMade.remove(movesMade.size() - 1);
+        return true;
+    }
 
     /**
      * @return if current turn is over

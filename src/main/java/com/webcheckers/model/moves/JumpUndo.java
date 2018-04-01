@@ -19,5 +19,6 @@ public class JumpUndo extends MoveAction {
         Move undo = new Move(move.end, move.start);
         board.makeMove(undo);
         board.placePiece(piece, piece.getPosition());
+        board.addMoves();
     }
 }

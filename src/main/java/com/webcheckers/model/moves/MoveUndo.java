@@ -12,5 +12,7 @@ public class MoveUndo extends MoveAction {
     public void execute() {
         Move undo = new Move(move.end, move.start);
         board.makeMove(undo);
+        board.resetTurnOver();
+        board.addMoves();
     }
 }
