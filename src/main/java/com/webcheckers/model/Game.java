@@ -44,6 +44,7 @@ public class Game {
         gameOver = false;
         lastPlayed = new Stack<>();
         movesMade = new ArrayList<>();
+        turnBoard.addMoves();
     }
 
     /**
@@ -61,6 +62,11 @@ public class Game {
         lastPlayed.push(actualMove);
         movesMade.add(actualMove);
         turnBoard.makeMove(actualMove);
+
+        if(actualMove.getType() == Move.Type.JUMP) {
+            Piece piece = turnBoard.getPiece(move.getEnd());
+            turnBoard.addMoves(piece);
+        }
     }
 
     /**
@@ -110,6 +116,7 @@ public class Game {
         turnBoard.submitTurn();
         movesMade.clear();
         lastPlayed.clear();
+        turnBoard.addMoves();
     }
 
     /**
@@ -130,14 +137,6 @@ public class Game {
      */
     public boolean isTurnOver() {
         return turnBoard.isTurnOver();
-    }
-
-    /**
-     * Tells if first move made for current player
-     * @return
-     */
-    public boolean isMoveMade() {
-        return board.isMoveMade();
     }
 
     /**

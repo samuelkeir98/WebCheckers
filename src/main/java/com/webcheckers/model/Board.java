@@ -19,9 +19,6 @@ public class Board implements Iterable<Row> {
     /** Tells if turn is over */
     private boolean turnOver = false;
 
-    /** Stops generation of new steps */
-    private boolean moveMade = false;
-
     /** All of the red player's pieces */
     private Set<Piece> redPieces;
 
@@ -163,7 +160,6 @@ public class Board implements Iterable<Row> {
      * Adds all valid moves of all pieces to map
      */
     public void addMoves() {
-        moves.clear();
 
         Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
         while(iter.hasNext()) {
@@ -171,7 +167,7 @@ public class Board implements Iterable<Row> {
             addJumps(piece);
         }
 
-        if(!moveMade && moves.isEmpty()) {
+        if(moves.isEmpty()) {
             Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();
             while(iter2.hasNext()) {
                 Piece piece = (Piece) iter2.next();
@@ -182,8 +178,16 @@ public class Board implements Iterable<Row> {
         if(moves.isEmpty()) {
             turnOver = true;
         }
-        for(Move move : moves.keySet()) {
-            System.out.println(move);
+    }
+
+    /**
+     * Adds moves for one piece
+     * @param piece piece to get moves for
+     */
+    public void addMoves(Piece piece) {
+        addJumps(piece);
+        if(moves.isEmpty()) {
+            turnOver = true;
         }
     }
 
@@ -243,12 +247,16 @@ public class Board implements Iterable<Row> {
             Piece pieceTaken = ((Jump) move).getJumped();
             Row takenRow = rows.get(pieceTaken.getPosition().getRow());
             takenRow.removePiece(pieceTaken.getPosition().getCell());
+            if(curTurn == Color.RED)
+                whitePieces.remove(pieceTaken);
+            else
+                redPieces.remove(pieceTaken);
+
         } else {
             turnOver = true;
         }
 
-        moveMade = true;
-        addMoves();
+        moves.clear();
     }
 
     /**
@@ -265,7 +273,6 @@ public class Board implements Iterable<Row> {
         this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);
         this.moves.clear();
         turnOver = false;
-        moveMade = false;
     }
 
     /**
@@ -277,13 +284,6 @@ public class Board implements Iterable<Row> {
             makeMove(move);
         }
         submitTurn();
-    }
-
-    /**
-     * @return if first move is made
-     */
-    public boolean isMoveMade() {
-        return moveMade;
     }
 
     /**
