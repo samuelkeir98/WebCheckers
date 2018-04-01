@@ -88,8 +88,8 @@ public class Game {
 
     /**
      * Checks if a move is valid
-     * @param move move to check
-     * @return true if move follows rules, false otherwise
+     * @param move Move to check
+     * @return True if move follows rules, false otherwise
      */
     public boolean isValidMove(Move move){
         return turnBoard.isValidMove(move);
@@ -113,7 +113,7 @@ public class Game {
     }
 
     /**
-     * @return winner of the game
+     * @return Winner of the game
      */
     public Player getWinner(){
         return board.getWinner();
@@ -126,7 +126,7 @@ public class Game {
     public void backUpMove(){}
 
     /**
-     * @return if current turn is over
+     * @return If current turn is over
      */
     public boolean isTurnOver() {
         return turnBoard.isTurnOver();
@@ -134,28 +134,28 @@ public class Game {
 
     /**
      * Tells if first move made for current player
-     * @return
+     * @return If the move has been made
      */
     public boolean isMoveMade() {
         return board.isMoveMade();
     }
 
     /**
-     * @return player whose turn it is
+     * @return Player whose turn it is
      */
     public Player getCurPlayer(){
         return (board.whoseTurn() == Color.RED ? redPlayer : whitePlayer);
     }
 
     /**
-     * @return player 2 of game
+     * @return Player 2 of game
      */
     public Player getWhitePlayer() {
         return whitePlayer;
     }
 
     /**
-     * @return player 1 of game
+     * @return Player 1 of game
      */
     public Player getRedPlayer() {
         return redPlayer;
@@ -163,8 +163,8 @@ public class Game {
 
     /**
      * Checks if player is in game
-     * @param player player to check for
-     * @return true if player is in game, false otherwise
+     * @param player Player to check for
+     * @return True if player is in game, false otherwise
      */
     public boolean hasPlayer(Player player) {
         return player.equals(redPlayer) || player.equals(whitePlayer);
