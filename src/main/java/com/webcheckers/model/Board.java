@@ -214,7 +214,7 @@ public class Board implements Iterable<Row> {
         return rows.get(position.getRow()).getPieceAt(position.getCell());
     }
 
-    void placePiece(Piece piece,Position position){
+    public void placePiece(Piece piece,Position position){
     	if(piece!=null) {
 			Set<Piece> set = (piece.getColor() == Color.RED ? redPieces : whitePieces);
 			set.add(piece);
