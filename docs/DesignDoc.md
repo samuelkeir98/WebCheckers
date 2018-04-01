@@ -122,6 +122,11 @@ When the game is over, the user may click on the home link to return to the Home
 > Provide a summary of the Server-side UI tier of your architecture.
 > Describe the types of components in the tier and describe their responsibilities.
 
+The WebSever class sets up the routes for the UI tier. The GetHomeRoute class initializes the webcheckers server. Our get routes and post routes for sign-in cooperate to populate
+the player lobby with signed-in players. Further, our get and post routes for the game work in unison to pull players into a game once a challenge has been issued. While the game
+is running, our post routes for validate move, check turn, and submit turn operate in order to keep the game loop functional. At any time, if a player attempts to sigh out, the
+get route for signing out handles the calls and completes the request.
+
 #### Static models
 > Provide one or more static models (UML class or object diagrams) with details such as critical attributes and methods.
 
@@ -144,6 +149,12 @@ When the game is over, the user may click on the home link to return to the Home
 ### Model Tier
 > Provide a summary of the Model tier of your architecture.
 > Describe the types of components in the tier and describe their responsibilities.
+
+The game and board classes are the most important classes for the Model Tier. The game class implements the functionality of the game loop and keeps it running while players
+are participating in a webcheckers match. Player is a representation of the users participating in the game. The board keeps track of the pieces and the state of the turns for
+the players. Color, piece, row, and space all represent their corresponding features inside the board, and are interacted with in order to keep the game loop functional and
+accurate to the rules for checkers. The moves package includes all of the implementation for the different types of moves that occur in checkers, ranging from jumps to kinging
+and more.
 
 #### Static models
 > Provide one or more static models (UML class or object diagrams) with some details such as critical attributes and methods.
