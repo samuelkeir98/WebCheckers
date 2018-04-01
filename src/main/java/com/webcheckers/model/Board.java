@@ -65,16 +65,16 @@ public class Board implements Iterable<Row> {
         }
     }
 
-    public Board emptyBoard(){
+    public static Board emptyBoard(){
         Board board = new Board();
         for(int i = 0; i<NUM_ROWS;i++){
             for(int j = 0;j<Row.ROW_SIZE;j++){
-                placePiece(null,new Position(i,j));
+                board.placePiece(null,new Position(i,j));
             }
         }
 
-        redPieces.clear();
-        whitePieces.clear();
+        board.redPieces.clear();
+        board.whitePieces.clear();
         return board;
     }
 
