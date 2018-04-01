@@ -65,6 +65,19 @@ public class Board implements Iterable<Row> {
         }
     }
 
+    public static Board emptyBoard(){
+        Board board = new Board();
+        for(int i = 0; i<NUM_ROWS;i++){
+            for(int j = 0;j<Row.ROW_SIZE;j++){
+            	board.rows.get(i).removePiece(j);
+            }
+        }
+
+        board.redPieces.clear();
+        board.whitePieces.clear();
+        return board;
+    }
+
     /**
      * Reverts a move
      * Expects that the move is the last one made
@@ -209,6 +222,14 @@ public class Board implements Iterable<Row> {
         return rows.get(position.getRow()).getPieceAt(position.getCell());
     }
 
+    void placePiece(Piece piece,Position position){
+    	if(piece!=null) {
+			Set<Piece> set = (piece.getColor() == Color.RED ? redPieces : whitePieces);
+			set.add(piece);
+		}
+        rows.get(position.getRow()).placePiece(piece,position.getCell());
+    }
+
     /**
      * Checks if a move is legal to make in the current state of the board
      * @param move the move being tested
@@ -300,7 +321,7 @@ public class Board implements Iterable<Row> {
      */
     @Override
     public String toString() {
-        String out = " ";
+    	String out = " ";
         for(int i = 0;i<Row.ROW_SIZE;i++){
             out+=i;
         }
