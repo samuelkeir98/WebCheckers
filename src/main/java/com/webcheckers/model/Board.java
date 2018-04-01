@@ -69,7 +69,7 @@ public class Board implements Iterable<Row> {
         Board board = new Board();
         for(int i = 0; i<NUM_ROWS;i++){
             for(int j = 0;j<Row.ROW_SIZE;j++){
-                board.placePiece(null,new Position(i,j));
+            	board.rows.get(i).removePiece(j);
             }
         }
 
@@ -223,10 +223,10 @@ public class Board implements Iterable<Row> {
     }
 
     void placePiece(Piece piece,Position position){
-        Set<Piece> set =(piece.getColor()==Color.RED?redPieces:whitePieces);
-        if(!set.contains(piece)){
-            set.add(piece);
-        }
+    	if(piece!=null) {
+			Set<Piece> set = (piece.getColor() == Color.RED ? redPieces : whitePieces);
+			set.add(piece);
+		}
         rows.get(position.getRow()).placePiece(piece,position.getCell());
     }
 
@@ -321,7 +321,7 @@ public class Board implements Iterable<Row> {
      */
     @Override
     public String toString() {
-        String out = " ";
+    	String out = " ";
         for(int i = 0;i<Row.ROW_SIZE;i++){
             out+=i;
         }
