@@ -17,15 +17,15 @@ public class MoveUndoTest {
 
     // mock objects
     private Board board;
-    private Move move;
+
+    // friendly object
+    private Move move =
+            new Move(new Position(1, 1), new Position(2, 2));
 
     @BeforeEach
     public void setup() {
         // set up mock board object
         board = mock(Board.class);
-        move = mock(Move.class);
-
-        CuT = new MoveUndo(move, board);
     }
 
     @Test
@@ -38,6 +38,14 @@ public class MoveUndoTest {
 
     @Test
     public void undoMoveTest1() {
+        Move undo = new Move(move.getEnd(), move.getStart());
+
+        // invoke test
+        CuT = new MoveUndo(move, board);
+        CuT.execute();
+
+        // verify method calls
+        verify(board, times(1)).makeMove(undo);
 
     }
 }
