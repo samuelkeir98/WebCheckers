@@ -120,8 +120,14 @@ The WebSever class sets up the routes for the UI tier. The GetHomeRoute class in
 
 #### Dynamic models
 > For example, in WebCheckers you might create a sequence diagram of the `POST /validateMove` HTTP request processing or you might use a state diagram if the Game component uses a state machine to manage the game.
+
 Start Game Sequence Diagram
+
 ![The Start Game Sequence Diagram](startAGameSequence.png)
+
+PostValidateMove Sequence Diagram
+
+![PostValidateMove Sequence Diagram](PostValidateMoveSequence.png)
 
 ### Application Tier
 The Application tier contains the GameLobby and PlayerLobby classes and keeps track of all of the players in the lobby and the ongoing games. The PlayerLobby class also signs in players by adding them to its map of players. The GameLobby can be used to find the players in a particular game and notify a user if he/she has been challenged. It also puts both players into a game when a user challenges another player.
@@ -142,4 +148,3 @@ Model UML
 ![The Model UML Diagram](modelUML.png)
 
 #### Dynamic models
-
