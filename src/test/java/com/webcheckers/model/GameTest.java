@@ -2,6 +2,7 @@ package com.webcheckers.model;
 
 import com.webcheckers.model.moves.Move;
 import com.webcheckers.model.moves.MoveAction;
+import com.webcheckers.model.moves.MoveUndo;
 import com.webcheckers.model.moves.Position;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -24,6 +25,7 @@ public class GameTest {
     @Mock private Board turnBoard;
     @Mock private Stack<MoveAction> lastPlayed;
     @Mock private List<Move> movesMade;
+    @Mock private MoveAction action;
 
 
     // Component under test
@@ -35,7 +37,6 @@ public class GameTest {
     Player player1 = new Player("Jim");
     Player player2 = new Player("Bob");
     Move testMove = new Move(new Position(1, 1), new Position(2, 2));
-    MoveAction action = new MoveAction();
 
     @BeforeEach
     public void setup() {
@@ -63,6 +64,30 @@ public class GameTest {
 
     @Test
     public void submitTurnTest() {
+        // invoke test
+        CuT.submitTurn();
 
+        verify(lastPlayed, times(1)).clear();
+        verify(movesMade, times(1)).clear();
+        verify(turnBoard, times(1)).submitTurn();
     }
+
+    @Test
+    public void backupMoveTest() {
+        // invoke test
+        when(lastPlayed.empty()).thenReturn(false);
+        when(lastPlayed.pop()).thenReturn(action);
+        CuT.backUpMove();
+
+        verify(lastPlayed, times(1)).pop();
+    }
+
+    @Test
+    public void emptyBackupMove() {
+        when(lastPlayed.empty()).thenReturn(true);
+        // invoke test
+        boolean result = CuT.backUpMove();
+        assertFalse(result);
+    }
+
 }
