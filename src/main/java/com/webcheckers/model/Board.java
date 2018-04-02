@@ -214,7 +214,7 @@ public class Board implements Iterable<Row> {
         return rows.get(position.getRow()).getPieceAt(position.getCell());
     }
 
-    void placePiece(Piece piece,Position position){
+    public void placePiece(Piece piece,Position position){
     	if(piece!=null) {
 			Set<Piece> set = (piece.getColor() == Color.RED ? redPieces : whitePieces);
 			set.add(piece);
@@ -235,7 +235,7 @@ public class Board implements Iterable<Row> {
      * Handles a step or jump move on board
      * @param move move to be made
      */
-    public void makeMove(Move move){
+    public MoveAction makeMove(Move move){
         Position startPos = move.getStart();
         Position endPos = move.getEnd();
 
@@ -247,6 +247,7 @@ public class Board implements Iterable<Row> {
         myPiece.setPosition(endPos);
         row.placePiece(myPiece,endPos.getCell());
 
+        moves.clear();
         if(move.getType() == Move.Type.JUMP) {
             Piece pieceTaken = ((Jump) move).getJumped();
             Row takenRow = rows.get(pieceTaken.getPosition().getRow());
@@ -256,11 +257,11 @@ public class Board implements Iterable<Row> {
             else
                 redPieces.remove(pieceTaken);
 
+            return new JumpUndo(move, this, pieceTaken);
         } else {
             turnOver = true;
         }
-
-        moves.clear();
+        return new MoveUndo(move, this);
     }
 
     /**
@@ -269,6 +270,7 @@ public class Board implements Iterable<Row> {
     public boolean isTurnOver() {
         return turnOver;
     }
+    public void resetTurnOver() { turnOver = false; }
 
     /**
      * Switches turns and clears moves
