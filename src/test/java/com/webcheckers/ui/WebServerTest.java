@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 /**
  * Unit test suites for WebServer
  */
-@Tag("UI tier")
+@Tag("UI-tier")
 public class WebServerTest {
 
     /** Component under test */

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
  * Unit test suites for the PostCheckTurn component
  * @author Andy Gin
  */
-@Tag("UI tier")
+@Tag("UI-tier")
 public class PostCheckTurnRouteTest {
     private static final String PLAYER_NAME = "name";
     private static final String OPPONENT_NAME = "opponent";

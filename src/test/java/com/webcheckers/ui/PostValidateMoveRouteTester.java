@@ -26,7 +26,7 @@ import static org.mockito.Mockito.any;
  * Unit test suites for the PostValidateMove component
  * @author Andy Gin
  */
-@Tag("UI-Tier")
+@Tag("UI-tier")
 public class PostValidateMoveRouteTester {
 
     private static final String PLAYER_NAME = "name";

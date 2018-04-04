@@ -15,7 +15,6 @@ import java.util.HashMap;
  * unit test for UI route GET /signin
  * @author Samuel Keir
  */
-
 @Tag("UI-tier")
 public class GetSignInRouteTest {
 

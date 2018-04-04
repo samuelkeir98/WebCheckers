@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
  * Unit test suites for the PostSubmitTurn component
  * @author Andy Gin
  */
-@Tag("UI Tier")
+@Tag("UI-tier")
 public class PostSubmitTurnTest {
 
     private static final String PLAYER_NAME = "name";
