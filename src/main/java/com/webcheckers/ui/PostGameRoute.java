@@ -54,6 +54,7 @@ public class PostGameRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         final String opponent = request.queryParams("name");
+
         final Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
         Player player1 = request.session().attribute(PostSigninRoute.PLAYER_KEY);
@@ -70,14 +71,23 @@ public class PostGameRoute implements Route {
             vm.put(RED_PLAYER_ATTR, player1);
             vm.put(WHITE_PLAYER_ATTR, player2);
             vm.put(ACTIVE_COLOR_ATTR, game.getCurPlayer() == player1 ? Color.RED : Color.WHITE);
-            vm.put(BOARD_ATTR, new BoardView(gameLobby.getGame(player2).getBoard(player1),Color.RED));
+            vm.put(BOARD_ATTR, new BoardView(game.getBoard(),Color.RED));
             return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
         }
 
         else {
-            request.session().attribute("message", "Player already in game!");
-            response.redirect("/");
-            return null;
+            Game game = gameLobby.getGame(player2);
+            Player red = game.getRedPlayer();
+            Player white = game.getWhitePlayer();
+
+            ViewMode view = ViewMode.SPECTATOR;
+            vm.put(CURRENT_PLAYER_ATTR, player1);
+            vm.put(VIEW_MODE_ATTR, view);
+            vm.put(RED_PLAYER_ATTR, red);
+            vm.put(WHITE_PLAYER_ATTR, white);
+            vm.put(ACTIVE_COLOR_ATTR, game.getCurPlayer() == red ? Color.RED : Color.WHITE);
+            vm.put(BOARD_ATTR, new BoardView(game.getBoard(),Color.RED));
+            return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
         }
     }
 }

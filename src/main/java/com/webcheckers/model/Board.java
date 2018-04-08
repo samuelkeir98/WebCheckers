@@ -46,7 +46,8 @@ public class Board implements Iterable<Row> {
 
         for(int row = 0; row<3; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
-                if((i+row)%2 == 1) {
+                //if((i+row)%2 == 1) {
+                if(row == 2 && i == 3) {
                     Piece piece = new Piece(new Position(row,i),Color.WHITE);
                     whitePieces.add(piece);
                     rows.get(row).placePiece(piece,i);
@@ -56,7 +57,8 @@ public class Board implements Iterable<Row> {
 
         for(int row = NUM_ROWS-3; row<NUM_ROWS; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
-                if((i+row)%2 == 1) {
+                //if((i+row)%2 == 1) {
+                if(row == 5 && i == 4) {
                     Piece piece = new Piece(new Position(row,i),Color.RED);
                     redPieces.add(piece);
                     rows.get(row).placePiece(piece,i);
@@ -83,15 +85,21 @@ public class Board implements Iterable<Row> {
      * Tells whether or not the game is over
      * @return
      */
-    //TODO
-    boolean isGameOver(){return false;}
+    boolean isGameOver(){
+        return !turnOver && moves.isEmpty();
+    }
 
     /**
      * Gets the winner of this board
      * @return The Player who is the winner, or null if game isn't over.
      */
     //TODO
-    Player getWinner(){return null;}
+    public Color getWinner() {
+        if(isGameOver()) {
+            return getOpponent();
+        }
+        return null;
+    }
 
     /**
      * @return the color of the player whose turn it is
@@ -178,10 +186,6 @@ public class Board implements Iterable<Row> {
                 Piece piece = (Piece) iter2.next();
                 addSteps(piece);
             }
-        }
-
-        if(moves.isEmpty()) {
-            turnOver = true;
         }
     }
 

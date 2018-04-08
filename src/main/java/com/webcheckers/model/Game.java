@@ -42,7 +42,6 @@ public class Game {
         gameOver = false;
         board = new Board();
         turnBoard = new Board();
-        gameOver = false;
         lastPlayed = new Stack<>();
         movesMade = new ArrayList<>();
         turnBoard.addMoves();
@@ -75,7 +74,7 @@ public class Game {
      * @return true if game is over, false otherwise
      */
     public boolean isGameOver(){
-        return gameOver || board.isGameOver();
+        return gameOver;
     }
 
     /**
@@ -104,13 +103,6 @@ public class Game {
     }
 
     /**
-     * Generates all the legal move the current player can make
-     */
-    public void generateMoves() {
-        turnBoard.addMoves();
-    }
-
-    /**
      * Makes all moves stored in list and switches turn
      */
     public void submitTurn(){
@@ -119,19 +111,21 @@ public class Game {
         movesMade.clear();
         lastPlayed.clear();
         turnBoard.addMoves();
+        if(turnBoard.isGameOver()) {
+            gameOver = true;
+        }
     }
 
     /**
      * @return winner of the game
      */
     public Player getWinner(){
-        return board.getWinner();
+        return turnBoard.getWinner() == Color.WHITE ? whitePlayer : redPlayer;
     }
 
     /**
      * Backs up last move made
      */
-    //TODO
     public boolean backUpMove() {
         if (lastPlayed.empty())
             return false;

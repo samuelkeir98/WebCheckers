@@ -42,4 +42,13 @@ public class GameLobby {
     public void enterGame(Player player, Game game) {
         games.put(player, game);
     }
+
+    /**
+     * Removes player from game
+     * @param game game to end
+     */
+    public void endGame(Game game) {
+        games.remove(game.getRedPlayer());
+        games.remove(game.getWhitePlayer());
+    }
 }

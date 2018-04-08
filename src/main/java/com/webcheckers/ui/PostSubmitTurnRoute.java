@@ -38,7 +38,7 @@ public class PostSubmitTurnRoute implements Route {
     }
 
     /**
-     *
+     * Handles submitting a turn
      * @param request HTTP request object
      * @param response HTTP response object
      * @return Message telling game turn is over
