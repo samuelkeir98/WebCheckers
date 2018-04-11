@@ -99,7 +99,7 @@
     </div>
   </div>
 
-  <audio id="audio" src="http://www.soundjay.com/button/beep-07.mp3" autostart="false" ></audio>
+  <audio id="audio" src="http://soundbible.com/grab.php?id=1441&type=mp3" autostart="false" ></audio>
   
   <script data-main="js/game/index" src="js/require.js"></script>
   
