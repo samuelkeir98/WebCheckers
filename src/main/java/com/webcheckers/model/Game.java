@@ -179,4 +179,6 @@ public class Game {
         return player.equals(redPlayer) || player.equals(whitePlayer);
     }
 
+
+
 }
