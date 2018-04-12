@@ -37,6 +37,13 @@ public class GameLobby {
     }
 
     /**
+     * Gets a game based on the username
+     * @param username username of the player whose game is being got
+     * @return their game, null if not in a game
+     */
+    public Game getGame(String username){return getGame(new Player(username));}
+
+    /**
      * Places player into game
      * @param player player to put into game
      * @param game game to put player in

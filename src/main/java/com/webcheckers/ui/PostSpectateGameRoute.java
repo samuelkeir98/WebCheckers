@@ -24,7 +24,20 @@ public class PostSpectateGameRoute implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         final Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
-        final Game game =
+        final String redPlayer = request.queryParams("name");
+
+        final Game game = gameLobby.getGame(redPlayer);
+
+        if(game!=null){
+            if(gameLobby.isSpectating(player)){
+                gameLobby.removeSpectator(player);
+            }
+            gameLobby.spectateGame(player,game);
+            response.redirect("/game");
+        }else{
+            response.redirect("/");
+        }
+
 
         return null;
     }
