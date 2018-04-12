@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.GameView;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -22,6 +23,7 @@ public class GetHomeRoute implements Route {
   public static final String OTHER_PLAYERS_PARAM = "otherPlayers";
   public static final String PLAYER_KEY = "player";
   public static final String TEMPLATE_NAME = "home.ftl";
+  public static final String OTHER_GAMES_PARAM = "games";
 
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
@@ -80,8 +82,17 @@ public class GetHomeRoute implements Route {
         vm.put(OTHER_PLAYERS_PARAM, otherPlayers);
       }
 
+      if(gameLobby.hasGames()){
+        Collection<GameView> games = gameLobby.getGames();
+        vm.put(OTHER_GAMES_PARAM,games);
+      }
+
       if(gameLobby.inGame(player)) {
         response.redirect("/game");
+      }
+
+      if(gameLobby.isSpectating(player)){
+        gameLobby.removeSpectator(player);
       }
 
       String message = session.attribute("message");

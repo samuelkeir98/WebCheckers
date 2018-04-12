@@ -3,10 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GameLobby class for keeping track of game being played
@@ -49,6 +46,11 @@ public class GameLobby {
     }
 
     /**
+     * @return whether or not there are any ongoing games
+     */
+    public boolean hasGames(){return !games.values().isEmpty();}
+
+    /**
      * Checks if player is spectating a game
      * @param player potential spectator
      * @return whether the player is spectating
@@ -80,8 +82,9 @@ public class GameLobby {
      * @return collection of all games' game views
      */
     public Collection<GameView> getGames(){
+        Set<Game> actualGames = new HashSet<>(games.values());
         ArrayList<GameView> allGames = new ArrayList<>();
-        games.values().forEach(e->allGames.add(new GameView(e)));
+        actualGames.forEach(e->allGames.add(new GameView(e)));
         return allGames;
     }
 }

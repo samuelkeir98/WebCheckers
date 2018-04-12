@@ -76,6 +76,8 @@ public class WebServer {
 
   public static final String BACKUP_MOVE_URL = "/backupMove";
 
+  public static final String SPECTATE_GAME_URL = "/spectate";
+
 
   //
   // Attributes

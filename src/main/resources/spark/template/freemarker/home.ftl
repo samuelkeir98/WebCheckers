@@ -27,15 +27,25 @@
       </#if>
       
       <p>Number of people playing: ${numPlayers}</p>
+      <div>
+        <#if otherPlayers??>
+          <form action="/game" method="POST">
+            <#list otherPlayers as player>
+              <input type="radio" name="name" value="${player.name}" checked>${player.name}<br>
+            </#list>
+              <input type="submit" value="Challenge">
+          </form>
+        </#if>
 
-      <#if otherPlayers??>
-        <form action="/game" method="POST">
-          <#list otherPlayers as player>
-            <input type="radio" name="name" value="${player.name}" checked>${player.name}<br>
-          </#list>
-            <input type="submit" value="Challenge">
-        </form>
-      </#if>
+        <#if games??>
+          <form action="/spectate" method="POST">
+            <#list games as game>
+              <input type="radio" name="name" value="${game.getRedPlayer().name}" checked>${game.display()}<br>
+            </#list>
+              <input type="submit" value="Spectate">
+          </form>
+        </#if>
+      </div>
 
     </div>
     
