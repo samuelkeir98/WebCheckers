@@ -185,7 +185,7 @@ public class Game {
      * @return set of available moves
      */
     public Set<Move> availableMoves() {
-        return board.getAvailableMoves();
+        return turnBoard.getAvailableMoves();
     }
 
 }
