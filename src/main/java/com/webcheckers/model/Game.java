@@ -6,6 +6,7 @@ import com.webcheckers.model.moves.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -177,6 +178,14 @@ public class Game {
      */
     public boolean hasPlayer(Player player) {
         return player.equals(redPlayer) || player.equals(whitePlayer);
+    }
+
+    /**
+     * set of available moves from board object
+     * @return set of available moves
+     */
+    public Set<Move> availableMoves() {
+        return board.getAvailableMoves();
     }
 
 }
