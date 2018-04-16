@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.webcheckers.model.GameTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.886 sec - in com.webcheckers.model.GameTest
