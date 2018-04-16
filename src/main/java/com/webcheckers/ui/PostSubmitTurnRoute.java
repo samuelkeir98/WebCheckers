@@ -47,7 +47,10 @@ public class PostSubmitTurnRoute implements Route {
     public Object handle(Request request, Response response) {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGame(player);
-        if(game.isTurnOver()) {
+        if(game == null) {
+            return gson.toJson(new Message(PostValidateMoveRoute.GAME_OVER, Message.Type.info));
+        }
+        else if(game.isTurnOver()) {
             game.submitTurn();
             return gson.toJson(new Message(PostValidateMoveRoute.VALID_MOVE, Message.Type.info));
         }

@@ -42,12 +42,8 @@ public class PostCheckTurnRoute implements Route {
     public Object handle(Request request, Response response) {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGame(player);
-        if(game == null || game.isGameOver()) {
-            if(game != null)
-                gameLobby.endGame(game);
-            return gson.toJson(new Message("Game over. Click \"my home\" to return home.", Message.Type.error));
-        }
-        else if(game.getCurPlayer().equals(player)){
+
+        if(game == null || game.getCurPlayer().equals(player)){
             return gson.toJson(new Message("true", Message.Type.info));
         }else{
             return gson.toJson(new Message("false", Message.Type.info));

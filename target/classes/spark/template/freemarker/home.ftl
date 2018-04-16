@@ -27,9 +27,9 @@
       </#if>
 
       <#if result??>
-              <div class="info">${result}</div>
+        <div class="info">${result}</div>
       </#if>
-      
+
       <p>Number of people playing: ${numPlayers}</p>
 
       <#if otherPlayers??>

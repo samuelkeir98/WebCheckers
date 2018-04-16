@@ -14,6 +14,9 @@ import spark.Route;
  */
 public class PostResignGameRoute implements Route {
 
+    public static final String RESIGN = "You have resigned.";
+    public static final String RESIGN_FAIL = "Other player has resigned. Click \"my home\" to return home.";
+
     /** Used to parse JSON objects */
     private final Gson gson;
     private final GameLobby gameLobby;
@@ -31,11 +34,11 @@ public class PostResignGameRoute implements Route {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGame(player);
         if(game == null) {
-            return gson.toJson(new Message("Other player has resigned. Click \"my home\" to return home.", Message.Type.error));
+            return gson.toJson(new Message(RESIGN_FAIL, Message.Type.error));
         }
         gameLobby.endGame(game);
         if(!gameLobby.inGame(player)) {
-            request.session().attribute("resigned", true);
+            request.session().attribute(GetGameRoute.RESULT, RESIGN);
             return gson.toJson(new Message("success", Message.Type.info));
         }
         return gson.toJson(new Message("Error", Message.Type.error));

@@ -51,4 +51,8 @@ public class GameLobby {
         games.remove(game.getRedPlayer());
         games.remove(game.getWhitePlayer());
     }
+
+    public void leaveGame(Player player) {
+        games.remove(player);
+    }
 }
