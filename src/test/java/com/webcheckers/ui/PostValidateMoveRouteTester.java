@@ -39,9 +39,9 @@ public class PostValidateMoveRouteTester {
     private GameLobby gameLobby;
     private Game game;
     private Move move;
+    private Gson gson;
 
     //friendly
-    private Gson gson;
     private Player player;
 
     /**
@@ -77,11 +77,9 @@ public class PostValidateMoveRouteTester {
         when(gameLobby.getGame(player)).thenReturn(game);
         when(game.isValidMove(move)).thenReturn(false);
 
-        //invoke test
-        String type = (String) CuT.handle(request, response);
+        CuT.handle(request, response);
 
-        //assertNotNull(type);
-        //assertEquals(PostValidateMoveRoute.INVALID_MOVE, type);
+        verify(gson).toJson(any(Message.class));
     }
 
     /**
@@ -94,8 +92,10 @@ public class PostValidateMoveRouteTester {
         when(game.isValidMove(move)).thenReturn(true);
 
         //invoke test
-        String type = (String) CuT.handle(request, response);
+        CuT.handle(request, response);
+
         verify(game).makeMove(move);
+        verify(gson).toJson(any(Message.class));
     }
 
     /**
@@ -107,5 +107,6 @@ public class PostValidateMoveRouteTester {
 
         CuT.handle(request, response);
 
+        verify(gson).toJson(any(Message.class));
     }
 }

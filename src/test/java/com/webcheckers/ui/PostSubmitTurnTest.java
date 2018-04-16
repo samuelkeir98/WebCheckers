@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.Message;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
@@ -14,7 +15,9 @@ import spark.Response;
 import spark.Session;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 
 /**
  * Unit test suites for the PostSubmitTurn component
@@ -29,7 +32,6 @@ public class PostSubmitTurnTest {
     private PostSubmitTurnRoute CuT;
 
     //friendly
-    private Gson gson;
     private Player player;
 
     //mock
@@ -38,6 +40,7 @@ public class PostSubmitTurnTest {
     private Response response;
     private GameLobby gameLobby;
     private Game game;
+    private Gson gson;
 
     /**
      * Setup up before each test
@@ -50,14 +53,13 @@ public class PostSubmitTurnTest {
         response = mock(Response.class);
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
+        gson = mock(Gson.class);
 
         //friendly
-        gson = new Gson();
         player = new Player(PLAYER_NAME);
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
-        when(gameLobby.getGame(player)).thenReturn(game);
 
         //setup test
         CuT = new PostSubmitTurnRoute(gson, gameLobby);
@@ -68,10 +70,13 @@ public class PostSubmitTurnTest {
      */
     @Test
     public void turnComplete() {
+        when(gameLobby.getGame(player)).thenReturn(game);
         when(game.isTurnOver()).thenReturn(true);
 
         //invoke test
         CuT.handle(request, response);
+
+        verify(gson).toJson(any(Message.class));
     }
 
     /**
@@ -79,11 +84,27 @@ public class PostSubmitTurnTest {
      */
     @Test
     public void turnIncomplete() {
+        when(gameLobby.getGame(player)).thenReturn(game);
         //must jump
-        when(game.isTurnOver()).thenReturn(true);
+        when(game.isTurnOver()).thenReturn(false);
 
         //invoke test
         CuT.handle(request, response);
+
+        verify(gson).toJson(any(Message.class));
+    }
+
+    /**
+     * Tests Game is over
+     */
+    @Test
+    public void gameOver() {
+        when(gameLobby.getGame(player)).thenReturn(null);
+
+        //invoke test
+        CuT.handle(request, response);
+
+        verify(gson).toJson(any(Message.class));
     }
 
 }

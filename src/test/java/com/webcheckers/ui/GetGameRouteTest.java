@@ -152,7 +152,6 @@ public class GetGameRouteTest {
         verify(session).attribute(GetGameRoute.RESULT, GetGameRoute.WIN);
         verify(gameLobby).leaveGame(player);
         verify(response).redirect(WebServer.HOME_URL);
-
     }
 
     /**
