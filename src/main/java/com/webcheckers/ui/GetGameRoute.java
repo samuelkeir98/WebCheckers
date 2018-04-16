@@ -71,7 +71,7 @@ public class GetGameRoute implements Route {
                     httpSession.attribute(RESULT, LOST);
 
                 gameLobby.leaveGame(player);
-                response.redirect("/");
+                response.redirect(WebServer.HOME_URL);
                 return null;
             }
 

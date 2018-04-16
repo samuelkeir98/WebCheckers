@@ -14,10 +14,9 @@ import org.junit.jupiter.api.Test;
 
 import spark.*;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit test suite for the GetGameRoute component.
@@ -60,7 +59,6 @@ public class GetGameRouteTest {
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
         playerLobby = mock(PlayerLobby.class);
-        //opponent = mock(Player.class);
 
         //friendlies
         player = new Player(PLAYER_NAME);
@@ -86,6 +84,7 @@ public class GetGameRouteTest {
         when(gameLobby.inGame(eq(player))).thenReturn(true);
         when(game.getRedPlayer()).thenReturn(opponent);
         when(game.getWhitePlayer()).thenReturn(player);
+        when(game.isGameOver()).thenReturn(false);
 
         //mock render for analysis
         final TemplateEngineTester testHelper = new TemplateEngineTester();
@@ -122,6 +121,7 @@ public class GetGameRouteTest {
         CuT.handle(request, response);
 
         //response redirected
+        verify(response, times(1)).redirect(WebServer.HOME_URL);
     }
 
     /**
@@ -132,7 +132,46 @@ public class GetGameRouteTest {
         //test scenario: opponent logged out
         when(gameLobby.inGame(eq(player))).thenThrow(NullPointerException.class);
 
-        //response redirected
+    }
+
+    /**
+     * Tests game is won
+     */
+    @Test
+    public void game_won() {
+        when(gameLobby.getGame(eq(player))).thenReturn(game);
+        when(gameLobby.inGame(eq(player))).thenReturn(true);
+        when(game.getRedPlayer()).thenReturn(opponent);
+        when(game.getWhitePlayer()).thenReturn(player);
+        when(game.isGameOver()).thenReturn(true);
+        when(gameLobby.inGame(eq(opponent))).thenReturn(true);
+        when(gameLobby.inGame(eq(player))).thenReturn(true);
+
+        CuT.handle(request, response);
+
+        verify(session).attribute(GetGameRoute.RESULT, GetGameRoute.WIN);
+        verify(gameLobby).leaveGame(player);
+        verify(response).redirect(WebServer.HOME_URL);
+
+    }
+
+    /**
+     * Tests game is lost
+     */
+    @Test
+    public void game_lost() {
+        when(gameLobby.getGame(eq(player))).thenReturn(game);
+        when(gameLobby.inGame(eq(player))).thenReturn(true);
+        when(game.getRedPlayer()).thenReturn(opponent);
+        when(game.getWhitePlayer()).thenReturn(player);
+        when(game.isGameOver()).thenReturn(true);
+        when(gameLobby.inGame(eq(opponent))).thenReturn(false);
+
+        CuT.handle(request, response);
+
+        verify(session).attribute(GetGameRoute.RESULT, GetGameRoute.LOST);
+        verify(gameLobby).leaveGame(player);
+        verify(response).redirect(WebServer.HOME_URL);
     }
 
 }

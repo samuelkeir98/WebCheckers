@@ -39,7 +39,7 @@ public class GetSignoutRoute implements Route {
         Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
         playerLobby.signout(player);
         request.session().removeAttribute(PostSigninRoute.PLAYER_KEY);
-        response.redirect("/");
+        response.redirect(WebServer.HOME_URL);
         return null;
     }
 }
