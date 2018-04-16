@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers UI Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+/**
+ * Player model class
+ * @author Anthony Massicci
+ * Tested by Samuel Keir
+ */
+public class Player {
+    public static final int MAX_NAME_DISPLAY_LENGTH = 15;
+    private final String name;
+
+    /**
+     * Constructor
+     * @param name name of player
+     */
+<span class="fc" id="L16">    public Player(String name) {</span>
+<span class="fc" id="L17">        this.name = name;</span>
+<span class="fc" id="L18">    }</span>
+
+    /**
+     * Grabs name of player
+     */
+    public String getName() {
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        return (this.name.length()&lt;MAX_NAME_DISPLAY_LENGTH ? this.name : this.name.substring(0,MAX_NAME_DISPLAY_LENGTH)+&quot;...&quot;);</span>
+    }
+
+    /**
+     * Equals method for value object semantics
+     * @param other other object to compare this object to.
+     * @return equivalency
+     */
+    @Override
+    public boolean equals(Object other) {
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (!(other instanceof Player))</span>
+<span class="nc" id="L35">            return false;</span>
+
+<span class="fc" id="L37">        Player otherPlayer = (Player)other;</span>
+<span class="fc" id="L38">        return otherPlayer.name.equals(this.name);</span>
+    }
+
+    /**
+     * Implementation for hashCode
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L46">        return this.name.hashCode();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>UI Tier</div></body></html>

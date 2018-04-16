@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KingDirection.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model.moves</a> &gt; <span class="el_source">KingDirection.java</span></div><h1>KingDirection.java</h1><pre class="source lang-java linenums">package com.webcheckers.model.moves;
+
+
+/**
+ * Represents the four directions a king can go
+ * @author: Adrian Postolache
+ * Tested by Sam Keir
+ */
+<span class="nc" id="L9">public enum KingDirection implements Direction {</span>
+<span class="nc" id="L10">    FL(-1,-1), //Front left move</span>
+<span class="nc" id="L11">    FR(-1,1), //Front right move</span>
+<span class="nc" id="L12">    BL(1,-1), //Back left move</span>
+<span class="nc" id="L13">    BR(1,1); //Back right move</span>
+
+    /**
+     * The step values in the row and column direction
+     */
+    private int row,col;
+
+    /**
+     * Constructor for the enum.
+     * @param row Step in the row direction
+     * @param col Step in the column direction
+     */
+<span class="nc" id="L25">    KingDirection(int row,int col){</span>
+<span class="nc" id="L26">        this.row = row;</span>
+<span class="nc" id="L27">        this.col = col;</span>
+<span class="nc" id="L28">    }</span>
+
+    /**
+     * Override for the getRow method
+     * @return The row component of the direction
+     */
+    @Override
+    public int getRow() {
+<span class="nc" id="L36">        return row;</span>
+    }
+
+    /**
+     * Override for the getCol method
+     * @return The column component of the direction
+     */
+    @Override
+    public int getCol() {
+<span class="nc" id="L45">        return col;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>Application Tier</div></body></html>

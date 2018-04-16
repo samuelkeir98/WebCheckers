@@ -47,7 +47,7 @@ public class PostValidateMoveRoute implements Route {
 		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
 		Game game = gameLobby.getGame(player);
 		if(game == null) {
-			return gson.toJson(new Message("Opponent resigned. Refresh to go home.", Message.Type.error));
+			return gson.toJson(new Message("Opponent resigned. Click \"my home\" to return home.", Message.Type.error));
 		}
 		if(!game.isValidMove(move)){
 			return gson.toJson(new Message(INVALID_MOVE, Message.Type.error));

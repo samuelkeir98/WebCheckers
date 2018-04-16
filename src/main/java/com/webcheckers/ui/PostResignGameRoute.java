@@ -30,10 +30,14 @@ public class PostResignGameRoute implements Route {
     public Object handle(Request request, Response response) {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGame(player);
+        if(game == null) {
+            return gson.toJson(new Message("Other player has resigned. Click \"my home\" to return home.", Message.Type.error));
+        }
         gameLobby.endGame(game);
         if(!gameLobby.inGame(player)) {
+            request.session().attribute("resigned", true);
             return gson.toJson(new Message("success", Message.Type.info));
         }
-        return gson.toJson(new Message("fail", Message.Type.error));
+        return gson.toJson(new Message("Error", Message.Type.error));
     }
 }

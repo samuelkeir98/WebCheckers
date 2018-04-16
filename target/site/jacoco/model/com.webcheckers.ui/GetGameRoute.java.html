@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetGameRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Model Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">GetGameRoute.java</span></div><h1>GetGameRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import com.webcheckers.appl.BoardView;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.model.Color;
+import com.webcheckers.model.Game;
+import spark.*;
+
+import com.webcheckers.model.Board;
+import com.webcheckers.model.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Logger;
+
+/**
+ * UI Controller to GET game page
+ *
+ * @author Andy Gin
+ */
+public class GetGameRoute implements Route {
+
+    static final String TITLE_ATTR = &quot;title&quot;;
+    static final String TITLE = &quot;Game&quot;;
+<span class="nc" id="L26">    private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());</span>
+    private final TemplateEngine templateEngine;
+    private final GameLobby gameLobby;
+
+    /**
+     * Create the spark component for the
+     * {@code GET /game} HTTP request.
+     * @param templateEngine ftl template engine
+     * @param gameLobby keeps track of all games
+     */
+<span class="nc" id="L36">    public GetGameRoute(TemplateEngine templateEngine, GameLobby gameLobby) {</span>
+<span class="nc" id="L37">        this.gameLobby = gameLobby;</span>
+<span class="nc" id="L38">        Objects.requireNonNull(templateEngine, &quot;templateEngine must not be null&quot;);</span>
+<span class="nc" id="L39">        this.templateEngine = templateEngine;</span>
+
+<span class="nc" id="L41">        LOG.config(&quot;GetGameRoute is initialized.&quot;);</span>
+<span class="nc" id="L42">    }</span>
+
+    /**
+     * Render the game page
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return rendered game page
+     */
+    @Override
+    public Object handle(Request request, Response response) {
+<span class="nc" id="L52">        LOG.finer(&quot;GetGameRoute is invoked&quot;);</span>
+<span class="nc" id="L53">        Session httpSession = request.session();</span>
+<span class="nc" id="L54">        Player player = httpSession.attribute(PostSigninRoute.PLAYER_KEY);</span>
+<span class="nc" id="L55">        final Map&lt;String, Object&gt; vm = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L56">        vm.put(TITLE_ATTR, TITLE);</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if(gameLobby.inGame(player)) {</span>
+<span class="nc" id="L59">            Game game = gameLobby.getGame(player);</span>
+<span class="nc" id="L60">            Player player1 = game.getRedPlayer();</span>
+<span class="nc" id="L61">            Player player2 = game.getWhitePlayer();</span>
+
+<span class="nc" id="L63">            ViewMode view = ViewMode.PLAY;</span>
+<span class="nc" id="L64">            vm.put(PostGameRoute.CURRENT_PLAYER_ATTR, player);</span>
+<span class="nc" id="L65">            vm.put(PostGameRoute.VIEW_MODE_ATTR, view);</span>
+<span class="nc" id="L66">            vm.put(PostGameRoute.RED_PLAYER_ATTR, player1);</span>
+<span class="nc" id="L67">            vm.put(PostGameRoute.WHITE_PLAYER_ATTR, player2);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, game.getCurPlayer() == player2 ? Color.WHITE : Color.RED);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(player),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));</span>
+<span class="nc" id="L70">            return templateEngine.render(new ModelAndView(vm, PostGameRoute.TEMPLATE_NAME));</span>
+        }
+
+        else {
+<span class="nc" id="L74">            response.redirect(&quot;/&quot;);</span>
+<span class="nc" id="L75">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>Model Tier</div></body></html>

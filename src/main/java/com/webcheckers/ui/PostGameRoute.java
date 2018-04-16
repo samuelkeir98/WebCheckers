@@ -76,18 +76,9 @@ public class PostGameRoute implements Route {
         }
 
         else {
-            Game game = gameLobby.getGame(player2);
-            Player red = game.getRedPlayer();
-            Player white = game.getWhitePlayer();
-
-            ViewMode view = ViewMode.SPECTATOR;
-            vm.put(CURRENT_PLAYER_ATTR, player1);
-            vm.put(VIEW_MODE_ATTR, view);
-            vm.put(RED_PLAYER_ATTR, red);
-            vm.put(WHITE_PLAYER_ATTR, white);
-            vm.put(ACTIVE_COLOR_ATTR, game.getCurPlayer() == red ? Color.RED : Color.WHITE);
-            vm.put(BOARD_ATTR, new BoardView(game.getBoard(),Color.RED));
-            return templateEngine.render(new ModelAndView(vm, TEMPLATE_NAME));
+            request.session().attribute("message", "Player already in game!");
+            response.redirect("/");
+            return null;
         }
     }
 }

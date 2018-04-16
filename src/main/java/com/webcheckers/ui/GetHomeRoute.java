@@ -22,6 +22,7 @@ public class GetHomeRoute implements Route {
   public static final String OTHER_PLAYERS_PARAM = "otherPlayers";
   public static final String PLAYER_KEY = "player";
   public static final String TEMPLATE_NAME = "home.ftl";
+  public static final String PLAYER_IN_GAME = "message";
 
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
@@ -84,8 +85,8 @@ public class GetHomeRoute implements Route {
         response.redirect("/game");
       }
 
-      String message = session.attribute("message");
-      vm.put("message", message);
+      String message = session.attribute(PLAYER_IN_GAME);
+      vm.put(PLAYER_IN_GAME, message);
 
     }
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostCheckTurnRoute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.ui</a> &gt; <span class="el_source">PostCheckTurnRoute.java</span></div><h1>PostCheckTurnRoute.java</h1><pre class="source lang-java linenums">package com.webcheckers.ui;
+
+import com.google.gson.Gson;
+import com.webcheckers.appl.GameLobby;
+import com.webcheckers.appl.Message;
+import com.webcheckers.model.Game;
+import com.webcheckers.model.Player;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.TemplateEngine;
+
+import java.util.Objects;
+import java.util.logging.Logger;
+
+/**
+ * UI Controller for POST check turn route
+ */
+public class PostCheckTurnRoute implements Route {
+<span class="nc" id="L20">    private static final Logger LOG = Logger.getLogger(PostCheckTurnRoute.class.getName());</span>
+
+    /** Used to parse JSON objects */
+    private final Gson gson;
+    private final GameLobby gameLobby;
+
+    /**
+     * Create spark component for HTTP request
+     * @param gson used to parse JSON objects
+     * @param gameLobby lobby of games
+     */
+<span class="nc" id="L31">    public PostCheckTurnRoute(Gson gson, GameLobby gameLobby) {</span>
+<span class="nc" id="L32">        this.gson = gson;</span>
+<span class="nc" id="L33">        this.gameLobby = gameLobby;</span>
+
+<span class="nc" id="L35">        LOG.config(&quot;PostCheckTurnRoute is initialized.&quot;);</span>
+<span class="nc" id="L36">    }</span>
+
+    /**
+     * Checks if it is player's turn yet
+     * @param request HTTP request object
+     * @param response HTTP response object
+     * @return true if it is player's turn, false otherwise
+     */
+    @Override
+    public Object handle(Request request, Response response) {
+<span class="nc" id="L46">        Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);</span>
+<span class="nc" id="L47">        Game game = gameLobby.getGame(player);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if(game.getCurPlayer().equals(player)){</span>
+<span class="nc" id="L49">            return gson.toJson(new Message(&quot;true&quot;, Message.Type.info));</span>
+        }else{
+<span class="nc" id="L51">            return gson.toJson(new Message(&quot;false&quot;, Message.Type.info));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>Application Tier</div></body></html>

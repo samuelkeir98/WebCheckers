@@ -45,7 +45,7 @@ public class PostCheckTurnRoute implements Route {
         if(game == null || game.isGameOver()) {
             if(game != null)
                 gameLobby.endGame(game);
-            return gson.toJson(new Message("Game over. Refresh to go home.", Message.Type.error));
+            return gson.toJson(new Message("Game over. Click \"my home\" to return home.", Message.Type.error));
         }
         else if(game.getCurPlayer().equals(player)){
             return gson.toJson(new Message("true", Message.Type.info));

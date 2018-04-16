@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Jump.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Model Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model.moves</a> &gt; <span class="el_source">Jump.java</span></div><h1>Jump.java</h1><pre class="source lang-java linenums">package com.webcheckers.model.moves;
+
+import com.webcheckers.model.Color;
+import com.webcheckers.model.Piece;
+
+/**
+ * Representation of a Jump move. Keeps track of the piece being jumped for easy undo functionality
+ * @author: Adrian Postolache axp3806@rit.edu
+ * Tested by Sam Keir
+ */
+public class Jump extends Move {
+
+    /**
+     * The piece that's getting jumped
+     */
+    private Piece jumped;
+
+    /**
+     * Creates a move that represents a jump
+     * @param piece Piece that's moving
+     * @param direction The raw direction it's going in
+     * @param color The color of the piece that's moving
+     * @param taken The piece being jumped over and killed
+     */
+    public Jump(Piece piece, Direction direction, Color color, Piece taken){
+<span class="nc" id="L26">        super(piece,direction,Type.JUMP,color);</span>
+<span class="nc" id="L27">        jumped = taken;</span>
+<span class="nc" id="L28">    }</span>
+
+    /**
+     * Gets the piece that being jumped
+     * @return The jumped piece
+     */
+    public Piece getJumped() {
+<span class="nc" id="L35">        return jumped;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>Model Tier</div></body></html>

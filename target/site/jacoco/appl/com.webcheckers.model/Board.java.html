@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import com.webcheckers.model.moves.*;
+
+import java.util.*;
+
+/**
+ * Model object that holds and moves the pieces around, also managing if the game's over or not
+ * @author: Adrian Postolache
+ */
+public class Board implements Iterable&lt;Row&gt; {
+
+    /** Amount of rows in a board */
+    public static final int NUM_ROWS = 8;
+
+    /** The color of the player whose turn it is */
+    private Color curTurn;
+
+    /** Tells if turn is over */
+<span class="nc" id="L20">    private boolean turnOver = false;</span>
+
+    /** All of the red player's pieces */
+    private Set&lt;Piece&gt; redPieces;
+
+    /** All of whitey's pieces */
+    private Set&lt;Piece&gt; whitePieces;
+
+    /** The collection of Rows */
+    private List&lt;Row&gt; rows;
+
+    /** Set of available moves */
+    private Map&lt;Move, Move&gt; moves;
+
+    /**
+     * Builds a board in the starting configuration for Checkers
+     */
+<span class="nc" id="L37">    public Board(){</span>
+<span class="nc" id="L38">        this.redPieces = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L39">        this.whitePieces = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L40">        this.curTurn = Color.RED;</span>
+<span class="nc" id="L41">        this.rows = new ArrayList&lt;&gt;(NUM_ROWS);</span>
+<span class="nc" id="L42">        this.moves = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for(int i = 0;i&lt;NUM_ROWS;i++){</span>
+<span class="nc" id="L44">            rows.add(new Row(i));</span>
+        }
+
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        for(int row = 0; row&lt;3; row++) {</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            for (int i = 0; i &lt; Row.ROW_SIZE; i++) {</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                if((i+row)%2 == 1) {</span>
+<span class="nc" id="L50">                    Piece piece = new Piece(new Position(row,i),Color.WHITE);</span>
+<span class="nc" id="L51">                    whitePieces.add(piece);</span>
+<span class="nc" id="L52">                    rows.get(row).placePiece(piece,i);</span>
+                }
+            }
+        }
+
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        for(int row = NUM_ROWS-3; row&lt;NUM_ROWS; row++) {</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            for (int i = 0; i &lt; Row.ROW_SIZE; i++) {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">                if((i+row)%2 == 1) {</span>
+<span class="nc" id="L60">                    Piece piece = new Piece(new Position(row,i),Color.RED);</span>
+<span class="nc" id="L61">                    redPieces.add(piece);</span>
+<span class="nc" id="L62">                    rows.get(row).placePiece(piece,i);</span>
+                }
+            }
+        }
+<span class="nc" id="L66">    }</span>
+
+    public static Board emptyBoard(){
+<span class="nc" id="L69">        Board board = new Board();</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        for(int i = 0; i&lt;NUM_ROWS;i++){</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            for(int j = 0;j&lt;Row.ROW_SIZE;j++){</span>
+<span class="nc" id="L72">            	board.rows.get(i).removePiece(j);</span>
+            }
+        }
+
+<span class="nc" id="L76">        board.redPieces.clear();</span>
+<span class="nc" id="L77">        board.whitePieces.clear();</span>
+<span class="nc" id="L78">        return board;</span>
+    }
+
+
+    /**
+     * Tells whether or not the game is over
+     * @return
+     */
+    //TODO
+<span class="nc" id="L87">    boolean isGameOver(){return false;}</span>
+
+    /**
+     * Gets the winner of this board
+     * @return The Player who is the winner, or null if game isn't over.
+     */
+    //TODO
+<span class="nc" id="L94">    Player getWinner(){return null;}</span>
+
+    /**
+     * @return the color of the player whose turn it is
+     */
+<span class="nc" id="L99">    public Color whoseTurn(){return curTurn;}</span>
+
+    /**
+     * @return color of opponent
+     */
+    public Color getOpponent() {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        return curTurn == Color.RED ? Color.WHITE : Color.RED;</span>
+    }
+
+    /**
+     * Helper method to check if dimension of space is in bounds of board
+     * @param row row to check
+     * @param col column to check
+     * @return true if row and column are within board's dimensions, false otherwise
+     */
+    public boolean inBounds(int row, int col) {
+<span class="nc bnc" id="L115" title="All 8 branches missed.">        return row &gt;= 0 &amp;&amp; row &lt; NUM_ROWS &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; NUM_ROWS;</span>
+    }
+
+    /**
+     * Finds and adds possible jump moves of a pieces to map
+     */
+    public void addJumps(Piece piece) {
+
+<span class="nc" id="L123">        Position pos = piece.getPosition();</span>
+<span class="nc" id="L124">        Direction[] directions = piece.getDirections();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        for (Direction dir : directions) {</span>
+<span class="nc" id="L126">            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();</span>
+<span class="nc" id="L127">            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;</span>
+
+            //checks next row and column in directions of piece for an opponent piece
+<span class="nc bnc" id="L131" title="All 4 branches missed.">            if (row != null &amp;&amp; row.isPieceAt(col, getOpponent())) {</span>
+<span class="nc" id="L132">                int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();</span>
+<span class="nc" id="L133">                int col2 = col + dir.getCol() * curTurn.getMovementFactor();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;</span>
+<span class="nc" id="L135">                Piece pieceTaken = row.getPieceAt(col);</span>
+
+<span class="nc bnc" id="L137" title="All 4 branches missed.">                if (nextRow != null &amp;&amp; !nextRow.isPieceAt(col2)) {</span>
+<span class="nc" id="L138">                    Jump jump = new Jump(piece, dir, curTurn, pieceTaken);</span>
+<span class="nc" id="L139">                    moves.put(jump, jump);</span>
+                }
+            }
+        }
+<span class="nc" id="L143">    }</span>
+
+    /**
+     * Finds and adds possible steps of a pieces to map
+     */
+    public void addSteps(Piece piece) {
+
+<span class="nc" id="L150">        Position pos = piece.getPosition();</span>
+<span class="nc" id="L151">        Direction[] directions = piece.getDirections();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        for (Direction dir : directions) {</span>
+<span class="nc" id="L153">            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();</span>
+<span class="nc" id="L154">            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;</span>
+
+<span class="nc bnc" id="L157" title="All 4 branches missed.">            if (row != null &amp;&amp; !row.isPieceAt(col)) {</span>
+<span class="nc" id="L158">                Move step = new Step(piece, dir, curTurn);</span>
+<span class="nc" id="L159">                moves.put(step, step);</span>
+            }
+        }
+<span class="nc" id="L162">    }</span>
+
+    /**
+     * Adds all valid moves of all pieces to map
+     */
+    public void addMoves() {
+
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        Iterator iter = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        while(iter.hasNext()) {</span>
+<span class="nc" id="L171">            Piece piece = (Piece) iter.next();</span>
+<span class="nc" id="L172">            addJumps(piece);</span>
+<span class="nc" id="L173">        }</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if(moves.isEmpty()) {</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">            Iterator iter2 = curTurn == Color.RED ? redPieces.iterator() : whitePieces.iterator();</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            while(iter2.hasNext()) {</span>
+<span class="nc" id="L178">                Piece piece = (Piece) iter2.next();</span>
+<span class="nc" id="L179">                addSteps(piece);</span>
+<span class="nc" id="L180">            }</span>
+        }
+
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        if(moves.isEmpty()) {</span>
+<span class="nc" id="L184">            turnOver = true;</span>
+        }
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * Adds moves for one piece
+     * @param piece piece to get moves for
+     */
+    public void addMoves(Piece piece) {
+<span class="nc" id="L193">        addJumps(piece);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if(moves.isEmpty()) {</span>
+<span class="nc" id="L195">            turnOver = true;</span>
+        }
+<span class="nc" id="L197">    }</span>
+
+    /**
+     * Gets move with information using move from JSON
+     * @param move move with only start and end from JSON
+     * @return move with information
+     */
+    public Move getMove(Move move) {
+<span class="nc" id="L205">        return moves.get(move);</span>
+    }
+
+    /**
+     * Gets the piece in the passed position
+     * @param position the position to look at
+     * @return the piece at that position, null if none
+     */
+    Piece getPiece(Position position){
+<span class="nc" id="L214">        return rows.get(position.getRow()).getPieceAt(position.getCell());</span>
+    }
+
+    public void placePiece(Piece piece,Position position){
+<span class="nc bnc" id="L218" title="All 2 branches missed.">    	if(piece!=null) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			Set&lt;Piece&gt; set = (piece.getColor() == Color.RED ? redPieces : whitePieces);</span>
+<span class="nc" id="L220">			set.add(piece);</span>
+		}
+<span class="nc" id="L222">        rows.get(position.getRow()).placePiece(piece,position.getCell());</span>
+<span class="nc" id="L223">    }</span>
+
+    /**
+     * Checks if a move is legal to make in the current state of the board
+     * @param move the move being tested
+     * @return whether it can be made
+     */
+    boolean isValidMove(Move move){
+<span class="nc" id="L231">        return moves.containsKey(move);</span>
+    }
+
+    /**
+     * Handles a step or jump move on board
+     * @param move move to be made
+     */
+    public MoveAction makeMove(Move move){
+<span class="nc" id="L239">        Position startPos = move.getStart();</span>
+<span class="nc" id="L240">        Position endPos = move.getEnd();</span>
+
+<span class="nc" id="L242">        Piece myPiece = getPiece(startPos);</span>
+<span class="nc" id="L243">        Row row = rows.get(startPos.getRow());</span>
+<span class="nc" id="L244">        row.removePiece(startPos.getCell());</span>
+<span class="nc" id="L245">        row = rows.get(endPos.getRow());</span>
+
+<span class="nc" id="L247">        myPiece.setPosition(endPos);</span>
+<span class="nc" id="L248">        row.placePiece(myPiece,endPos.getCell());</span>
+
+<span class="nc" id="L250">        moves.clear();</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        if(move.getType() == Move.Type.JUMP) {</span>
+<span class="nc" id="L252">            Piece pieceTaken = ((Jump) move).getJumped();</span>
+<span class="nc" id="L253">            Row takenRow = rows.get(pieceTaken.getPosition().getRow());</span>
+<span class="nc" id="L254">            takenRow.removePiece(pieceTaken.getPosition().getCell());</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            if(curTurn == Color.RED)</span>
+<span class="nc" id="L256">                whitePieces.remove(pieceTaken);</span>
+            else
+<span class="nc" id="L258">                redPieces.remove(pieceTaken);</span>
+
+<span class="nc" id="L260">            return new JumpUndo(move, this, pieceTaken);</span>
+        } else {
+<span class="nc" id="L262">            turnOver = true;</span>
+        }
+<span class="nc" id="L264">        return new MoveUndo(move, this);</span>
+    }
+
+    /**
+     * @return if turn is over
+     */
+    public boolean isTurnOver() {
+<span class="nc" id="L271">        return turnOver;</span>
+    }
+<span class="nc" id="L273">    public void resetTurnOver() { turnOver = false; }</span>
+
+    /**
+     * Switches turns and clears moves
+     */
+    public void submitTurn(){
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        this.curTurn = (curTurn == Color.RED ? Color.WHITE: Color.RED);</span>
+<span class="nc" id="L280">        this.moves.clear();</span>
+<span class="nc" id="L281">        turnOver = false;</span>
+<span class="nc" id="L282">    }</span>
+
+    /**
+     * Makes moves to board and submits turn
+     * @param moves moves to make to board
+     */
+    public void submitTurn(List&lt;Move&gt; moves){
+<span class="nc bnc" id="L289" title="All 2 branches missed.">        for(Move move: moves){</span>
+<span class="nc" id="L290">            makeMove(move);</span>
+<span class="nc" id="L291">        }</span>
+<span class="nc" id="L292">        submitTurn();</span>
+<span class="nc" id="L293">    }</span>
+
+    /**
+     * @return The iterator containing Rows
+     */
+    @Override
+    public Iterator&lt;Row&gt; iterator() {
+<span class="nc" id="L300">        return rows.iterator();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>Application Tier</div></body></html>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers Application Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package com.webcheckers.model;
+
+import com.webcheckers.model.moves.Move;
+import com.webcheckers.model.moves.MoveAction;
+import com.webcheckers.model.moves.Position;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * Represents a WebCheckers game
+ */
+public class Game {
+
+    /** Board game is played on */
+    private Board board;
+
+    /** Board of curent turn */
+    private Board turnBoard;
+
+    /** Players of the game */
+    private Player whitePlayer,redPlayer;
+
+    /** Tells if game is over or not */
+    private boolean gameOver;
+
+    /** Stack of moves to back up if necessary */
+    private Stack&lt;MoveAction&gt; lastPlayed;
+
+    /** List of moves made in current turn to be submitted */
+    private List&lt;Move&gt; movesMade;
+
+    /**
+     * Initializes a game
+     * @param redPlayer player 1 in game
+     * @param whitePlayer player 2 in game
+     */
+<span class="nc" id="L39">    public Game(Player redPlayer,Player whitePlayer){</span>
+<span class="nc" id="L40">        this.redPlayer = redPlayer;</span>
+<span class="nc" id="L41">        this.whitePlayer = whitePlayer;</span>
+<span class="nc" id="L42">        gameOver = false;</span>
+<span class="nc" id="L43">        board = new Board();</span>
+<span class="nc" id="L44">        turnBoard = new Board();</span>
+<span class="nc" id="L45">        gameOver = false;</span>
+<span class="nc" id="L46">        lastPlayed = new Stack&lt;&gt;();</span>
+<span class="nc" id="L47">        movesMade = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L48">        turnBoard.addMoves();</span>
+<span class="nc" id="L49">    }</span>
+
+    /**
+     * @return the current player's color
+     */
+<span class="nc" id="L54">    public Color getTurn(){return board.whoseTurn();}</span>
+
+    /**
+     * Stores moves in stack and list to submit or back up moves
+     * @param move
+     */
+    public void makeMove(Move move){
+        //get move with info
+<span class="nc" id="L62">        Move actualMove = turnBoard.getMove(move);</span>
+        //lastPlayed.push(actualMove);
+<span class="nc" id="L64">        movesMade.add(actualMove);</span>
+<span class="nc" id="L65">        MoveAction action = turnBoard.makeMove(actualMove);</span>
+<span class="nc" id="L66">        lastPlayed.push(action);</span>
+
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(actualMove.getType() == Move.Type.JUMP) {</span>
+<span class="nc" id="L69">            Piece piece = turnBoard.getPiece(move.getEnd());</span>
+<span class="nc" id="L70">            turnBoard.addMoves(piece);</span>
+        }
+<span class="nc" id="L72">    }</span>
+
+    /**
+     * @return true if game is over, false otherwise
+     */
+    public boolean isGameOver(){
+<span class="nc bnc" id="L78" title="All 4 branches missed.">        return gameOver || board.isGameOver();</span>
+    }
+
+    /**
+     * @return the game board
+     */
+    public Board getBoard() {
+<span class="nc" id="L85">        return board;</span>
+    }
+
+    /**
+     * Gets board of certain player
+     * @param player player to get board for
+     * @return player's board
+     */
+    public Board getBoard(Player player){
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        return (player.equals(getCurPlayer()) ? turnBoard : board);</span>
+    }
+
+    /**
+     * Checks if a move is valid
+     * @param move move to check
+     * @return true if move follows rules, false otherwise
+     */
+    public boolean isValidMove(Move move){
+<span class="nc" id="L103">        return turnBoard.isValidMove(move);</span>
+    }
+
+    /**
+     * Generates all the legal move the current player can make
+     */
+    public void generateMoves() {
+<span class="nc" id="L110">        turnBoard.addMoves();</span>
+<span class="nc" id="L111">    }</span>
+
+    /**
+     * Makes all moves stored in list and switches turn
+     */
+    public void submitTurn(){
+<span class="nc" id="L117">        board.submitTurn(movesMade);</span>
+<span class="nc" id="L118">        turnBoard.submitTurn();</span>
+<span class="nc" id="L119">        movesMade.clear();</span>
+<span class="nc" id="L120">        lastPlayed.clear();</span>
+<span class="nc" id="L121">        turnBoard.addMoves();</span>
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * @return winner of the game
+     */
+    public Player getWinner(){
+<span class="nc" id="L128">        return board.getWinner();</span>
+    }
+
+    /**
+     * Backs up last move made
+     */
+    //TODO
+    public boolean backUpMove() {
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (lastPlayed.empty())</span>
+<span class="nc" id="L137">            return false;</span>
+
+<span class="nc" id="L139">        MoveAction action = lastPlayed.pop();</span>
+<span class="nc" id="L140">        action.execute();</span>
+<span class="nc" id="L141">        movesMade.remove(movesMade.size() - 1);</span>
+<span class="nc" id="L142">        return true;</span>
+    }
+
+    /**
+     * @return if current turn is over
+     */
+    public boolean isTurnOver() {
+<span class="nc" id="L149">        return turnBoard.isTurnOver();</span>
+    }
+
+    /**
+     * @return player whose turn it is
+     */
+    public Player getCurPlayer(){
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        return (board.whoseTurn() == Color.RED ? redPlayer : whitePlayer);</span>
+    }
+
+    /**
+     * @return player 2 of game
+     */
+    public Player getWhitePlayer() {
+<span class="nc" id="L163">        return whitePlayer;</span>
+    }
+
+    /**
+     * @return player 1 of game
+     */
+    public Player getRedPlayer() {
+<span class="nc" id="L170">        return redPlayer;</span>
+    }
+
+    /**
+     * Checks if player is in game
+     * @param player player to check for
+     * @return true if player is in game, false otherwise
+     */
+    public boolean hasPlayer(Player player) {
+<span class="nc bnc" id="L179" title="All 4 branches missed.">        return player.equals(redPlayer) || player.equals(whitePlayer);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>Application Tier</div></body></html>

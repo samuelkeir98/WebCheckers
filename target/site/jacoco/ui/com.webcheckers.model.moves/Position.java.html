@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Position.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers UI Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.model.moves</a> &gt; <span class="el_source">Position.java</span></div><h1>Position.java</h1><pre class="source lang-java linenums">package com.webcheckers.model.moves;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * An easy value object method to pass positions around without needing too many parameters
+ * @author: Adrian Postolache
+ * Tested by Sam Keir
+ */
+public class Position implements Serializable{
+
+    /**
+     * The row and column this position represents
+     */
+    private final int row,cell;
+
+    /**
+     * Creates the position value object
+     * @param row The row
+     * @param cell The column
+     */
+<span class="fc" id="L23">    public Position(int row,int cell){</span>
+<span class="fc" id="L24">        this.row = row;</span>
+<span class="fc" id="L25">        this.cell = cell;</span>
+<span class="fc" id="L26">    }</span>
+
+    /**
+     * Gets the row
+     * @return The row
+     */
+    public int getRow() {
+<span class="fc" id="L33">        return row;</span>
+    }
+
+    /**
+     * Gets the column
+     * @return The column
+     */
+    public int getCell() {
+<span class="fc" id="L41">        return cell;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L46">        return Objects.hash(row,cell);</span>
+    }
+
+    /**
+     * Equals method for Position
+     * @param obj Object being compared to
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if(obj instanceof Position){</span>
+<span class="nc" id="L57">            Position position = (Position) obj;</span>
+<span class="nc bnc" id="L58" title="All 4 branches missed.">            return row == position.row &amp;&amp; cell == position.cell;</span>
+        }
+<span class="nc" id="L60">        return false;</span>
+    }
+
+    /**
+     * Override for the toString method
+     * @return  The row and cell representing the position
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L69">        return &quot;Position row: &quot;+row+&quot; Cell: &quot;+cell;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>UI Tier</div></body></html>

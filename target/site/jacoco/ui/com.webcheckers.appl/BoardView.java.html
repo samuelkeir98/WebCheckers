@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoardView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">WebCheckers UI Tier Test Coverage</a> &gt; <a href="index.source.html" class="el_package">com.webcheckers.appl</a> &gt; <span class="el_source">BoardView.java</span></div><h1>BoardView.java</h1><pre class="source lang-java linenums">package com.webcheckers.appl;
+
+import com.webcheckers.model.Board;
+import com.webcheckers.model.Color;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.Row;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * BoardView class that renders how board is viewed
+ */
+public class BoardView implements Iterable&lt;RowView&gt; {
+
+	/** list of rowViews to display */
+	private List&lt;RowView&gt; rowViews;
+
+	/** checkers game board */
+	private Board board;
+
+	/**
+	 * Determines view of the board respective to player color
+	 * @param board board to view
+	 * @param player player to view board as
+	 */
+<span class="fc" id="L28">	public BoardView(Board board, Color player){</span>
+<span class="fc" id="L29">		rowViews = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L30">		this.board = board;</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">		for(Row row:board){</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">			if(player == Color.RED){</span>
+<span class="fc" id="L33">				rowViews.add(new RowView(row,player));</span>
+			}else{
+<span class="fc" id="L35">				rowViews.add(0,new RowView(row,player));</span>
+			}
+<span class="fc" id="L37">		}</span>
+<span class="fc" id="L38">	}</span>
+
+	/**
+	 * checks whose turn it is
+	 * @return the color of the current player's turn
+	 */
+	public Color whoseTurn(){
+<span class="nc" id="L45">		return board.whoseTurn();</span>
+	}
+
+	/**
+	 * @return iterator of rowViews List
+	 */
+	@Override
+	public Iterator&lt;RowView&gt; iterator() {
+<span class="nc" id="L53">		return rowViews.iterator();</span>
+	}
+
+	/**
+	 * Tells if boardviews are same by board
+	 * @param obj other boardview to check
+	 * @return if boardview is same
+	 */
+	@Override
+	public boolean equals(Object obj) {
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">		if(obj instanceof BoardView) {</span>
+<span class="fc" id="L64">			BoardView view = (BoardView)obj;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">			return view.board == this.board;</span>
+		}
+<span class="nc" id="L67">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span>UI Tier</div></body></html>
