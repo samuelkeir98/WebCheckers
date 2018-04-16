@@ -46,8 +46,7 @@ public class Board implements Iterable<Row> {
 
         for(int row = 0; row<3; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
-                //if((i+row)%2 == 1) {
-                if(row == 2 && i == 3) {
+                if((i+row)%2 == 1) {
                     Piece piece = new Piece(new Position(row,i),Color.WHITE);
                     whitePieces.add(piece);
                     rows.get(row).placePiece(piece,i);
@@ -57,8 +56,7 @@ public class Board implements Iterable<Row> {
 
         for(int row = NUM_ROWS-3; row<NUM_ROWS; row++) {
             for (int i = 0; i < Row.ROW_SIZE; i++) {
-                //if((i+row)%2 == 1) {
-                if(row == 5 && i == 4) {
+                if((i+row)%2 == 1) {
                     Piece piece = new Piece(new Position(row,i),Color.RED);
                     redPieces.add(piece);
                     rows.get(row).placePiece(piece,i);
