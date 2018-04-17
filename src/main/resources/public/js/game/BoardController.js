@@ -197,6 +197,9 @@ define(function(require){
     .off('dragend');
   }
 
+  BoardController.prototype.clearHighlightedMoves = function () {
+    jQuery('.highlight').removeClass('highlight');
+  }
   //
   // Private (external) functions
   //

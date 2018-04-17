@@ -104,6 +104,14 @@ define(function(require){
       view.displayMessage(message);
     }
 
+    this.highlightAvailableMoves = function (moves) {
+      const spaceGroups = moves
+        .map(move => [this._boardController.getSpace$(move.start),
+                      this._boardController.getSpace$(move.end)]);
+      const spaces = [].concat(...spaceGroups);
+      spaces.forEach(space => space.addClass('highlight'));
+    };
+
   };
 
   //
@@ -233,6 +241,9 @@ define(function(require){
       this.$activePiece = this._boardController.getPiece$(this._pendingMove.end);
       console.info('$activePiece', this.$activePiece);
     }
+    // clear highlighting of available moves
+    this._boardController.clearHighlightedMoves();
+
     // change the 'pending' to 'valid'
     this._boardController.setSpaceValidated(this._pendingMove.start);
     this._boardController.setSpaceValidated(this._pendingMove.end);
@@ -273,7 +284,12 @@ define(function(require){
   };
 
   PlayController.prototype.availableMoves = function () {
-    console.log('TODO: implement');
+    const processMoves = message => {
+      if (message.type === 'info')
+        this.highlightAvailableMoves(JSON.parse(message.text));
+    };
+    jQuery.get('/availableMoves')
+      .done(processMoves.bind(this));
   };
 
   PlayController.prototype.undoMove = function undoMove(move) {
