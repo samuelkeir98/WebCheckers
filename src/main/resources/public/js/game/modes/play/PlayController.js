@@ -72,6 +72,8 @@ define(function(require){
             PlayModeConstants.SUBMIT_BUTTON_TOOLTIP, this.submitTurn);
     this.addButton(PlayModeConstants.RESIGN_BUTTON_ID, 'Resign', true,
             PlayModeConstants.RESIGN_BUTTON_TOOLTIP, this.resignGame);
+    this.addButton(PlayModeConstants.HELP_BUTTON_ID, 'Help', false,
+            PlayModeConstants.HELP_BUTTON_TOOLTIP, this.availableMoves);
 
     // Public (internal) methods
 
@@ -268,6 +270,10 @@ define(function(require){
     }
     //
     this._boardController.enablePiece(this.$activePiece);
+  };
+
+  PlayController.prototype.availableMoves = function () {
+    console.log('TODO: implement');
   };
 
   PlayController.prototype.undoMove = function undoMove(move) {
