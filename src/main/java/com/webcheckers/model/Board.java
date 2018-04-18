@@ -198,6 +198,15 @@ public class Board implements Iterable<Row> {
         }
     }
 
+
+    /**
+     * returns set of all generated available moves
+     * @return available move set
+     */
+    public Set<Move> getAvailableMoves() {
+        return moves.keySet();
+    }
+
     /**
      * Gets move with information using move from JSON
      * @param move move with only start and end from JSON
