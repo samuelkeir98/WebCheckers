@@ -17,6 +17,7 @@ public class PostValidateMoveRoute implements Route {
 
 	public static final String INVALID_MOVE = "Invalid Move";
 	public static final String VALID_MOVE = "Move made";
+	public static final String GAME_OVER = "Opponent Resigned. Submit turn to end";
 
 	private static final Logger LOG = Logger.getLogger(PostValidateMoveRoute.class.getName());
 
@@ -46,10 +47,16 @@ public class PostValidateMoveRoute implements Route {
 		Move move = gson.fromJson(request.body(), Move.class);
 		Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
 		Game game = gameLobby.getGame(player);
-		if(!game.isValidMove(move)){
-			return gson.toJson(new Message(INVALID_MOVE, Message.Type.error));
+
+		if(game == null) {
+			return gson.toJson(new Message(GAME_OVER, Message.Type.info));
 		}
-		game.makeMove(move);
-		return gson.toJson(new Message(VALID_MOVE, Message.Type.info));
+
+		else if(game.isValidMove(move)) {
+			game.makeMove(move);
+			return gson.toJson(new Message(VALID_MOVE, Message.Type.info));
+		}
+
+		return gson.toJson(new Message(INVALID_MOVE, Message.Type.error));
 	}
 }

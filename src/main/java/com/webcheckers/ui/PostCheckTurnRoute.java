@@ -8,9 +8,6 @@ import com.webcheckers.model.Player;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.TemplateEngine;
-
-import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +42,8 @@ public class PostCheckTurnRoute implements Route {
     public Object handle(Request request, Response response) {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGame(player);
-        if(game.getCurPlayer().equals(player)){
+
+        if(game == null || game.getCurPlayer().equals(player)){
             return gson.toJson(new Message("true", Message.Type.info));
         }else{
             return gson.toJson(new Message("false", Message.Type.info));

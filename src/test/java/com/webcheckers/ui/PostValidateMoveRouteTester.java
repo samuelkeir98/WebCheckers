@@ -18,9 +18,7 @@ import spark.Response;
 import spark.Session;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit test suites for the PostValidateMove component
@@ -41,9 +39,9 @@ public class PostValidateMoveRouteTester {
     private GameLobby gameLobby;
     private Game game;
     private Move move;
+    private Gson gson;
 
     //friendly
-    private Gson gson;
     private Player player;
 
     /**
@@ -59,15 +57,13 @@ public class PostValidateMoveRouteTester {
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
         move = mock(Move.class);
-        gson = new Gson();
+        gson = mock(Gson.class);
 
         //friendly
         player = new Player(PLAYER_NAME);
 
         when(request.session()).thenReturn(session);
         when(session.attribute(GetHomeRoute.PLAYER_KEY)).thenReturn(player);
-        when(gameLobby.getGame(player)).thenReturn(game);
-        //when(gson.toJson(any(Message.class))).thenAnswer(new GsonAnswer());
 
         //setup test
         CuT = new PostValidateMoveRoute(gson, gameLobby);
@@ -78,13 +74,12 @@ public class PostValidateMoveRouteTester {
      */
     @Test
     public void moveInvalid() {
+        when(gameLobby.getGame(player)).thenReturn(game);
         when(game.isValidMove(move)).thenReturn(false);
 
-        //invoke test
-        String type = (String) CuT.handle(request, response);
+        CuT.handle(request, response);
 
-        //assertNotNull(type);
-        //assertEquals(PostValidateMoveRoute.INVALID_MOVE, type);
+        verify(gson).toJson(any(Message.class));
     }
 
     /**
@@ -92,24 +87,26 @@ public class PostValidateMoveRouteTester {
      */
     @Test
     public void moveValid() {
+        when(gson.fromJson(request.body(), Move.class)).thenReturn(move);
+        when(gameLobby.getGame(player)).thenReturn(game);
         when(game.isValidMove(move)).thenReturn(true);
 
         //invoke test
-        String type = (String) CuT.handle(request, response);
+        CuT.handle(request, response);
 
-        //assertNotNull(type);
-        //assertEquals(PostValidateMoveRoute.INVALID_MOVE, type);
+        verify(game).makeMove(move);
+        verify(gson).toJson(any(Message.class));
     }
 
-    /*
-     * help for gson mocking
+    /**
+     * Tests game is over
      */
-    private class GsonAnswer implements Answer<String> {
+    @Test
+    public void game_over() {
+        when(gameLobby.getGame(player)).thenReturn(null);
 
-        @Override
-        public String answer(InvocationOnMock invocationOnMock) {
-            Message msg = invocationOnMock.getArgument(0);
-            return msg.getType().toString();
-        }
+        CuT.handle(request, response);
+
+        verify(gson).toJson(any(Message.class));
     }
 }
