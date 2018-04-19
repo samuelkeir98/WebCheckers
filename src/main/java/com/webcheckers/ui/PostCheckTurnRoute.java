@@ -43,19 +43,11 @@ public class PostCheckTurnRoute implements Route {
         Player player = request.session().attribute(GetHomeRoute.PLAYER_KEY);
         Game game = gameLobby.getGame(player);
 
-        if(game!=null) {
-            if (game.getCurPlayer().equals(player)) {
-                return gson.toJson(new Message("true", Message.Type.info));
-            } else {
-                return gson.toJson(new Message("false", Message.Type.info));
-            }
-
-
         if(game == null || game.getCurPlayer().equals(player)){
             return gson.toJson(new Message("true", Message.Type.info));
 
         }else{
-            return gson.toJson(new Message("true", Message.Type.info));
+            return gson.toJson(new Message("false", Message.Type.info));
         }
     }
 }

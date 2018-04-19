@@ -101,9 +101,6 @@ public class GetHomeRoute implements Route {
       String message = session.attribute("message");
       vm.put("message", message);
 
-      String message = session.attribute(PLAYER_IN_GAME);
-      vm.put(PLAYER_IN_GAME, message);
-
       String result = session.attribute(GetGameRoute.RESULT);
       vm.put(GetGameRoute.RESULT, result);
 

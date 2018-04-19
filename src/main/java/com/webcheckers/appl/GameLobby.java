@@ -89,14 +89,15 @@ public class GameLobby {
      * gets All the current games so they can be displayed on the home page for spectating
      * @return collection of all games' game views
      */
-    public Collection<GameView> getGames(){
+    public Collection<GameView> getGames() {
         Set<Game> actualGames = new HashSet<>(games.values());
         ArrayList<GameView> allGames = new ArrayList<>();
-        actualGames.forEach(e->allGames.add(new GameView(e)));
+        actualGames.forEach(e -> allGames.add(new GameView(e)));
         return allGames;
+    }
       
-     * Removes player from game
-     * @param game game to end
+     /** Removes player from game
+     *@param game game to end
      */
     public void endGame(Game game) {
         games.remove(game.getRedPlayer());
