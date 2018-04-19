@@ -24,6 +24,9 @@ public class GetHomeRoute implements Route {
   public static final String PLAYER_KEY = "player";
   public static final String TEMPLATE_NAME = "home.ftl";
   public static final String OTHER_GAMES_PARAM = "games";
+  public static final String PLAYER_IN_GAME = "message";
+  public static final String GAME_URL = "/game";
+
 
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
@@ -88,7 +91,7 @@ public class GetHomeRoute implements Route {
       }
 
       if(gameLobby.inGame(player)) {
-        response.redirect("/game");
+        response.redirect(GAME_URL);
       }
 
       if(gameLobby.isSpectating(player)){
@@ -97,6 +100,12 @@ public class GetHomeRoute implements Route {
 
       String message = session.attribute("message");
       vm.put("message", message);
+
+      String message = session.attribute(PLAYER_IN_GAME);
+      vm.put(PLAYER_IN_GAME, message);
+
+      String result = session.attribute(GetGameRoute.RESULT);
+      vm.put(GetGameRoute.RESULT, result);
 
     }
 

@@ -78,7 +78,10 @@ public class WebServer {
 
   public static final String SPECTATE_GAME_URL = "/spectate";
 
+  public static final String RESIGN_URL = "/resignGame";
 
+
+  public static final String AVAILABLE_MOVES_URL = "/availableMoves";
   //
   // Attributes
   //
@@ -178,6 +181,8 @@ public class WebServer {
     post(CHECK_TURN_URL, new PostCheckTurnRoute(gson,gameLobby));
     post(SUBMIT_TURN_URL, new PostSubmitTurnRoute(gson,gameLobby));
     post(BACKUP_MOVE_URL, new PostBackupMoveRoute(gson,gameLobby));
+    post(RESIGN_URL, new PostResignGameRoute(gson, gameLobby));
+    get(AVAILABLE_MOVES_URL, new GetAvailableMovesRoute(gson, gameLobby));
     //
     LOG.config("WebServer is initialized.");
   }

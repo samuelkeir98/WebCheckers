@@ -61,6 +61,7 @@ public class PostGameRouteTest {
         game = mock(Game.class);
         playerLobby = mock(PlayerLobby.class);
 
+
         //friendlies
         player = new Player(PLAYER_NAME);
         opponent = new Player(OPPONENT);
@@ -105,8 +106,7 @@ public class PostGameRouteTest {
         testHelper.assertViewModelAttribute(PostGameRoute.RED_PLAYER_ATTR, player);
         testHelper.assertViewModelAttribute(PostGameRoute.WHITE_PLAYER_ATTR, opponent);
         testHelper.assertViewModelAttribute(PostGameRoute.ACTIVE_COLOR_ATTR, color);
-
-        testHelper.assertViewModelAttribute(PostGameRoute.BOARD_ATTR, new BoardView(board, color));
+        
         //test view name
         testHelper.assertViewName(PostGameRoute.TEMPLATE_NAME);
     }

@@ -83,15 +83,21 @@ public class Board implements Iterable<Row> {
      * Tells whether or not the game is over
      * @return
      */
-    //TODO
-    boolean isGameOver(){return false;}
+    boolean isGameOver(){
+        return !turnOver && moves.isEmpty();
+    }
 
     /**
      * Gets the winner of this board
      * @return The Player who is the winner, or null if game isn't over.
      */
     //TODO
-    Player getWinner(){return null;}
+    public Color getWinner() {
+        if(isGameOver()) {
+            return getOpponent();
+        }
+        return null;
+    }
 
     /**
      * @return the color of the player whose turn it is
@@ -179,10 +185,6 @@ public class Board implements Iterable<Row> {
                 addSteps(piece);
             }
         }
-
-        if(moves.isEmpty()) {
-            turnOver = true;
-        }
     }
 
     /**
@@ -194,6 +196,15 @@ public class Board implements Iterable<Row> {
         if(moves.isEmpty()) {
             turnOver = true;
         }
+    }
+
+
+    /**
+     * returns set of all generated available moves
+     * @return available move set
+     */
+    public Set<Move> getAvailableMoves() {
+        return moves.keySet();
     }
 
     /**

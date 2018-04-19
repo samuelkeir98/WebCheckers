@@ -25,7 +25,11 @@
       <#if message??>
         <div class="error">${message}</div>
       </#if>
-      
+
+      <#if result??>
+        <div class="info">${result}</div>
+      </#if>
+
       <p>Number of people playing: ${numPlayers}</p>
       <div>
         <#if otherPlayers??>

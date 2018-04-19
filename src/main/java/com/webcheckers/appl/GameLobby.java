@@ -53,6 +53,7 @@ public class GameLobby {
     }
 
     /**
+
      * @return whether or not there are any ongoing games
      */
     public boolean hasGames(){return !games.values().isEmpty();}
@@ -93,5 +94,16 @@ public class GameLobby {
         ArrayList<GameView> allGames = new ArrayList<>();
         actualGames.forEach(e->allGames.add(new GameView(e)));
         return allGames;
+      
+     * Removes player from game
+     * @param game game to end
+     */
+    public void endGame(Game game) {
+        games.remove(game.getRedPlayer());
+        games.remove(game.getWhitePlayer());
+    }
+
+    public void leaveGame(Player player) {
+        games.remove(player);
     }
 }

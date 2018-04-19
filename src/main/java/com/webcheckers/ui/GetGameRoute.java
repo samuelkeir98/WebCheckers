@@ -23,6 +23,10 @@ public class GetGameRoute implements Route {
 
     static final String TITLE_ATTR = "title";
     static final String TITLE = "Game";
+    static final String RESULT = "result";
+    static final String LOST = "You lost!";
+    static final String WIN = "You Won!";
+    public static final String OPPONENT_RESIGNED = "Opponent Resigned.";
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final GameLobby gameLobby;
@@ -60,6 +64,17 @@ public class GetGameRoute implements Route {
             Player player1 = game.getRedPlayer();
             Player player2 = game.getWhitePlayer();
 
+            if(game.isGameOver()) {
+                if(gameLobby.inGame(player1) && gameLobby.inGame(player2))
+                    httpSession.attribute(RESULT, WIN);
+                else
+                    httpSession.attribute(RESULT, LOST);
+
+                gameLobby.leaveGame(player);
+                response.redirect(WebServer.HOME_URL);
+                return null;
+            }
+
             ViewMode view = ViewMode.PLAY;
             vm.put(PostGameRoute.CURRENT_PLAYER_ATTR, player);
             vm.put(PostGameRoute.VIEW_MODE_ATTR, view);
@@ -71,6 +86,7 @@ public class GetGameRoute implements Route {
         }
 
         else {
+            httpSession.attribute(RESULT, OPPONENT_RESIGNED);
             response.redirect("/");
             return null;
         }
