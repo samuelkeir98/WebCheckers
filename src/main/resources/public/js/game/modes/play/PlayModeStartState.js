@@ -45,12 +45,12 @@ define(function(require){
    */
   PlayModeStartState.prototype.onEntry = function onEntry() {
     // validate game state for Play mode (currentPlayer must be == to one of the platers)
-    var currentPlayer = this._gameState.getCurrentPlayer();
-    if ( currentPlayer !== this._gameState.getRedPlayer()
-      && currentPlayer !== this._gameState.getWhitePlayer() ) {
-      alert('PlayModeStartState invalid state variables.');
-      return;
-    }
+    //var currentPlayer = this._gameState.getCurrentPlayer();
+    //if ( currentPlayer !== this._gameState.getRedPlayer()
+    //  && currentPlayer !== this._gameState.getWhitePlayer() ) {
+    //  alert('PlayModeStartState invalid state variables.');
+    //  return;
+    //}
     // 1) initialize the main View content
     this._initializeView();
     // 2) decide which state to transition to next

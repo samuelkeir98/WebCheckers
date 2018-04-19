@@ -59,8 +59,8 @@ public class GetGameRoute implements Route {
         final Map<String, Object> vm = new HashMap<>();
         vm.put(TITLE_ATTR, TITLE);
 
-        if(gameLobby.inGame(player)) {
-            Game game = gameLobby.getGame(player);
+        if(gameLobby.inGame(player) || gameLobby.isSpectating(player)) {
+            Game game = (gameLobby.inGame(player) ? gameLobby.getGame(player):gameLobby.getSpectateGame(player));
             Player player1 = game.getRedPlayer();
             Player player2 = game.getWhitePlayer();
 
