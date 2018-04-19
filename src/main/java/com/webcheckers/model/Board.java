@@ -239,6 +239,23 @@ public class Board implements Iterable<Row> {
         rows.get(position.getRow()).placePiece(piece,position.getCell());
     }
 
+    public boolean kingCheck(Piece piece){
+        if (piece.getType() == Piece.Type.KING){
+            return false;
+        }
+        if (piece.getColor() == Color.RED){
+            if(piece.getPosition().getRow() == redEnd){
+                return true;
+            }
+        }
+        if (piece.getColor() == Color.WHITE){
+            if(piece.getPosition().getRow() == whiteEnd){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Checks if a move is legal to make in the current state of the board
      * @param move the move being tested
