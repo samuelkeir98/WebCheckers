@@ -239,6 +239,11 @@ public class Board implements Iterable<Row> {
         rows.get(position.getRow()).placePiece(piece,position.getCell());
     }
 
+    /**
+     * Checks conditions for the given piece and returns true if it needs to become a king
+     * @param piece the piece to check
+     * @return true if piece needs to become a king, false otherwise
+     */
     public boolean kingCheck(Piece piece){
         if (piece.getType() == Piece.Type.KING){
             return false;
@@ -295,6 +300,11 @@ public class Board implements Iterable<Row> {
         } else {
             turnOver = true;
         }
+
+        if(kingCheck(myPiece)){
+            myPiece.becomeKing();
+        }
+
         return new MoveUndo(move, this);
     }
 
