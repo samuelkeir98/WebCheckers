@@ -65,12 +65,22 @@ public class GetGameRoute implements Route {
             Player player2 = game.getWhitePlayer();
 
             if(game.isGameOver()) {
-                if(gameLobby.inGame(player1) && gameLobby.inGame(player2))
-                    httpSession.attribute(RESULT, WIN);
-                else
+                if(gameLobby.inGame(player1) && gameLobby.inGame(player2)) {
+                    if(gameLobby.isSpectating(player)) {
+                        httpSession.attribute(RESULT, game.getWinner() + " Won!");
+                    } else {
+                        httpSession.attribute(RESULT, WIN);
+                        gameLobby.leaveGame(player);
+                    }
+                }
+                else if(gameLobby.inGame(player)){
                     httpSession.attribute(RESULT, LOST);
+                    gameLobby.leaveGame(player);
+                }
+                else {
+                    httpSession.attribute(RESULT, "Player resigned!");
+                }
 
-                gameLobby.leaveGame(player);
                 response.redirect(WebServer.HOME_URL);
                 return null;
             }
@@ -81,13 +91,13 @@ public class GetGameRoute implements Route {
             vm.put(PostGameRoute.RED_PLAYER_ATTR, player1);
             vm.put(PostGameRoute.WHITE_PLAYER_ATTR, player2);
             vm.put(PostGameRoute.ACTIVE_COLOR_ATTR, game.getCurPlayer() == player2 ? Color.WHITE : Color.RED);
-            vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(player),(player == game.getRedPlayer() ? Color.RED : Color.WHITE)));
+            vm.put(PostGameRoute.BOARD_ATTR, new BoardView(game.getBoard(player),((player == game.getRedPlayer() || gameLobby.isSpectating(player)) ? Color.RED : Color.WHITE)));
             return templateEngine.render(new ModelAndView(vm, PostGameRoute.TEMPLATE_NAME));
         }
 
         else {
             httpSession.attribute(RESULT, OPPONENT_RESIGNED);
-            response.redirect("/");
+            response.redirect(WebServer.HOME_URL);
             return null;
         }
     }

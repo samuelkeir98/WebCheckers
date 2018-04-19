@@ -100,6 +100,7 @@ public class GameLobby {
      *@param game game to end
      */
     public void endGame(Game game) {
+        game.endGame();
         games.remove(game.getRedPlayer());
         games.remove(game.getWhitePlayer());
     }

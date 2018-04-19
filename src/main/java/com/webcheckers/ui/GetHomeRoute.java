@@ -90,13 +90,15 @@ public class GetHomeRoute implements Route {
         vm.put(OTHER_GAMES_PARAM,games);
       }
 
+      if(gameLobby.isSpectating(player)){
+          gameLobby.removeSpectator(player);
+      }
+
       if(gameLobby.inGame(player)) {
         response.redirect(GAME_URL);
       }
 
-      if(gameLobby.isSpectating(player)){
-        gameLobby.removeSpectator(player);
-      }
+
 
       String message = session.attribute("message");
       vm.put("message", message);

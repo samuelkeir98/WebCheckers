@@ -120,8 +120,8 @@ public class Game {
     /**
      * @return winner of the game
      */
-    public Player getWinner(){
-        return turnBoard.getWinner() == Color.WHITE ? whitePlayer : redPlayer;
+    public Color getWinner(){
+        return turnBoard.getWinner();
     }
 
     /**
@@ -180,6 +180,13 @@ public class Game {
      */
     public Set<Move> availableMoves() {
         return turnBoard.getAvailableMoves();
+    }
+
+    /**
+     * Ends a game
+     */
+    public void endGame() {
+        gameOver = true;
     }
 
 }

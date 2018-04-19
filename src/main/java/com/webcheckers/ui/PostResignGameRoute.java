@@ -44,6 +44,6 @@ public class PostResignGameRoute implements Route {
             request.session().attribute(GetGameRoute.RESULT, RESIGN);
             return gson.toJson(new Message("success", Message.Type.info));
         }
-        return gson.toJson(new Message("Error", Message.Type.error));
+        return gson.toJson(new Message("error", Message.Type.error));
     }
 }
