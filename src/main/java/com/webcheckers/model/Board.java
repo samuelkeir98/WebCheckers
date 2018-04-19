@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * Model object that holds and moves the pieces around, also managing if the game's over or not
- * @author: Adrian Postolache
+ * @author: Adrian Postolache, Samuel Keir
  */
 public class Board implements Iterable<Row> {
 
