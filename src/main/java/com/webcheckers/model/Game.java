@@ -32,12 +32,6 @@ public class Game {
     /** List of moves made in current turn to be submitted */
     private List<Move> movesMade;
 
-    /** The end zone of the board for red pieces */
-    private static int redEnd = 0;
-
-    /** The end zne of  the board for white pieces */
-    private static int whiteEnd = 7;
-
     /**
      * Initializes a game
      * @param redPlayer Player 1 in game
