@@ -36,7 +36,7 @@ public class PostResignGameRoute implements Route {
         Game game = gameLobby.getGame(player);
         if(game == null) {
             if(gameLobby.isSpectating(player))
-                return gson.toJson(new Message(SPECTATING, Message.Type.error));
+                return gson.toJson(null);
             return gson.toJson(new Message(RESIGN_FAIL, Message.Type.error));
         }
         gameLobby.endGame(game);
