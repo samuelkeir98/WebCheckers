@@ -32,10 +32,10 @@ public class Board implements Iterable<Row> {
     private Map<Move, Move> moves;
 
     /** The end zone of the board for red pieces */
-    private static int redEnd = 7;
+    private static int redEnd = 0;
 
     /** The end zone of the board for white pieces */
-    private static int whiteEnd = 0;
+    private static int whiteEnd = 7;
 
     /**
      * Builds a board in the starting configuration for Checkers
