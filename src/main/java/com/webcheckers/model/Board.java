@@ -131,24 +131,25 @@ public class Board implements Iterable<Row> {
      * Finds and adds possible jump moves of a pieces to map
      */
     public void addJumps(Piece piece) {
+        if(turnOver == false) {
+            Position pos = piece.getPosition();
+            Direction[] directions = piece.getDirections();
+            for (Direction dir : directions) {
+                int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+                int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
+                Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
 
-        Position pos = piece.getPosition();
-        Direction[] directions = piece.getDirections();
-        for (Direction dir : directions) {
-            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
-            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
-            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+                //checks next row and column in directions of piece for an opponent piece
+                if (row != null && row.isPieceAt(col, getOpponent())) {
+                    int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
+                    int col2 = col + dir.getCol() * curTurn.getMovementFactor();
+                    Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
+                    Piece pieceTaken = row.getPieceAt(col);
 
-            //checks next row and column in directions of piece for an opponent piece
-            if (row != null && row.isPieceAt(col, getOpponent())) {
-                int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
-                int col2 = col + dir.getCol() * curTurn.getMovementFactor();
-                Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
-                Piece pieceTaken = row.getPieceAt(col);
-
-                if (nextRow != null && !nextRow.isPieceAt(col2)) {
-                    Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
-                    moves.put(jump, jump);
+                    if (nextRow != null && !nextRow.isPieceAt(col2)) {
+                        Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
+                        moves.put(jump, jump);
+                    }
                 }
             }
         }
@@ -287,6 +288,11 @@ public class Board implements Iterable<Row> {
         row.placePiece(myPiece,endPos.getCell());
 
         moves.clear();
+
+        if(kingCheck(myPiece)){
+            myPiece.becomeKing();
+            turnOver = true;
+        }
         if(move.getType() == Move.Type.JUMP) {
             Piece pieceTaken = ((Jump) move).getJumped();
             Row takenRow = rows.get(pieceTaken.getPosition().getRow());
@@ -299,10 +305,6 @@ public class Board implements Iterable<Row> {
             return new JumpUndo(move, this, pieceTaken);
         } else {
             turnOver = true;
-        }
-
-        if(kingCheck(myPiece)){
-            myPiece.becomeKing();
         }
 
         return new MoveUndo(move, this);
