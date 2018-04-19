@@ -99,13 +99,14 @@ public class GetHomeRoute implements Route {
       }
 
 
-
-      String message = session.attribute("message");
-      vm.put("message", message);
+      String message = session.attribute(PLAYER_IN_GAME);
+      vm.put(PLAYER_IN_GAME, message);
 
       String result = session.attribute(GetGameRoute.RESULT);
       vm.put(GetGameRoute.RESULT, result);
 
+      session.removeAttribute(GetGameRoute.RESULT);
+      session.removeAttribute(PLAYER_IN_GAME);
     }
 
     return templateEngine.render(new ModelAndView(vm , TEMPLATE_NAME));

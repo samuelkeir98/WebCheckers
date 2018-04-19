@@ -16,7 +16,6 @@ public class PostResignGameRoute implements Route {
 
     public static final String RESIGN = "You have resigned.";
     public static final String RESIGN_FAIL = "Other player has resigned. Click \"my home\" to return home.";
-    public static final String SPECTATING = "You are a spectator! Click \"my home\" to return home.";
 
     /** Used to parse JSON objects */
     private final Gson gson;

@@ -27,6 +27,8 @@ public class PostGameRoute implements Route {
     public static final String ACTIVE_COLOR_ATTR = "activeColor";
     public static final String BOARD_ATTR = "board";
     public static final String TEMPLATE_NAME = "game.ftl";
+    public static final String OPPONENT_SPECTATING = "Player spectating a game!";
+    public static final String OPPONENT_BUSY = "Player already in game!";
 
     private final TemplateEngine templateEngine;
     private final GameLobby gameLobby;
@@ -60,7 +62,7 @@ public class PostGameRoute implements Route {
         Player player1 = request.session().attribute(PostSigninRoute.PLAYER_KEY);
         Player player2 = playerLobby.getPlayer(opponent);
 
-        if(!gameLobby.inGame(player2)) {
+        if(!gameLobby.inGame(player2) && !gameLobby.isSpectating(player2)) {
             Game game = new Game(player1, player2);
             gameLobby.enterGame(player2, game);
             gameLobby.enterGame(player1, game);
@@ -76,8 +78,11 @@ public class PostGameRoute implements Route {
         }
 
         else {
-            request.session().attribute("message", "Player already in game!");
-            response.redirect("/");
+            if(gameLobby.inGame(player2))
+                request.session().attribute("message", OPPONENT_BUSY);
+            else
+                request.session().attribute("message", OPPONENT_SPECTATING);
+            response.redirect(WebServer.HOME_URL);
             return null;
         }
     }
