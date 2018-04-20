@@ -44,8 +44,8 @@ public class Piece {
 
 	/**
 	 * Initializes a piece
-	 * @param position position to set piece to
-	 * @param color color of piece
+	 * @param position Position to set piece to
+	 * @param color Color of piece
 	 */
 	public Piece(Position position,Color color){
 		this.position = position;
@@ -57,28 +57,28 @@ public class Piece {
 	}
 
 	/**
-	 * promotes a piece to a KING type
+	 * Promotes a piece to a KING type
 	 */
 	public void becomeKing(){
 		this.type = Type.KING;
 	}
 
 	/**
-	 * @return the position of the piece
+	 * @return The position of the piece
 	 */
 	public Position getPosition() {
 		return position;
 	}
 
 	/**
-	 * @return the piece's color
+	 * @return The piece's color
 	 */
 	public Color getColor() {
 		return color;
 	}
 
 	/**
-	 * @return the type of move a piece is
+	 * @return The type of move a piece is
 	 */
 	public Type getType() {
 		return type;
@@ -90,7 +90,7 @@ public class Piece {
 	public void unbecomeKing(){ this.type = Type.SINGLE;}
 
 	/**
-	 * @return list of directions piece can move in
+	 * @return List of directions piece can move in
 	 */
 	Direction[] getDirections(){
 		return (type == Type.SINGLE ? NormalDirection.values() : KingDirection.values());
@@ -98,7 +98,7 @@ public class Piece {
 
 	/**
 	 * Sets piece's position
-	 * @param position position to set piece to
+	 * @param position Position to set piece to
 	 */
 	public void setPosition(Position position) {
 		this.position = position;
@@ -106,8 +106,8 @@ public class Piece {
 
 	/**
 	 * Used for comparison of Pieces
-	 * @param obj piece to compare to
-	 * @return true if Piece IDs match, false otherwise
+	 * @param obj Piece to compare to
+	 * @return True if Piece IDs match, false otherwise
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -116,7 +116,7 @@ public class Piece {
 
 	/**
 	 * Generates unique code for different piece objects
-	 * @return hashcode of Piece
+	 * @return Hashcode of Piece
 	 */
 	@Override
 	public int hashCode() {

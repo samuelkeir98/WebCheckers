@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  * Model object that holds and moves the pieces around, also managing if the game's over or not
- * @author: Adrian Postolache
+ * @author: Adrian Postolache, Samuel Keir
  */
 public class Board implements Iterable<Row> {
 
@@ -30,6 +30,12 @@ public class Board implements Iterable<Row> {
 
     /** Set of available moves */
     private Map<Move, Move> moves;
+
+    /** The end zone of the board for red pieces */
+    private static int redEnd = 0;
+
+    /** The end zone of the board for white pieces */
+    private static int whiteEnd = 7;
 
     /**
      * Builds a board in the starting configuration for Checkers
@@ -125,24 +131,25 @@ public class Board implements Iterable<Row> {
      * Finds and adds possible jump moves of a pieces to map
      */
     public void addJumps(Piece piece) {
+        if(turnOver == false) {
+            Position pos = piece.getPosition();
+            Direction[] directions = piece.getDirections();
+            for (Direction dir : directions) {
+                int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
+                int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
+                Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
 
-        Position pos = piece.getPosition();
-        Direction[] directions = piece.getDirections();
-        for (Direction dir : directions) {
-            int rowNum = pos.getRow() + dir.getRow() * curTurn.getMovementFactor();
-            int col = pos.getCell() + dir.getCol() * curTurn.getMovementFactor();
-            Row row = inBounds(rowNum, col) ? rows.get(rowNum) : null;
+                //checks next row and column in directions of piece for an opponent piece
+                if (row != null && row.isPieceAt(col, getOpponent())) {
+                    int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
+                    int col2 = col + dir.getCol() * curTurn.getMovementFactor();
+                    Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
+                    Piece pieceTaken = row.getPieceAt(col);
 
-            //checks next row and column in directions of piece for an opponent piece
-            if (row != null && row.isPieceAt(col, getOpponent())) {
-                int rowNum2 = rowNum + dir.getRow() * curTurn.getMovementFactor();
-                int col2 = col + dir.getCol() * curTurn.getMovementFactor();
-                Row nextRow = inBounds(rowNum2, col2) ? rows.get(rowNum2) : null;
-                Piece pieceTaken = row.getPieceAt(col);
-
-                if (nextRow != null && !nextRow.isPieceAt(col2)) {
-                    Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
-                    moves.put(jump, jump);
+                    if (nextRow != null && !nextRow.isPieceAt(col2)) {
+                        Jump jump = new Jump(piece, dir, curTurn, pieceTaken);
+                        moves.put(jump, jump);
+                    }
                 }
             }
         }
@@ -234,6 +241,28 @@ public class Board implements Iterable<Row> {
     }
 
     /**
+     * Checks conditions for the given piece and returns true if it needs to become a king
+     * @param piece the piece to check
+     * @return true if piece needs to become a king, false otherwise
+     */
+    public boolean kingCheck(Piece piece){
+        if (piece.getType() == Piece.Type.KING){
+            return false;
+        }
+        if (piece.getColor() == Color.RED){
+            if(piece.getPosition().getRow() == redEnd){
+                return true;
+            }
+        }
+        if (piece.getColor() == Color.WHITE){
+            if(piece.getPosition().getRow() == whiteEnd){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Checks if a move is legal to make in the current state of the board
      * @param move the move being tested
      * @return whether it can be made
@@ -259,6 +288,11 @@ public class Board implements Iterable<Row> {
         row.placePiece(myPiece,endPos.getCell());
 
         moves.clear();
+
+        if(kingCheck(myPiece)){
+            myPiece.becomeKing();
+            turnOver = true;
+        }
         if(move.getType() == Move.Type.JUMP) {
             Piece pieceTaken = ((Jump) move).getJumped();
             Row takenRow = rows.get(pieceTaken.getPosition().getRow());
@@ -272,6 +306,7 @@ public class Board implements Iterable<Row> {
         } else {
             turnOver = true;
         }
+
         return new MoveUndo(move, this);
     }
 

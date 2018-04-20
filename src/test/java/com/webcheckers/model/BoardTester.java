@@ -8,6 +8,7 @@ import com.webcheckers.model.moves.Position;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class BoardTester {
 	public void kingStepMoveTest(){
 		Board board = Board.emptyBoard();
 		Position start = new Position(3,3);
-		Piece king = new Piece(start,Color.RED);
+		Piece king = new Piece(start, Color.RED);
 		king.becomeKing();
 		board.placePiece(king,start);
 		board.addMoves();
@@ -84,6 +85,24 @@ public class BoardTester {
 			Move move = new Move(start,position);
 			assertFalse(board.isValidMove(move));
 		}
+	}
+
+	@Test
+	public void kingJumpTest(){
+		Board board = Board.emptyBoard();
+		Position jumpStart = new Position(1,4);
+		Piece jumpedPiece = new Piece(jumpStart, Color.WHITE);
+		board.placePiece(jumpedPiece, jumpStart);
+		Position kingStart = new Position(2,5);
+		Piece king = new Piece(kingStart, Color.RED);
+		board.placePiece(king, kingStart);
+		board.addMoves();
+		Position kingEnd = new Position(0,3);
+		Move move = new Move(kingStart, kingEnd);
+		assertTrue(board.isValidMove(move));
+		Move actual = board.getMove(move);
+		board.makeMove(actual);
+		assertFalse(board.kingCheck(board.getPiece(kingEnd)));
 	}
 
 	@Test
