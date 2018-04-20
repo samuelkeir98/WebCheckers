@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 
+
 /**
  * The homepage representation of a GameView
  */
