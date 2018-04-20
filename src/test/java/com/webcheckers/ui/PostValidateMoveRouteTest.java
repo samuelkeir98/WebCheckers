@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
  * @author Andy Gin
  */
 @Tag("UI-tier")
-public class PostValidateMoveRouteTester {
+public class PostValidateMoveRouteTest {
 
     private static final String PLAYER_NAME = "name";
 

@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Tag("Model-tier")
-public class BoardTester {
+public class BoardTest {
 
 	@Test
 	public void initTest(){
