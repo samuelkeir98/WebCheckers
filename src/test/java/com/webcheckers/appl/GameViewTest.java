@@ -20,6 +20,7 @@ import org.mockito.MockitoAnnotations;
  *
  * @author Andy Gin
  */
+@Tag("Application-tier")
 public class GameViewTest {
 
     private static final String name = "name";
