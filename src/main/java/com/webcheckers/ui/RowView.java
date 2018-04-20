@@ -1,4 +1,4 @@
-package com.webcheckers.appl;
+package com.webcheckers.ui;
 
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Row;

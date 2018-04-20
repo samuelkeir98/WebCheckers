@@ -1,8 +1,7 @@
-package com.webcheckers.appl;
+package com.webcheckers.ui;
 
 import com.webcheckers.model.Board;
 import com.webcheckers.model.Color;
-import com.webcheckers.model.Player;
 import com.webcheckers.model.Row;
 
 import java.util.ArrayList;

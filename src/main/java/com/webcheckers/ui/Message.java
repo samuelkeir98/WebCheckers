@@ -1,4 +1,4 @@
-package com.webcheckers.appl;
+package com.webcheckers.ui;
 
 import java.io.Serializable;
 

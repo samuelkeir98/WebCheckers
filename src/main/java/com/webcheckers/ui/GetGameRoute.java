@@ -1,12 +1,10 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.BoardView;
 import com.webcheckers.appl.GameLobby;
 import com.webcheckers.model.Color;
 import com.webcheckers.model.Game;
 import spark.*;
 
-import com.webcheckers.model.Board;
 import com.webcheckers.model.Player;
 
 import java.util.HashMap;

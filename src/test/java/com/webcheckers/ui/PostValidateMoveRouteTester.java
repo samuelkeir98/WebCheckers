@@ -2,7 +2,6 @@ package com.webcheckers.ui;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.GameLobby;
-import com.webcheckers.appl.Message;
 import com.webcheckers.model.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.moves.Move;
@@ -11,13 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import spark.Request;
 import spark.Response;
 import spark.Session;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
