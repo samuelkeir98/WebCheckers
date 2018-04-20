@@ -292,6 +292,7 @@ public class Board implements Iterable<Row> {
         if(kingCheck(myPiece)){
             myPiece.becomeKing();
             turnOver = true;
+            return new KingUndo(move, this, myPiece);
         }
         if(move.getType() == Move.Type.JUMP) {
             Piece pieceTaken = ((Jump) move).getJumped();

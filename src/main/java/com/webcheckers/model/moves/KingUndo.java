@@ -20,5 +20,7 @@ public class KingUndo extends MoveAction {
         Move undo = new Move(move.end, move.start);
         piece.unbecomeKing();
         board.makeMove(undo);
+        board.resetTurnOver();
+        board.addMoves(piece);
     }
 }
