@@ -22,7 +22,7 @@ public class PostSpectateGameRoute implements Route {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         final Player player = request.session().attribute(PostSigninRoute.PLAYER_KEY);
         final String redPlayer = request.queryParams("name");
 
@@ -33,9 +33,9 @@ public class PostSpectateGameRoute implements Route {
                 gameLobby.removeSpectator(player);
             }
             gameLobby.spectateGame(player,game);
-            response.redirect("/game");
+            response.redirect(WebServer.GAME_URL);
         }else{
-            response.redirect("/");
+            response.redirect(WebServer.HOME_URL);
         }
 
 

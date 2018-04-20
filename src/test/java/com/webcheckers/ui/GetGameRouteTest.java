@@ -26,14 +26,16 @@ import static org.mockito.Mockito.*;
 public class GetGameRouteTest {
 
     private static final String PLAYER_NAME = "name";
-    private static final String OPPONENT = "opponent";
+    private static final String PLAYER1 = "player1";
+    private static final String PLAYER2 = "player2";
 
     /** The component-under-test (CuT) */
     private GetGameRoute CuT;
 
     //friendly objects
     private Player player;
-    private Player opponent;
+    private Player player1;
+    private Player player2;
     private Board board;
 
     //mock objects
@@ -43,7 +45,6 @@ public class GetGameRouteTest {
     private TemplateEngine engine;
     private GameLobby gameLobby;
     private Game game;
-    private PlayerLobby playerLobby;
     private Color color;
 
     /**
@@ -58,11 +59,11 @@ public class GetGameRouteTest {
         engine = mock(TemplateEngine.class);
         gameLobby = mock(GameLobby.class);
         game = mock(Game.class);
-        playerLobby = mock(PlayerLobby.class);
 
         //friendlies
         player = new Player(PLAYER_NAME);
-        opponent = new Player(OPPONENT);
+        player1 = new Player(PLAYER1);
+        player2 = new Player(PLAYER2);
         board = new Board();
         color = Color.RED;
 
@@ -82,7 +83,7 @@ public class GetGameRouteTest {
     public void game_entered() {
         when(gameLobby.getGame(eq(player))).thenReturn(game);
         when(gameLobby.inGame(eq(player))).thenReturn(true);
-        when(game.getRedPlayer()).thenReturn(opponent);
+        when(game.getRedPlayer()).thenReturn(player1);
         when(game.getWhitePlayer()).thenReturn(player);
         when(game.isGameOver()).thenReturn(false);
 
@@ -100,7 +101,7 @@ public class GetGameRouteTest {
         //model contains all necessary View-Model data
         testHelper.assertViewModelAttribute(PostGameRoute.CURRENT_PLAYER_ATTR, player);
         testHelper.assertViewModelAttribute(PostGameRoute.VIEW_MODE_ATTR, ViewMode.PLAY);
-        testHelper.assertViewModelAttribute(PostGameRoute.RED_PLAYER_ATTR, opponent);
+        testHelper.assertViewModelAttribute(PostGameRoute.RED_PLAYER_ATTR, player1);
         testHelper.assertViewModelAttribute(PostGameRoute.WHITE_PLAYER_ATTR, player);
         testHelper.assertViewModelAttribute(PostGameRoute.ACTIVE_COLOR_ATTR, color);
 
@@ -110,11 +111,11 @@ public class GetGameRouteTest {
     }
 
     /**
-     * Test that the "challenge" action fails to enter game (opponent in game)
+     * Test that the "challenge" action fails to enter game (player1 in game)
      */
     @Test
     public void game_not_entered_1() {
-        //test scenario: opponent in game
+        //test scenario: player1 in game
         when(gameLobby.inGame(eq(player))).thenReturn(false);
 
         //invoke test
@@ -129,7 +130,7 @@ public class GetGameRouteTest {
      */
     @Test
     public void game_not_entered_2() throws NullPointerException {
-        //test scenario: opponent logged out
+        //test scenario: player1 logged out
         when(gameLobby.inGame(eq(player))).thenThrow(NullPointerException.class);
 
     }
@@ -141,10 +142,11 @@ public class GetGameRouteTest {
     public void game_won() {
         when(gameLobby.getGame(eq(player))).thenReturn(game);
         when(gameLobby.inGame(eq(player))).thenReturn(true);
-        when(game.getRedPlayer()).thenReturn(opponent);
+        when(gameLobby.isSpectating(eq(player))).thenReturn(false);
+        when(game.getRedPlayer()).thenReturn(player1);
         when(game.getWhitePlayer()).thenReturn(player);
         when(game.isGameOver()).thenReturn(true);
-        when(gameLobby.inGame(eq(opponent))).thenReturn(true);
+        when(gameLobby.inGame(eq(player1))).thenReturn(true);
         when(gameLobby.inGame(eq(player))).thenReturn(true);
 
         CuT.handle(request, response);
@@ -161,15 +163,57 @@ public class GetGameRouteTest {
     public void game_lost() {
         when(gameLobby.getGame(eq(player))).thenReturn(game);
         when(gameLobby.inGame(eq(player))).thenReturn(true);
-        when(game.getRedPlayer()).thenReturn(opponent);
+        when(gameLobby.isSpectating(eq(player))).thenReturn(false);
+        when(game.getRedPlayer()).thenReturn(player1);
         when(game.getWhitePlayer()).thenReturn(player);
         when(game.isGameOver()).thenReturn(true);
-        when(gameLobby.inGame(eq(opponent))).thenReturn(false);
+        when(gameLobby.inGame(eq(player1))).thenReturn(false);
 
         CuT.handle(request, response);
 
         verify(session).attribute(GetGameRoute.RESULT, GetGameRoute.LOST);
         verify(gameLobby).leaveGame(player);
+        verify(response).redirect(WebServer.HOME_URL);
+    }
+
+    /**
+     * Spectator leaves game is over normally (not resigned)
+     */
+    @Test
+    public void spectator_leave() {
+        when(gameLobby.getGame(eq(player))).thenReturn(game);
+        when(gameLobby.inGame(eq(player))).thenReturn(false);
+        when(gameLobby.isSpectating(eq(player))).thenReturn(true);
+        when(game.getRedPlayer()).thenReturn(player1);
+        when(game.getWhitePlayer()).thenReturn(player);
+        when(game.isGameOver()).thenReturn(true);
+        when(gameLobby.inGame(eq(player1))).thenReturn(true);
+        when(gameLobby.inGame(eq(player))).thenReturn(true);
+        when(game.getWinner()).thenReturn(player1);
+
+        CuT.handle(request, response);
+
+        verify(session).attribute(GetGameRoute.RESULT, player1 + " Won!");
+        verify(response).redirect(WebServer.HOME_URL);
+    }
+
+    /**
+     * Spectator leaves player resigns
+     */
+    @Test
+    public void spectator_leave_after_resign() {
+        when(gameLobby.inGame(eq(player))).thenReturn(false);
+        when(gameLobby.getSpectateGame(eq(player))).thenReturn(game);
+        when(gameLobby.isSpectating(eq(player))).thenReturn(true);
+        when(game.getRedPlayer()).thenReturn(player1);
+        when(game.getWhitePlayer()).thenReturn(player2);
+        when(game.isGameOver()).thenReturn(true);
+        when(gameLobby.inGame(eq(player1))).thenReturn(false);
+        when(gameLobby.inGame(eq(player2))).thenReturn(false);
+
+        CuT.handle(request, response);
+
+        verify(session).attribute(GetGameRoute.RESULT, GetGameRoute.PLAYER_RESIGNED);
         verify(response).redirect(WebServer.HOME_URL);
     }
 

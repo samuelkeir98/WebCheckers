@@ -120,8 +120,8 @@ public class Game {
     /**
      * @return winner of the game
      */
-    public Color getWinner(){
-        return turnBoard.getWinner();
+    public Player getWinner(){
+        return turnBoard.getWinner() == Color.RED ? redPlayer : whitePlayer;
     }
 
     /**

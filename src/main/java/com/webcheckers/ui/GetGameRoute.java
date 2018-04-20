@@ -27,6 +27,7 @@ public class GetGameRoute implements Route {
     static final String LOST = "You lost!";
     static final String WIN = "You Won!";
     public static final String OPPONENT_RESIGNED = "Opponent Resigned.";
+    public static final String PLAYER_RESIGNED = "Player resigned!";
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
     private final TemplateEngine templateEngine;
     private final GameLobby gameLobby;
@@ -78,7 +79,7 @@ public class GetGameRoute implements Route {
                     gameLobby.leaveGame(player);
                 }
                 else {
-                    httpSession.attribute(RESULT, "Player resigned!");
+                    httpSession.attribute(RESULT, PLAYER_RESIGNED);
                 }
 
                 response.redirect(WebServer.HOME_URL);
