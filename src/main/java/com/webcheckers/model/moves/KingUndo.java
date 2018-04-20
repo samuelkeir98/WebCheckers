@@ -21,6 +21,6 @@ public class KingUndo extends MoveAction {
         piece.unbecomeKing();
         board.makeMove(undo);
         board.resetTurnOver();
-        board.addMoves(piece);
+        board.addMoves();
     }
 }

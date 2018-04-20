@@ -20,6 +20,7 @@ public class JumpUndo extends MoveAction {
         board.makeMove(undo);
         board.placePiece(piece, piece.getPosition());
         board.resetTurnOver();
-        board.addMoves(piece);
+        piece.setPosition(move.start);
+        board.addJumps(piece);
     }
 }
