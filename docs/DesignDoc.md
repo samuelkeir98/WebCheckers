@@ -75,8 +75,7 @@ The game is played on an 8x8 Checker Board which is made of 64 alternating black
 
 A Move entity is broken down into two categories: a Jump, which is further broken down into a Multi Jump and a Single Jump, and a Simple Move, which is further broken down into a Normal Move and a King Move. All Moves adhere to the rules of Checkers.
 
-
-
+\pagebreak
 ## Architecture
 
 This section describes the application architecture.
@@ -96,7 +95,7 @@ Controllers are built using the Spark framework and View are built using the Fre
 
 Details of the components within these tiers are supplied below
 
-
+\pagebreak
 ### Overview of User Interface
 
 This section describes the web interface flow; this is how the user views and interacts
@@ -118,122 +117,146 @@ When the game is over, the user will be redirected to the home page automaticall
 
 If a player resigns, he/she will be redirected to the home page. The other user will be redirected if they are waiting for his/her turn. If it is the other user's turn, he/she will be notified about the resignation upon trying to make a move and will be redirected after clicking submit.
 
-
+\pagebreak
 ### UI Tier
 
 The WebSever class sets up the routes for the UI tier. The GetHomeRoute class initializes the webcheckers server. Our GET routes and post routes for sign-in cooperate to populate the player lobby with signed-in players. Furthermore, our GET and POST routes for the game work in unison to pull players into a game once a challenge has been issued. The POST game route is used to handle the challenger clicking the button to challenge the opponent and the GET game route is used to enter a game if the player has been challenged by another player. While the game is running, our post routes for validate move, check turn, and submit turn operate in order to keep the game loop functional. At any time, if a player attempts to sign out, the get route for signing out handles the calls and completes the request.
 
 #### Static models
-Part 1
-![UI Tier UML Diagram](uiUML1.png)
-Part 2
-![UI Tier UML Diagram](uiUML2.png)
-Part 3
-![UI Tier UML Diagram](uiUML3.png)
-Part 4
-![UI Tier UML Diagram](uiUML4.png)
-Part 5
-![UI Tier UML Diagram](uiUML5.png)
+![UI Tier UML Part 1](uiUML1.png)
 
+![UI Tier UML Part 2](uiUML2.png)
+
+![UI Tier UML Part 3](uiUML3.png)
+
+![UI Tier UML Part 4](uiUML4.png)
+
+![UI Tier UML Part 5](uiUML5.png)
+
+\pagebreak
 #### Dynamic models
-PostGameRoute Sequence Diagram
 ![The Post Game Sequence Diagram](PostGame.png)
 
-GetGameRoute Sequence Diagram
 ![The Get Game Sequence Diagram](GetGame.png)
 
-PostValidateMove Sequence Diagram
-![PostValidateMove Sequence Diagram](PostValidateMoveSequence.png)
+![Post Validate Move Sequence Diagram](PostValidateMoveSequence.png)
 
+\pagebreak
 ### Application Tier
 The Application tier contains the GameLobby and PlayerLobby classes and keeps track of all of the players in the lobby and the ongoing games. The PlayerLobby class also signs in players by adding them to its map of players. The GameLobby can be used to find the players in a particular game and notify a user if he/she has been challenged. It also puts both players into a game when a user challenges another player.
 
 #### Static models
 ![Application Tier UML](AppUML.png)
 
-
+\pagebreak
 ### Model Tier
 
 The game and board classes are the main classes in the Model Tier. The game class implements the functionality of the game loop and keeps it running while players are participating in a webcheckers match. Player is a representation of the users participating in the game. The board keeps track of the pieces and the state of the turns for the players. Color, piece, row, and space all represent their corresponding features inside the board, and are interacted with in order to keep the game loop functional and accurate to the rules for checkers. The moves package includes all of the implementation for the different types of moves that occur in checkers, ranging from jumps to kinging
 and more.
 
 #### Static models
-Part 1
-![The Model UML Diagram](model1.png)
-Part 2
-![The Model UML Diagram](model2.png)
-Part 3
-![The Model UML Diagram](model3.png)
-Part 4
-![The Model UML Diagram](model4.png)
+![The Model UML Part 1](model1.png)
 
+![The Model UML Part 2](model2.png)
+
+![The Model UML Part 3](model3.png)
+
+![The Model UML Part 4](model4.png)
+
+\pagebreak
 #### Dynamic models
 ![The Model State Chart](Model State.png)
 
+\pagebreak
 ### Object Oriented Design
-####Polymorphism
+#### Polymorphism
 We use polymorphism with our Direction interface with its enum implementers since it allows us to have generic collections of them regardless of if they’re directions for a king or for a normal piece. We also have Jump and Step extending from the Move class, giving them the common methods of a move and allowing them to branch off with methods that make them different from each other.
 
-####Pure Fabrication
+#### Pure Fabrication
 Purely fabricated classes such as PlayerLobby and GameLobby classes do not exist in the problem domain. These classes help reduce coupling and increase cohesion between the different architectural tiers. Since these two classes are in the Application tier, the tier itself helps decrease coupling between the UI and Model tier classes. In the UI UML diagram part 2, we can see clearly how the GameLobby class decreases coupling greatly between UI and Model.
 
-####Controller
+#### Controller
 The Application tier classes also demonstrate the Controller principle by handling different system events. PlayerLobby handles signing in players, signing out players, and keeping track of spectators. GameLobby handles putting players into a new game and ending a game by removing players from said game.
 
+\pagebreak
 ### Code Coverage
 #### UI Tier
 UI Coverage Report
+
 ![UI Tier Coverage](UI Coverage.png)
+
 Overall, the coverage of the UI Tier is at 95%, covering most important aspects of the code. The least coverage comes from the GetHomeRoute, BoardView, and RowView classes where some lines were missed in the coverage. These lines would optimally be covered, but they are less important because some of the cases cannot be reached normally. For the most part, the routes have 100% coverage. However, some of the other UI routes do not have full coverage because of some of the lines dealing with JSON message passing.
 
 #### Application Tier
 Application Coverage Report
+
 ![Application Tier Coverage](Application Coverage.png)
+
 The application tier has 76% coverage, the weakest of the three tiers. The weakest link of the application tier tests is the PlayerLobby class with 59% coverage. The GameLobby class also has suboptimal coverage at 78% coverage. Most of the gaps in coverage stem from the construction of new objects, in which we had trouble mocking and testing.
 
 #### Model Tier
 Model Coverage Report
+
 ![Model Tier Coverage](Model Coverage.png)
+
 Moves Coverage Report
+
 ![Moves Coverage](Moves Coverage.png)
+
 The model tier is composed of two main parts, the Model package itself and the Moves package within the Model Package. The average of the two come up to 87% with the model being being the weaker of the two links. The weakest links of all the classes are the Game, Move, Position, and Player classes. These gaps also come from missed lines to do with constructing objects and also some insignificant cases.
 
+\pagebreak
 ### Code Metrics
-####Complexity Metrics
+#### Complexity Metrics
+
 ![Complexity](Complexity.png)
+
 The average cyclomatic complexity (excluding abstract classes) is 1.33 and the overall average is 5.70. The standout complexity from the average is the GetGameRoute, which may stem from the amount of system processes it needs to organize. For example, it has to deal with entering a game, spectating a game, and redirecting players once a game is over in all scenarios. This leads to different method calls and a more complex system of conditionals. GetHomeRoute is similar in this case, in which it deals with many scenarios.
 The standout for the overall average is the Board class. This means the class is much harder to test and get coverage for, as demonstrated in the code coverage anaylsis. The methods and complexity of this class is high because it handles much of the game's behavior and does most of the checks for the game state. Twin methods with different parameters for different tasks occured a few times, makes it more complex as well.
 
-####Lines of Code Metrics
+\pagebreak
+#### Lines of Code Metrics
+
 ![Lines](Lines.png)
+
 The lines of code metrics with respect to packages makes sense. The UI and model (model + moves packages) tier both contain around 2000 lines of code (including comments) while the application tier is much less.
 
-####Javadocs Metrics
+\pagebreak
+#### Javadocs Metrics
+
 ![Javadoc](Javadoc.png)
+
 Our Javadoc coverage for fields is at 19.58%. Many of the fields not covered with Javadocs are self-evident by name. These include constants and may include mock and friendly objects within unit tests as well. Although the names may be self-evident, it is good practice to document everything so this category needs to be improved.
 Our method coverage is about 70%. Many of the missed documentation most likely stems from self-evident naming of unit test methods, but there may have been some methods missed in the main application. This should be improved as it is the most important aspect.
 
-####Martin Package Metrics
+\pagebreak
+#### Martin Package Metrics
+
 ![Martin](Martin.png)
+
 The average afferent coupling (Ca) is 14. The UI tier has 22 instances where a class references to another class within the package. This mainly stems from the sharing of constants through all of the UI classes. This also affects the other tiers, but not as severely. The model tier naturally has a higher afferent coupling rating because the different entites need to work together and reference each other to connect the game. The application tier is the lowest and includes minor cases, including constant sharing.
 The average efferent coupling (Ce) is 27.80, which is moderately high but also within expectations considering the architecture. Most of the references to other packages stem from the UI, which reference to classes from both the model and application tiers. The application tier helps lessen the coupling between the model and UI tiers. It is necessary for the UI to do this because it needs to update the display accordingly with information from the model.
 
-####Chibamber-Kemerer Metrics
+\pagebreak
+#### Chibamber-Kemerer Metrics
+
 ![Chibamber](Chibamber.png)
+
 This metric describes the coupling of classes by their amound of dependencies and the amount in which other classes depend on a specific class. Classes with particularly high dependency ratings are Player (33), Piece (22), Move (21), Game (30), Board (23), and GameLobby (27).
 
-###Redesign and Reimplementation Recommendations
-####Constants Class
+\pagebreak
+### Redesign and Reimplementation Recommendations
+#### Constants Class
 As seen in the Martin Package metrics, the afferent and efferent coupling within the UI tier is very high due to the sharing of constants through the entire application. The majority of constants are defined in the Webserver clas or throughout the many UI classes. Having a separate class just for constant definition may help reduce this coupling greatly.
 
-####Model Refactoring
+#### Model Refactoring
 As aforementioned, the board class is somewhat of a "god class" and handles too much behavior. This results in very high cyclomatic complexity and affects the coverage and modularity of the application greatly. We had previously recommended to refactor the model design by giving more responsibilities to other classes connected to Board in the model. The decrease in responsibility would decrease the complexity and also make it easier to test.
 
-####Spectator Implementation Change
+#### Spectator Implementation Change
 As seen in the complexity metrics, the GetHome and GetGame routes have high cyclomatic complexity. This may be due to the way we implemented the Spectator enhancement. Rather than implementing the JavaScript files, we had tweaked and "hacked" the application, specifically in GameLobby, GetHomeRoute, and GetGameRoute. Doing so adds complexity to these routes because it adds a whole suite of new scenarios to consider including more conditionals and handling a spectator's behavior. Implementating it the intended way may reduce complexity.
 
-####State Management
+#### State Management
 The game states in our code is spread out through the model and largely implicity. This makes it more complex to think about and also more difficult to maintain and test. Implementating a new feature would require a lot of tracing. A way to improve this might be to use explicit states and organize them into few classes, probably the Game or Board class.
 
-####UI Refactoring
+#### UI Refactoring
 There are many checks spread out through the UI tier where the application checks if a player is logged in or in a game. These checks run frequently throughout the whole application. A way to reduce repititon may be to use spark middleware or possibly decorators.
