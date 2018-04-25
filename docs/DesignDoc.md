@@ -231,3 +231,9 @@ As aforementioned, the board class is somewhat of a "god class" and handles too 
 
 ####Spectator Implementation Change
 As seen in the complexity metrics, the GetHome and GetGame routes have high cyclomatic complexity. This may be due to the way we implemented the Spectator enhancement. Rather than implementing the JavaScript files, we had tweaked and "hacked" the application, specifically in GameLobby, GetHomeRoute, and GetGameRoute. Doing so adds complexity to these routes because it adds a whole suite of new scenarios to consider including more conditionals and handling a spectator's behavior. Implementating it the intended way may reduce complexity.
+
+####State Management
+The game states in our code is spread out through the model and largely implicity. This makes it more complex to think about and also more difficult to maintain and test. Implementating a new feature would require a lot of tracing. A way to improve this might be to use explicit states and organize them into few classes, probably the Game or Board class.
+
+####UI Refactoring
+There are many checks spread out through the UI tier where the application checks if a player is logged in or in a game. These checks run frequently throughout the whole application. A way to reduce repititon may be to use spark middleware or possibly decorators.
